@@ -1,0 +1,112 @@
+@import url('../font/roboto.css');
+
+.episode-card {
+  margin: 0 0 2vw 2vw;
+}
+
+.episode-preview-thumbnail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+
+  background: #FFFFFF;
+  border-radius: 5px;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 10px 0;
+}
+
+.episode-preview-title-number {
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 18px;
+  /* identical to box height, or 100% */
+
+  display: flex;
+  align-items: center;
+
+  color: #777777;
+}
+
+.episode-preview-title {
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  /* identical to box height, or 117% */
+
+  display: flex;
+  align-items: center;
+
+  color: #FBFBFB;
+
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 3px 0;
+}
+
+.episode-preview-anime-name {
+  font-family: Roboto, serif;
+  text-overflow: ellipsis;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 18px;
+  /* identical to box height, or 100% */
+
+  display: flex;
+  align-items: center;
+
+  color: #777777;
+}
+
+.episode-preview-title-container {
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 3px 0px;
+}
+
+.episode-preview-badge {
+  position: static;
+  width: 6px;
+  height: 16px;
+  left: 4px;
+  top: -1px;
+
+  font-family: Youtube Sans, serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  /* identical to box height, or 133% */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #000000;
+
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 10px 0px;
+}

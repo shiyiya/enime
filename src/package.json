@@ -1,0 +1,16 @@
+{
+  "name": "enime",
+  "productName": "Enime",
+  "version": "0.0.1",
+  "description": "Enime -> React",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Enime React"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../.erb/scripts/BabelRegister.js ../.erb/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

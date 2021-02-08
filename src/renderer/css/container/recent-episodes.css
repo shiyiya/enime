@@ -1,0 +1,28 @@
+@import url('../font/roboto.css');
+
+.recent-episodes-title {
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 64px;
+  /* identical to box height, or 133% */
+
+  display: flex;
+  align-items: center;
+
+  color: #FFFFFF;
+
+
+  /* Inside Auto Layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-left: 2vw;
+  margin-top: 0;
+}
+
+.episode-releases-container {
+  display: flex;
+}

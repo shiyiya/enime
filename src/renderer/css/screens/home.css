@@ -1,0 +1,6 @@
+@import "../component/episode-card.css";
+@import "../container/recent-episodes.css";
+
+body {
+  background-color: black;
+}
