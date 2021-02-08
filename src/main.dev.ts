@@ -65,9 +65,13 @@ switch (process.platform) {
     break;
 }
 
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../assets');
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const pluginDir = path.join(__dirname, '../assets/libraries', 'mpv', os);
+const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
 console.log(pluginDir);
 // See pitfalls section for details.
 if (process.platform !== 'linux') {
@@ -83,6 +87,10 @@ app.commandLine.appendSwitch(
   getPluginEntry(pluginDir)
 );
 
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -90,14 +98,6 @@ const createWindow = async () => {
   ) {
     await installExtensions();
   }
-
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
 
   mainWindow = new BrowserWindow({
     autoHideMenuBar: true,

@@ -71,11 +71,5 @@ export default merge(baseConfig, {
   node: {
     __dirname: false,
     __filename: false,
-  },
-
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '../src'), 'node_modules'],
-    aliasFields: []
-  },
+  }
 });

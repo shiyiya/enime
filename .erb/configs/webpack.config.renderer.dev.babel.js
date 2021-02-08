@@ -52,12 +52,6 @@ export default merge(baseConfig, {
     filename: 'renderer.dev.js',
   },
 
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '../src'), 'node_modules'],
-    aliasFields: []
-  },
-
   module: {
     rules: [
       {

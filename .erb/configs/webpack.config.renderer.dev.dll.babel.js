@@ -40,12 +40,6 @@ export default merge(baseConfig, {
     libraryTarget: 'var',
   },
 
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '../src'), 'node_modules'],
-    aliasFields: []
-  },
-
   plugins: [
     new webpack.DllPlugin({
       path: path.join(dist, '[name].json'),

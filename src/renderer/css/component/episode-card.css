@@ -2,6 +2,7 @@
 
 .episode-card {
   margin: 0 0 2vw 2vw;
+  flex: 1;
 }
 
 .episode-preview-thumbnail {

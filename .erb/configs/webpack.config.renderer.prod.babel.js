@@ -42,6 +42,15 @@ export default merge(baseConfig, {
   module: {
     rules: [
       {
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+          },
+        ],
+      },
+      {
         test: /.s?css$/,
         use: [
           {
@@ -132,12 +141,6 @@ export default merge(baseConfig, {
         }),
         new CssMinimizerPlugin(),
       ],
-  },
-
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '../src'), 'node_modules'],
-    aliasFields: []
   },
 
   plugins: [

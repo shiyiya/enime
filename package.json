@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Enime",
+    "appId": "project.enime.Enime",
     "files": [
       "dist/",
       "node_modules/",
@@ -178,6 +178,7 @@
     "electron-devtools-installer": "^3.1.1",
     "electron-notarize": "^1.0.0",
     "electron-rebuild": "^2.3.2",
+    "enime-torrent-stream": "^1.2.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "enzyme-to-json": "^3.5.0",
@@ -210,7 +211,6 @@
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
-    "enime-torrent-stream": "^1.2.3",
     "typescript": "^4.0.5",
     "url-loader": "^4.1.0",
     "webpack": "^5.5.1",
@@ -226,7 +226,6 @@
     "electron-log": "^4.2.4",
     "electron-updater": "^4.3.4",
     "fast-xml-parser": "^3.18.0",
-    "history": "^5.0.0",
     "magnet-link": "^1.1.3",
     "mime": "^2.5.0",
     "mpv.js-vanilla": "^0.3.4",
