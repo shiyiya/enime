@@ -1,4 +1,5 @@
 @import "./screens/home.css";
+@import "./screens/watch-episode.css";
 
 .no-selection {
   -webkit-touch-callout: none;

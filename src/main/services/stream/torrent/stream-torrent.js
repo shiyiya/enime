@@ -1,4 +1,4 @@
-import * as torrentToMagnetLink from 'magnet-link'
+import readTorrent from 'read-torrent'
 import torrentStream from 'enime-torrent-stream'
 import rangeParser from 'range-parser'
 import mime from 'mime'
@@ -13,14 +13,19 @@ const ERROR_MAGNET_PARSE = {
 
 export default (torrentLink) => {
   return new Promise((resolve, reject) => {
-    torrentToMagnetLink(torrentLink, (error, magnetLink) => {
+    console.log(torrentLink)
+    readTorrent(torrentLink, {}, (error, torrent) => {
+      console.log(torrent)
       if (error) reject(ERROR_MAGNET_PARSE);
 
-      let engine = torrentStream(magnetLink);
+      let engine = torrentStream(`magnet:?xt=urn:btih:` + torrent.infoHash, {
+        tracker: true,
+        trackers: torrent.announce,
+        udp: true
+      });
 
-      console.log(engine)
-      engine.on('torrent', () => {
-        console.log('fetched')
+      engine.on('error', error => {
+        console.log('error', error)
       })
 
       engine.ready(() => {

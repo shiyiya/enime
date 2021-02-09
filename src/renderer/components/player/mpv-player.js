@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MpvJs } from 'mpv.js-vanilla';
-
-const { remote } = require('electron');
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
 export class MpvPlayer extends React.PureComponent {
   constructor(props) {
@@ -11,17 +11,19 @@ export class MpvPlayer extends React.PureComponent {
       'time-pos': 0,
       duration: 0,
       fullscreen: false,
+      mute: false,
+      volume: 0
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMPVReady = this.handleMPVReady.bind(this);
     this.handlePropertyChange = this.handlePropertyChange.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.togglePause = this.togglePause.bind(this);
-    this.handleStop = this.handleStop.bind(this);
+    this.toggleMute = this.toggleMute.bind(this);
+    this.handleVolume = this.handleVolume.bind(this);
     this.handleSeek = this.handleSeek.bind(this);
     this.handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
     this.handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
-    this.handleLoad = this.handleLoad.bind(this);
     this.mpv = new MpvJs(this.handleMPVReady, this.handlePropertyChange);
     this.url = props.url;
   }
@@ -46,8 +48,9 @@ export class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'paused-for-cache', 'volume', 'mute', 'name'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
+    this.mpv.property('profile', 'low-latency');
     this.mpv.command('loadfile', this.url);
   }
 
@@ -75,11 +78,16 @@ export class MpvPlayer extends React.PureComponent {
     this.mpv.property('pause', !this.state.pause);
   }
 
-  handleStop(e) {
+  toggleMute(e) {
     e.target.blur();
-    this.mpv.property('pause', true);
-    this.mpv.command('stop');
-    this.setState({ 'time-pos': 0, duration: 0 });
+    if (!this.state.duration) return;
+    this.mpv.property('mute', !this.state.mute);
+  }
+
+  handleVolume(e) {
+    e.target.blur();
+    const targetVolume = +e.target.value;
+    this.mpv.property('volume', targetVolume)
   }
 
   handleSeekMouseDown() {
@@ -97,19 +105,6 @@ export class MpvPlayer extends React.PureComponent {
     this.seeking = false;
   }
 
-  handleLoad(e) {
-    e.target.blur();
-    const items = remote.dialog.showOpenDialog({
-      filters: [
-        { name: 'Videos', extensions: ['mkv', 'webm', 'mp4', 'mov', 'avi'] },
-        { name: 'All files', extensions: ['*'] },
-      ],
-    });
-    if (items) {
-      this.mpv.command('loadfile', items[0]);
-    }
-  }
-
   render() {
     const Embed = React.createElement(
       'embed',
@@ -119,17 +114,11 @@ export class MpvPlayer extends React.PureComponent {
       })
     );
     return (
-      <div className="container">
+      <div className="episode-player">
         {Embed}
-        <div className="controls">
-          <button className="control" onClick={this.togglePause}>
-            {this.state.pause ? '▶' : '❚❚'}
-          </button>
-          <button className="control" onClick={this.handleStop}>
-            ■
-          </button>
+        <div className="episode-player-control">
           <input
-            className="seek"
+            className="episode-player-control-slider"
             type="range"
             min={0}
             step={0.1}
@@ -139,9 +128,24 @@ export class MpvPlayer extends React.PureComponent {
             onMouseDown={this.handleSeekMouseDown}
             onMouseUp={this.handleSeekMouseUp}
           />
-          <button className="control" onClick={this.handleLoad}>
-            ⏏
+          <button className="control" onClick={this.togglePause}>
+            { this.state.pause ? <FontAwesomeIcon icon={faPlay}/> : <FontAwesomeIcon icon={faPause}/> }
           </button>
+          <button className="control" onClick={this.toggleMute}>
+            { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
+              this.state.volume <= 0 ? faVolumeOff :
+              this.state.volume <= 65 ? faVolumeDown : faVolumeUp
+            }/> }
+          </button>
+          <input
+            className="episode-player-control-slider"
+            type="range"
+            min={0}
+            step={1}
+            max={130}
+            value={this.state['volume']}
+            onChange={this.handleVolume}
+          />
         </div>
       </div>
     );

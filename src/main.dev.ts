@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -167,3 +167,10 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
 });
+
+import torrenStream from "./main/services/stream/torrent/stream-torrent";
+
+ipcMain.handle('enime:stream-torrent', async (_event, torrentLink) => {
+  console.log('received', torrentLink)
+  return await torrenStream(torrentLink)
+})

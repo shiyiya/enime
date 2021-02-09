@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MpvPlayer} from "../components/player/mpv-player";
-import StreamTorrent from "../../main/services/stream/torrent/stream-torrent";
+import { streamTorrent } from "../stream/torrent-stream";
 
 export class WatchEpisode extends React.Component {
   constructor(props) {
@@ -16,8 +16,7 @@ export class WatchEpisode extends React.Component {
   }
 
   componentDidMount() {
-    StreamTorrent(this.torrent).then(response => {
-      console.log(response)
+    streamTorrent(this.torrent).then(response => {
       if (response.success) {
         this.setState({
           ready: true,

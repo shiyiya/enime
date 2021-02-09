@@ -1,5 +1,5 @@
-import { remote } from "electron"
-const { app } = remote;
+import * as electron from "electron"
+const app = electron.remote ? electron.remote.app : electron.app;
 import { join } from 'path'
 
 export default process.env.NODE_ENV !== 'development'
