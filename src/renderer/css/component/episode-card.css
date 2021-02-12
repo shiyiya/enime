@@ -1,9 +1,16 @@
 @import url('../font/roboto.css');
 
 .episode-card {
-  margin: 0 0 2vw 2vw;
+  margin: 0 1vw 0 1vw;
   flex: 1;
+  cursor: pointer;
 }
+
+/*
+.episode-card:hover {
+  background: lightgrey;
+}
+*/
 
 .episode-preview-thumbnail {
   display: flex;
@@ -81,6 +88,7 @@
   order: 0;
   flex-grow: 0;
   margin: 3px 0px;
+  overflow: auto;
 }
 
 .episode-preview-badge {

@@ -1,1 +1,6 @@
 @import "./css/App.css";
+
+.back {
+  font-family: Youtube Sans, serif;
+  color: white;
+}

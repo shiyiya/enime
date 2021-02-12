@@ -168,6 +168,9 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+//import * as discordRpc from "../src/main/services/presence/discord-rpc";
+//discordRpc.start();
+
 import torrenStream from "./main/services/stream/torrent/stream-torrent";
 
 ipcMain.handle('enime:stream-torrent', async (_event, torrentLink) => {

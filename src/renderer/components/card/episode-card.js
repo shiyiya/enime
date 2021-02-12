@@ -18,12 +18,14 @@ class EpisodeCard extends React.Component {
 
   componentDidMount() {
     providers.getInformationProvider()
-      .information(this.anime_name)
+      .seek(this.anime_name)
       .then(result => {
         this.setState({
-          thumbnail: result.thumbnail.medium,
-          thumbnailUpdated: true
-        })
+          updated: true,
+          data: result
+        });
+
+        console.log(this.state.data)
       })
   }
 
@@ -37,11 +39,15 @@ class EpisodeCard extends React.Component {
           }
         })
       }}>
-        {this.state.thumbnailUpdated && <img draggable={false} src={this.state.thumbnail} alt={this.anime_name} className={"episode-preview-thumbnail"}/>}
-        <div className={"episode-preview-title-container"}>
-          <div className={"episode-preview-anime-name"}>{this.anime_name}</div>
-          <div className={"episode-preview-title"}>Episode {this.episode_number}</div>
-        </div>
+        {this.state.updated &&
+        <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.english}
+               className={"episode-preview-thumbnail"}/>
+          <div className={"episode-preview-title-container"}>
+            <div className={"episode-preview-anime-name"}>{this.state.data.title.english}</div>
+            <div className={"episode-preview-title"}>Episode {this.episode_number}</div>
+          </div>
+        </>
+        }
       </div>
     )
   }

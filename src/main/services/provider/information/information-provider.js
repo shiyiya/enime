@@ -9,7 +9,11 @@ export default class InformationProvider {
     throw Error("The provider name cannot be null");
   }
 
-  information(title) {
+  seek(title) {
+    return Promise.reject(new Error("The provider information fetch needs an implementation"));
+  }
+
+  information(id) {
     return Promise.reject(new Error("The provider information fetch needs an implementation"));
   }
 }

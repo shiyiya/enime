@@ -5,8 +5,8 @@ import request from "request-promise"
 import TorrentProvider from "../torrent-provider.js";
 
 const allowedSubs = [
-  "SubsPlease",
-  //"Erai-raws",
+  //"SubsPlease",
+  "Erai-raws",
   "HorribleSubs"
 ]
 
@@ -36,7 +36,9 @@ export default class Nyaa extends TorrentProvider {
             if (!allowedSubs.includes(information.subber)) continue;
 
             result.push({
+              original_name: torrent.title,
               name: information.name,
+              part: information.part,
               episode: information.episode,
               season: information.season,
               subber: information.subber,

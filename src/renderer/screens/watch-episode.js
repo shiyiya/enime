@@ -35,6 +35,11 @@ export class WatchEpisode extends React.Component {
         {this.state.ready &&
         <MpvPlayer url={"http://localhost:" + this.state.response.port}/>
         }
+        <button className={"back"} onClick={() => {
+          this.props.history.push({
+            pathname: "/"
+          })
+        }}>Back</button>
       </div>
     )
   }
