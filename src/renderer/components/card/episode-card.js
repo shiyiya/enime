@@ -24,8 +24,6 @@ class EpisodeCard extends React.Component {
           updated: true,
           data: result
         });
-
-        console.log(this.state.data)
       })
   }
 
@@ -35,15 +33,17 @@ class EpisodeCard extends React.Component {
         this.props.history.push({
           pathname: "/watch-episode",
           state: {
-            torrent: this.torrent
+            torrent: this.torrent,
+            anime: this.state.data,
+            episode: this.episode_number
           }
         })
       }}>
         {this.state.updated &&
-        <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.english}
+        <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.primary}
                className={"episode-preview-thumbnail"}/>
           <div className={"episode-preview-title-container"}>
-            <div className={"episode-preview-anime-name"}>{this.state.data.title.english}</div>
+            <div className={"episode-preview-anime-name"}>{this.state.data.title.primary}</div>
             <div className={"episode-preview-title"}>Episode {this.episode_number}</div>
           </div>
         </>

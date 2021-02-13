@@ -37,6 +37,8 @@ export default class NotifyMoe extends InformationProvider {
                 if (!anime || (anime && Date.parse(responseAnime.startDate) > Date.parse(anime.startDate))) anime = responseAnime;
               })
 
+              anime.title.primary = anime.title.english.length > 0 ? anime.title.english : anime.title.canonical;
+
               resolve({
                 id: anime.id,
                 title: anime.title,

@@ -30,23 +30,28 @@ export default class Nyaa extends TorrentProvider {
         })
         .catch(error => reject(error))
         .then(parsedXML => {
-          let result = []
+          let result = {}
           for (let torrent of parsedXML.rss.channel.item) {
             let information = util.rakun.parse(torrent.title);
             if (!allowedSubs.includes(information.subber)) continue;
 
-            result.push({
+            const key = information.name + "###" + information.season;
+            let entries = result[key] || [];
+            entries.push({
               original_name: torrent.title,
               name: information.name,
-              part: information.part,
               episode: information.episode,
               season: information.season,
-              subber: information.subber,
-              link: torrent.link
+              link: torrent.link,
+              resolution: information.resolution.replaceAll("p", "")
             });
+
+            entries = entries.sort((a, b) => -(Number.parseInt(a.resolution) - Number.parseInt(b.resolution)));
+
+            result[key] = entries;
           }
 
-          resolve(result.reduce((a, b) => a.findIndex(e => e.name === b.name && e.episode === b.episode && e.season === b.season) < 0 ? [...a, b]: a, []));
+          resolve(Object.entries(result));
         })
     })
   }

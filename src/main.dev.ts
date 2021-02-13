@@ -168,12 +168,17 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-//import * as discordRpc from "../src/main/services/presence/discord-rpc";
-//discordRpc.start();
+import * as discordRpc from "../src/main/services/presence/discord-rpc";
+discordRpc.start();
 
-import torrenStream from "./main/services/stream/torrent/stream-torrent";
+import {getHandlers, register} from "./main/services/ipc/ipc-handler";
+import RecentReleases from "./main/services/ipc/impl/recent-releases";
+import PresenceStatus from "./main/services/ipc/impl/presence-status";
+register(new RecentReleases());
+register(new PresenceStatus());
 
-ipcMain.handle('enime:stream-torrent', async (_event, torrentLink) => {
-  console.log('received', torrentLink)
-  return await torrenStream(torrentLink)
-})
+for (let [channel, func] of Object.entries(getHandlers())) {
+  ipcMain.handle(channel, async (event, data) => {
+    return await func(event, data);
+  })
+}

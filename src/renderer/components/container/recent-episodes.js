@@ -28,6 +28,8 @@ export default class RecentEpisodes extends React.Component {
         <h1 className={"recent-episodes-title"}>Recent</h1>
         <div className={"episode-releases-container"}>
           {this.state.updated && this.state.recent.map(element => {
+            element = element[1][0];
+
             return (
               <EpisodeCard
                 anime_name={element.name}

@@ -13,9 +13,7 @@ const ERROR_MAGNET_PARSE = {
 
 export default (torrentLink) => {
   return new Promise((resolve, reject) => {
-    console.log(torrentLink)
     readTorrent(torrentLink, {}, (error, torrent) => {
-      console.log(torrent)
       if (error) reject(ERROR_MAGNET_PARSE);
 
       let engine = torrentStream(`magnet:?xt=urn:btih:` + torrent.infoHash, {
