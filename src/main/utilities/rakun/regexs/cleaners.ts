@@ -21,6 +21,8 @@
           /^[-_./]/, /[-_./]$/,
         //Multiples spaces (post)
           /\s{2,}/g,
+        //Version ([episode]v[version])
+          /v(\d)/i
       ],
 
     //Miscelleanous cleaners
