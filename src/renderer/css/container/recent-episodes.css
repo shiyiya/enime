@@ -72,7 +72,7 @@
   cursor: pointer; /* Cursor on hover */
 }
 
-[class^='scroll-button'] {
+[class^='scroll-button-'] {
   font-size: 24px;
   background-color: #ffffff;
   padding: 10px;
