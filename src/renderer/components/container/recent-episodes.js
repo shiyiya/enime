@@ -9,15 +9,17 @@ export default class RecentEpisodes extends React.Component {
     super(props);
     this.state = {
       recent: [],
-      updated: false
+      updated: false,
+      page: 1
     }
   }
 
   componentDidMount() {
-    providers.getTorrentProvider().recentReleases(1).then(result => {
+    providers.getTorrentProvider().recentReleases(this.state.page).then(result => {
       this.setState({
         recent: result,
-        updated: true
+        updated: true,
+        state: this.state.page
       })
     })
   }
