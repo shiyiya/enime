@@ -25,11 +25,19 @@
 .episode-releases-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  overflow-x: scroll;
+  align-items: center;
 }
 
-.episode-releases-container::-webkit-scrollbar {
+.episode-releases {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  margin: 0 40px;
+}
+
+.episode-releases::-webkit-scrollbar {
   -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
@@ -39,7 +47,7 @@
 }
 
 /*Slider handle*/
-.episode-releases-container::-webkit-scrollbar-thumb {
+.episode-releases::-webkit-scrollbar-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   width: 25px; /* Set a specific slider handle width */
@@ -49,17 +57,38 @@
 }
 
 /* Mouse-over effects */
-.episode-releases-container::-webkit-scrollbar:hover {
+.episode-releases::-webkit-scrollbar:hover {
   background: rgba(39, 39, 42, 0.7);
 }
 
-.episode-releases-container::-webkit-scrollbar-thumb:hover {
+.episode-releases::-webkit-scrollbar-thumb:hover {
   background-color: rgba(63, 63, 70, 1);
 }
 
-.episode-releases-container::-moz-range-thumb {
+.episode-releases::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
   height: 10px; /* Slider handle height */
   background: rgb(63, 63, 70);
   cursor: pointer; /* Cursor on hover */
+}
+
+[class^='scroll-button'] {
+  font-size: 24px;
+  background-color: #ffffff;
+  padding: 10px;
+  color: #000000;
+  border: 0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 50%;
+  margin: 10px;
+  position: absolute;
+}
+
+.scroll-button-left {
+  left: 10px;
+}
+
+.scroll-button-right {
+  right: 10px;
 }
