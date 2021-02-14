@@ -2,6 +2,7 @@ import * as React from "react";
 
 import providers from "../../../main/services/provider/providers";
 import { withRouter } from 'react-router-dom';
+import EpisodeCardLoader from "./episode-card-loader";
 
 class EpisodeCard extends React.Component {
   constructor(props) {
@@ -39,6 +40,9 @@ class EpisodeCard extends React.Component {
           }
         })
       }}>
+        {!this.state.updated &&
+          <EpisodeCardLoader/>
+        }
         {this.state.updated &&
         <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.primary}
                className={"episode-preview-thumbnail"}/>
