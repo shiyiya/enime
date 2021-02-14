@@ -1,5 +1,19 @@
-@import "../component/episode-player.css";
+@import '../component/episode-player.css';
 
 body {
   background-color: black;
+}
+
+.back {
+  margin: 10px;
+  background-color: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.back:hover {
+  opacity: 1;
+  cursor: pointer;
 }

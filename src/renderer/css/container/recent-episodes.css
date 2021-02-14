@@ -11,8 +11,7 @@
   display: flex;
   align-items: center;
 
-  color: #FFFFFF;
-
+  color: #ffffff;
 
   /* Inside Auto Layout */
 
@@ -25,39 +24,42 @@
 
 .episode-releases-container {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   overflow-x: scroll;
 }
 
 .episode-releases-container::-webkit-scrollbar {
-  -webkit-appearance: none;  /* Override default CSS styles */
+  -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
   width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
+  height: 10px; /* Specified height */
   outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+  background-color: rgba(39, 39, 42, 0); /* gray background */
+}
+
+/*Slider handle*/
+.episode-releases-container::-webkit-scrollbar-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 10px;
+  background: rgba(63, 63, 70, 0.7); /* gray background */
+  cursor: pointer; /* Cursor on hover */
 }
 
 /* Mouse-over effects */
 .episode-releases-container::-webkit-scrollbar:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+  background: rgba(39, 39, 42, 0.7);
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-.episode-releases-container::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: black; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+.episode-releases-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(63, 63, 70, 1);
 }
 
 .episode-releases-container::-moz-range-thumb {
   width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: black; /* Green background */
+  height: 10px; /* Slider handle height */
+  background: rgb(63, 63, 70);
   cursor: pointer; /* Cursor on hover */
 }

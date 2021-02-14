@@ -1,9 +1,13 @@
 @import url('../font/roboto.css');
 
 .episode-card {
+  width: 170px; /* images are 142 px wide, but making this smaller will sometimes cut off
+  the episode number*/
   margin: 0 1vw 0 1vw;
   flex: 1;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 /*
@@ -12,83 +16,59 @@
 }
 */
 
-.episode-preview-thumbnail {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.episode-preview-title-container {
+  font-family: Roboto, serif;
+  font-style: normal;
   padding: 0;
-
-  background: #FFFFFF;
-  border-radius: 5px;
+  /* Inside Auto Layout */
 
   flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 3px 0;
+  overflow: auto;
+}
+
+.episode-preview-thumbnail {
+  padding: 0;
+  align-self: center;
+  background: #ffffff;
+  border-radius: 5px;
+
   order: 0;
   flex-grow: 0;
   margin: 10px 0;
 }
 
 .episode-preview-title-number {
-  font-family: Roboto, serif;
-  font-style: normal;
   font-weight: 900;
   font-size: 18px;
   line-height: 18px;
-  /* identical to box height, or 100% */
-
-  display: flex;
-  align-items: center;
-
   color: #777777;
 }
 
 .episode-preview-title {
-  font-family: Roboto, serif;
-  font-style: normal;
   font-weight: bold;
   font-size: 30px;
   line-height: 35px;
-  /* identical to box height, or 117% */
-
-  display: flex;
-  align-items: center;
-
-  color: #FBFBFB;
-
+  color: #fbfbfb;
 
   /* Inside Auto Layout */
-
-  flex: none;
   order: 1;
   flex-grow: 0;
   margin: 3px 0;
 }
 
 .episode-preview-anime-name {
-  font-family: Roboto, serif;
+  /*ellipsis overflow, all three need to be here*/
   text-overflow: ellipsis;
-  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+
   font-weight: 900;
   font-size: 18px;
   line-height: 18px;
-  /* identical to box height, or 100% */
-
-  display: flex;
-  align-items: center;
-
   color: #777777;
-}
-
-.episode-preview-title-container {
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  /* Inside Auto Layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  margin: 3px 0px;
-  overflow: auto;
 }
 
 .episode-preview-badge {
@@ -110,7 +90,6 @@
   text-align: center;
 
   color: #000000;
-
 
   /* Inside Auto Layout */
 
