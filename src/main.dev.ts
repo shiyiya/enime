@@ -41,7 +41,7 @@ if (
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
   return installer
     .default(
@@ -182,3 +182,5 @@ for (let [channel, func] of Object.entries(getHandlers())) {
     return await func(event, data);
   })
 }
+
+import "./main/services/storage/state-storage";

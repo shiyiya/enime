@@ -2,102 +2,100 @@ import * as React from "react";
 import {MpvPlayer} from "../components/player/mpv-player";
 import { streamTorrent } from "../stream/torrent-stream";
 import { ipcRenderer } from 'electron';
+import * as stateStorage from "../storage/state-storage";
+import {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
-export class WatchEpisode extends React.Component {
-  constructor(props) {
-    super(props);
+export default function WatchEpisode(props) {
+  const [result, setResult] = useState({
+    ready: false,
+    response: undefined
+  });
 
-    this.state = {
-      ready: false,
-      response: undefined
-    }
+  const history = useHistory();
 
-    if (!this.props.location.state) {
-      this.props.history.push({
-        pathname: "/"
-      });
-      return;
-    }
-
-    this.torrent = this.props.location.state.torrent;
-    this.anime = this.props.location.state.anime;
-    this.episode = this.props.location.state.episode;
-
-    this.prevPlayerData = {
-      duration: 0,
-      position: 0,
-      paused: true
-    }
-
-    this.player = React.createRef();
+  if (!props.location.state) {
+    history.push({
+      pathname: "/"
+    });
+    return;
   }
 
-  componentDidMount() {
-    if (this.torrent) {
-      streamTorrent(this.torrent).then(response => {
+  const torrent = props.location.state.torrent;
+  const anime = props.location.state.anime;
+  const episode = props.location.state.episode;
+
+  const prevPlayerData = {
+    duration: 0,
+    position: 0,
+    paused: true
+  }
+
+  const player = React.createRef();
+
+  useEffect(() => {
+    if (torrent) {
+      streamTorrent(torrent).then(response => {
         if (response.success) {
-          this.setState({
+          setResult({
             ready: true,
             response: {
               port: response.port
             }
-          })
-
+          });
           ipcRenderer.invoke('enime:presence-status', {
             status: 1,
-            anime: this.anime,
-            episode: this.episode
+            anime: anime,
+            episode: episode
           })
         }
       })
         .catch(err => console.log(err))
     }
-  }
+  }, []);
 
-  render() {
-    return (
-      <div>
-        {this.state.ready &&
-        <MpvPlayer ref={this.player} url={"http://localhost:" + this.state.response.port} handlePropertyChange={(name, value) => {
-          if (name === 'pause' || name === 'duration' || name === 'time-pos') {
-            const now = Date.now();
+  return (
+    <div>
+      {result.ready &&
+      <MpvPlayer ref={player} url={"http://localhost:" + result.response.port} handlePropertyChange={(name, value) => {
+        if (name === 'pause' || name === 'duration' || name === 'time-pos') {
+          const now = Date.now();
 
-            let activity = {
-              status: 1,
-              anime: this.anime,
-              episode: this.episode
-            };
+          let activity = {
+            status: 1,
+            anime: anime,
+            episode: episode
+          };
 
-            if (name === 'pause') {
-              if (value) activity.paused = value;
-              if (value !== this.prevPlayerData.paused) {
-                this.prevPlayerData.paused = value;
-                activity.startTimestamp = value ? null : now + this.prevPlayerData.position * 1000;
-                activity.endTimestamp = value ? null : now + (this.prevPlayerData.duration - this.prevPlayerData.position) * 1000;
-              }
+          if (name === 'pause') {
+            if (value) activity.paused = value;
+            if (value !== prevPlayerData.paused) {
+              prevPlayerData.paused = value;
+              activity.startTimestamp = value ? null : now + prevPlayerData.position * 1000;
+              activity.endTimestamp = value ? null : now + (prevPlayerData.duration - prevPlayerData.position) * 1000;
+            }
+            ipcRenderer.invoke('enime:presence-status', activity);
+          }
+
+          if (!prevPlayerData.paused && (name === 'duration' || name === 'time-pos')) {
+            if ((name === 'duration' && Math.abs(value - prevPlayerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - prevPlayerData.position) > 1)) {
+              if (name === 'duration') prevPlayerData.duration = value;
+              if (name === 'time-pos') prevPlayerData.position = value;
+
+              activity.startTimestamp = now + prevPlayerData.position * 1000;
+              activity.endTimestamp = now + (prevPlayerData.duration - prevPlayerData.position) * 1000;
+
               ipcRenderer.invoke('enime:presence-status', activity);
             }
-
-            if (!this.prevPlayerData.paused && (name === 'duration' || name === 'time-pos')) {
-              if ((name === 'duration' && Math.abs(value - this.prevPlayerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - this.prevPlayerData.position) > 1)) {
-                if (name === 'duration') this.prevPlayerData.duration = value;
-                if (name === 'time-pos') this.prevPlayerData.position = value;
-
-                activity.startTimestamp = now + this.prevPlayerData.position * 1000;
-                activity.endTimestamp = now + (this.prevPlayerData.duration - this.prevPlayerData.position) * 1000;
-
-                ipcRenderer.invoke('enime:presence-status', activity);
-              }
-            }
           }
-        }}/>
         }
-        <button className={"back"} onClick={() => {
-          this.props.history.push({
-            pathname: "/"
-          })
-        }}>Back</button>
-      </div>
-    )
-  }
+      }}/>
+      }
+      <button className={"back"} onClick={() => {
+        history.push({
+          pathname: "/"
+        })
+      }}>Back</button>
+    </div>
+  )
 }
