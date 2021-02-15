@@ -6,7 +6,6 @@ export default class scrollButton extends React.Component {
     this.state = {
       scrollActionId: 0
     };
-    this.scrollOffset = props.direction === "right" ? 170 : -170;
   }
 
   render() {
@@ -14,10 +13,10 @@ export default class scrollButton extends React.Component {
       <button
         className={"scroll-button-" + this.props.direction}
         onMouseDown={() => {
-          this.props.scrollFunction(this.scrollOffset);
+          this.props.scrollFunction(this.props.direction);
           this.state.scrollActionID = setInterval(
-            () => this.props.scrollFunction(this.scrollOffset),
-            350);
+            () => {this.props.scrollFunction(this.props.direction)}, 350
+          );
         }}
         onMouseLeave={() => {
           clearInterval(this.state.scrollActionID);

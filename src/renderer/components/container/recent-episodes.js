@@ -14,7 +14,7 @@ export default class RecentEpisodes extends React.Component {
       page: 1
     };
     this.episodeCards = React.createRef();
-    this.scrollActionID = null;
+    this.scrollActionID = 0;
   }
 
   componentDidMount() {
@@ -27,8 +27,13 @@ export default class RecentEpisodes extends React.Component {
     });
   }
 
-  scroll = (scrollOffset) => {
-    this.episodeCards.current.scrollLeft += scrollOffset; // todo - actually scroll to each element instead of a num
+  scrollPage = (direction) => {
+    if (direction === "right") {
+      this.episodeCards.current.scrollLeft += this.episodeCards.current.clientWidth
+      this.props.onPageFlip();
+    } else {
+      this.episodeCards.current.scrollLeft -= this.episodeCards.current.clientWidth
+    }
   };
 
   render() {
@@ -36,7 +41,7 @@ export default class RecentEpisodes extends React.Component {
       <div className={"no-selection"}>
         <h1 className={"recent-episodes-title"}>Recent</h1>
         <div className={"episode-releases-container"}>
-          <ScrollButton direction={"left"} scrollFunction={this.scroll} />
+          <ScrollButton direction={"left"} scrollFunction={this.scrollPage} />
 
           <div className={"episode-releases"} ref={this.episodeCards}>
             {this.state.updated && this.state.recent.map(element => {
@@ -52,8 +57,7 @@ export default class RecentEpisodes extends React.Component {
             })}
           </div>
 
-          <ScrollButton direction={"right"} scrollFunction={this.scroll}/>
-
+          <ScrollButton direction={"right"} scrollFunction={this.scrollPage}/>
         </div>
       </div>
     );

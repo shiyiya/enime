@@ -5,7 +5,7 @@ export class Home extends React.Component {
   render() {
     return (
       <div className={"home"}>
-        <RecentEpisodes/>
+        <RecentEpisodes onPageFlip={() => console.log('aqil fat')}/>
       </div>
     )
   }
