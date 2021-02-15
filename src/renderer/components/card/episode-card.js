@@ -41,7 +41,7 @@ class EpisodeCard extends React.Component {
         })
       }}>
         {!this.state.updated &&
-          <EpisodeCardLoader/>
+        <EpisodeCardLoader/>
         }
         {this.state.updated &&
         <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.primary}

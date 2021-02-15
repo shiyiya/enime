@@ -11,10 +11,10 @@ export default class RecentEpisodes extends React.Component {
     this.state = {
       recent: [],
       updated: false,
-      page: 1
+      page: 1,
+      atInitialCardPos: true
     };
     this.episodeCards = React.createRef();
-    this.scrollActionID = 0;
   }
 
   componentDidMount() {
@@ -28,11 +28,18 @@ export default class RecentEpisodes extends React.Component {
   }
 
   scrollPage = (direction) => {
+    const cardsElement = this.episodeCards.current;
     if (direction === "right") {
-      this.episodeCards.current.scrollLeft += this.episodeCards.current.clientWidth
+      cardsElement.scrollLeft += cardsElement.clientWidth;
       this.props.onPageFlip();
+      this.setState({
+        atInitialCardPos: false
+      })
     } else {
-      this.episodeCards.current.scrollLeft -= this.episodeCards.current.clientWidth
+      cardsElement.scrollLeft -= cardsElement.clientWidth;
+      this.setState({
+        atInitialCardPos: cardsElement.scrollLeft <= cardsElement.clientWidth
+      });
     }
   };
 
@@ -41,7 +48,11 @@ export default class RecentEpisodes extends React.Component {
       <div className={"no-selection"}>
         <h1 className={"recent-episodes-title"}>Recent</h1>
         <div className={"episode-releases-container"}>
-          <ScrollButton direction={"left"} scrollFunction={this.scrollPage} />
+          <ScrollButton
+            direction={"left"}
+            scrollFunction={this.scrollPage}
+            display={!this.state.atInitialCardPos}
+          />
 
           <div className={"episode-releases"} ref={this.episodeCards}>
             {this.state.updated && this.state.recent.map(element => {
@@ -57,7 +68,11 @@ export default class RecentEpisodes extends React.Component {
             })}
           </div>
 
-          <ScrollButton direction={"right"} scrollFunction={this.scrollPage}/>
+          <ScrollButton
+            direction={"right"}
+            scrollFunction={this.scrollPage}
+            display={true}
+          />
         </div>
       </div>
     );
