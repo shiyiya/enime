@@ -1,80 +1,70 @@
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
 
 import providers from "../../../main/services/provider/providers";
 
-export default class RecentEpisodes extends React.Component {
+export default function RecentEpisodes({ history, onPageFlip }) {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      recent: [],
-      updated: false,
-      page: 1,
-      atInitialCardPos: true
-    };
-    this.episodeCards = React.createRef();
-  }
+  const [recent, setRecent] = useState([]);
+  const [updated, setUpdated] = useState(false);
+  const [page, setPage] = useState(1);
+  const [atStartPos, setAtStartPos] = useState(true);
+  const [stateData, setStateData] = useState(null);
+  const episodeCards = useRef(null);
 
-  componentDidMount() {
-    providers.getTorrentProvider().recentReleases(this.state.page).then(result => {
-      this.setState({
-        recent: result,
-        updated: true,
-        state: this.state.page
-      });
-    });
-  }
-
-  scrollPage = (direction) => {
-    const cardsElement = this.episodeCards.current;
+  const scrollPage = (direction) => {
+    const cardsElement = episodeCards.current;
     if (direction === "right") {
       cardsElement.scrollLeft += cardsElement.clientWidth;
-      this.props.onPageFlip();
-      this.setState({
-        atInitialCardPos: false
-      })
+      setAtStartPos(false);
+      onPageFlip();
     } else {
       cardsElement.scrollLeft -= cardsElement.clientWidth;
-      this.setState({
-        atInitialCardPos: cardsElement.scrollLeft <= cardsElement.clientWidth
-      });
+      setAtStartPos(cardsElement.scrollLeft <= cardsElement.clientWidth);
     }
   };
 
-  render() {
-    return (
-      <div className={"no-selection"}>
-        <h1 className={"recent-episodes-title"}>Recent</h1>
-        <div className={"episode-releases-container"}>
-          <ScrollButton
-            direction={"left"}
-            scrollFunction={this.scrollPage}
-            display={!this.state.atInitialCardPos}
-          />
+  useEffect(() => {
+    providers.getTorrentProvider().recentReleases(page).then(result => {
+      setRecent(result);
+      setUpdated(true);
+      setStateData(page);
+    });
+  }, []);
 
-          <div className={"episode-releases"} ref={this.episodeCards}>
-            {this.state.updated && this.state.recent.map(element => {
-              element = element[1][0];
 
-              return (
-                <EpisodeCard
-                  anime_name={element.name}
-                  episode_number={element.episode}
-                  link={element.link}
-                  history={this.props.history}
-                />);
-            })}
-          </div>
+  return (
+    <div className={"no-selection"}>
+      <h1 className={"recent-episodes-title"}>Recent</h1>
+      <div className={"episode-releases-container"}>
+        <ScrollButton
+          direction={"left"}
+          scrollFunction={scrollPage}
+          display={!atStartPos}
+        />
 
-          <ScrollButton
-            direction={"right"}
-            scrollFunction={this.scrollPage}
-            display={true}
-          />
+        <div className={"episode-releases"} ref={episodeCards}>
+          {updated && recent.map(element => {
+            element = element[1][0];
+
+            return (
+              <EpisodeCard
+                anime_name={element.name}
+                episode_number={element.episode}
+                link={element.link}
+                history={history}
+              />);
+          })}
         </div>
+
+        <ScrollButton
+          direction={"right"}
+          scrollFunction={scrollPage}
+          display={true}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }

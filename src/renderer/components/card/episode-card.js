@@ -1,60 +1,49 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 import providers from "../../../main/services/provider/providers";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import EpisodeCardLoader from "./episode-card-loader";
 
-class EpisodeCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.episode_number = this.props.episode_number;
-    this.anime_name = this.props.anime_name;
-    this.torrent = this.props.link;
+function EpisodeCard({ episode_number, anime_name, link: torrent, history }) {
+  const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnailUpdated, setThumbnailUpdated] = useState(false);
+  const [updated, setUpdated] = useState(false);
+  const [data, setData] = useState(null);
 
-    this.state = {
-      thumbnail: null,
-      thumbnailUpdated: false
-    }
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     providers.getInformationProvider()
-      .seek(this.anime_name)
+      .seek(anime_name)
       .then(result => {
-        this.setState({
-          updated: true,
-          data: result
-        });
-      })
-  }
+        setUpdated(true);
+        setData(result);
+      });
+  }, []);
 
-  render() {
-    return (
-      <div className={"episode-card"} onClick={() => {
-        this.props.history.push({
-          pathname: "/watch-episode",
-          state: {
-            torrent: this.torrent,
-            anime: this.state.data,
-            episode: this.episode_number
-          }
-        })
-      }}>
-        {!this.state.updated &&
-        <EpisodeCardLoader/>
+  return data && (
+    <div className={"episode-card"} onClick={() => {
+      history.push({
+        pathname: "/watch-episode",
+        state: {
+          torrent: torrent,
+          anime: data,
+          episode: episode_number
         }
-        {this.state.updated &&
-        <><img draggable={false} src={this.state.data.thumbnail.large} alt={this.state.data.title.primary}
-               className={"episode-preview-thumbnail"}/>
-          <div className={"episode-preview-title-container"}>
-            <div className={"episode-preview-anime-name"}>{this.state.data.title.primary}</div>
-            <div className={"episode-preview-title"}>Episode {this.episode_number}</div>
-          </div>
-        </>
-        }
-      </div>
-    )
-  }
+      });
+    }}>
+      {!updated && <EpisodeCardLoader />}
+      {updated &&
+      <>
+        <img draggable={false} src={data.thumbnail.large} alt={data.title.primary}
+             className={"episode-preview-thumbnail"} />
+        <div className={"episode-preview-title-container"}>
+          <div className={"episode-preview-anime-name"}>{data.title.primary}</div>
+          <div className={"episode-preview-title"}>Episode {episode_number}</div>
+        </div>
+      </>
+      }
+    </div>
+  );
 }
 
 export default withRouter(EpisodeCard);
