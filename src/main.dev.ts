@@ -183,4 +183,7 @@ for (let [channel, func] of Object.entries(getHandlers())) {
   })
 }
 
+import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
+torrentStream.start();
+
 import "./main/services/storage/state-storage";

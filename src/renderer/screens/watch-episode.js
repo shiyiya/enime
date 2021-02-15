@@ -1,17 +1,9 @@
 import * as React from "react";
 import {MpvPlayer} from "../components/player/mpv-player";
-import { streamTorrent } from "../stream/torrent-stream";
 import { ipcRenderer } from 'electron';
-import * as stateStorage from "../storage/state-storage";
-import {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 
 export default function WatchEpisode(props) {
-  const [result, setResult] = useState({
-    ready: false,
-    response: undefined
-  });
-
   const history = useHistory();
 
   if (!props.location.state) {
@@ -33,31 +25,9 @@ export default function WatchEpisode(props) {
 
   const player = React.createRef();
 
-  useEffect(() => {
-    if (torrent) {
-      streamTorrent(torrent).then(response => {
-        if (response.success) {
-          setResult({
-            ready: true,
-            response: {
-              port: response.port
-            }
-          });
-          ipcRenderer.invoke('enime:presence-status', {
-            status: 1,
-            anime: anime,
-            episode: episode
-          })
-        }
-      })
-        .catch(err => console.log(err))
-    }
-  }, []);
-
   return (
     <div>
-      {result.ready &&
-      <MpvPlayer ref={player} url={"http://localhost:" + result.response.port} handlePropertyChange={(name, value) => {
+      <MpvPlayer ref={player} url={"http://localhost:8888/" + torrent} handlePropertyChange={(name, value) => {
         if (name === 'pause' || name === 'duration' || name === 'time-pos') {
           const now = Date.now();
 
@@ -90,7 +60,6 @@ export default function WatchEpisode(props) {
           }
         }
       }}/>
-      }
       <button className={"back"} onClick={() => {
         history.push({
           pathname: "/"
