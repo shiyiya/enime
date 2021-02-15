@@ -31,13 +31,15 @@
 
 .episode-preview-thumbnail {
   padding: 0;
-  align-self: center;
   background: #ffffff;
   border-radius: 5px;
 
   order: 0;
   flex-grow: 0;
   margin: 10px 0;
+
+  width: 142px;
+  height: 200px;
 }
 
 .episode-preview-title-number {
@@ -68,6 +70,7 @@
   overflow: hidden;
 
   font-weight: 900;
+  height: 2em;
   font-size: 18px;
   line-height: 18px;
   color: #777777;

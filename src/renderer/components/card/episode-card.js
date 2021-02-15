@@ -44,7 +44,7 @@ class EpisodeCard extends React.Component {
         <EpisodeCardLoader/>
         }
         {this.state.updated &&
-        <><img draggable={false} src={this.state.data.thumbnail.medium} alt={this.state.data.title.primary}
+        <><img draggable={false} src={this.state.data.thumbnail.large} alt={this.state.data.title.primary}
                className={"episode-preview-thumbnail"}/>
           <div className={"episode-preview-title-container"}>
             <div className={"episode-preview-anime-name"}>{this.state.data.title.primary}</div>
