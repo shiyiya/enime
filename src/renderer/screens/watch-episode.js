@@ -2,9 +2,12 @@ import * as React from "react";
 import {MpvPlayer} from "../components/player/mpv-player";
 import { ipcRenderer } from 'electron';
 import {useHistory} from "react-router-dom";
+import {useDispatch, useStore} from "react-redux";
+import StateActions from "../../shared/storage/action/state-actions";
 
 export default function WatchEpisode(props) {
   const history = useHistory();
+  const dispatch = useDispatch(), store = useStore();
 
   if (!props.location.state) {
     history.push({
@@ -13,9 +16,37 @@ export default function WatchEpisode(props) {
     return;
   }
 
-  const torrent = props.location.state.torrent;
-  const anime = props.location.state.anime;
-  const episode = props.location.state.episode;
+  let torrent = props.location.state.torrent;
+  let anime = props.location.state.anime;
+  let episode = props.location.state.episode;
+
+  if (torrent && anime && episode) {
+    dispatch({
+      type: StateActions.UPDATE_CURRENT_ANIME,
+      payload: {
+        props: anime,
+        episode: episode,
+        source: {
+          type: 'torrent',
+          link: torrent
+        }
+      }
+    })
+  }
+
+  if (!torrent || !anime || !episode) {
+    let data = store.getState();
+    torrent = data.source.link;
+    anime = data.props;
+    episode = data.episode;
+  }
+
+  if (!torrent || !anime || !episode) {
+    history.push({
+      pathname: '/'
+    });
+    return;
+  }
 
   const prevPlayerData = {
     duration: 0,

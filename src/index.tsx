@@ -4,9 +4,9 @@ import App from './renderer/App';
 // @ts-ignore
 import { Provider } from 'react-redux'
 
-import * as stateStorage from "./renderer/storage/state-storage";
+import * as stateStorage from "./shared/storage/state-storage";
 
-const store = stateStorage.getStore();
+const store = stateStorage.configureStore(null, 'renderer');
 
 render(
   <Provider store={store}>

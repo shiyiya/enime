@@ -77,6 +77,9 @@ console.log(pluginDir);
 if (process.platform !== 'linux') {
   process.chdir(pluginDir);
 }
+
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
 // Fix for latest Electron.
 app.commandLine.appendSwitch('no-sandbox');
 // To support a broader number of systems.
@@ -186,4 +189,5 @@ for (let [channel, func] of Object.entries(getHandlers())) {
 import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
 torrentStream.start();
 
-import "./main/services/storage/state-storage";
+import * as stateStorage from "./shared/storage/state-storage";
+stateStorage.configureStore(null, 'main');

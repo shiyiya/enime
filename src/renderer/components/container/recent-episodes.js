@@ -4,7 +4,6 @@ import ScrollButton from "../scroll-button";
 
 import providers from "../../../main/services/provider/providers";
 import {useEffect, useState} from "react";
-import {useDispatch, useStore} from "react-redux";
 
 export default function RecentEpisodes(props) {
 
@@ -15,21 +14,13 @@ export default function RecentEpisodes(props) {
 
   const episodeCards = React.createRef();
 
-  const store = useStore(), dispatch = useDispatch();
-
   useEffect(() => {
     providers.getTorrentProvider().recentReleases(page).then(result => {
       setRecent(result);
       setUpdated(true);
       setPage(page);
     })
-
-
-    console.log(dispatch({
-      type: 'torrent-watching',
-      payload: 'ok'
-    }))
-  }, [dispatch]);
+  }, []);
 
   const scrollPage = (direction) => {
     const cardsElement = episodeCards.current;
