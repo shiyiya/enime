@@ -4,7 +4,7 @@ import {
   Route
 } from "react-router-dom";
 
-import './App.global.css';
+import './App.global.sass';
 
 import WatchEpisode from "./screens/watch-episode";
 import Home from "./screens/home";
