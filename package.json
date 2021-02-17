@@ -16,9 +16,6 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "echo 'ur dumb'"
-    ],
     "{*.json,.{babelrc,eslintrc,prettierrc}}": [
       "prettier --ignore-path .eslintignore --parser json --write"
     ],
