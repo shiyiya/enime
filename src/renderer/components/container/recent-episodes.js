@@ -50,6 +50,7 @@ export default function RecentEpisodes(props) {
 
             return (
               <EpisodeCard
+                key={element.name}
                 anime_name={element.name}
                 episode_number={element.episode}
                 link={element.link}
