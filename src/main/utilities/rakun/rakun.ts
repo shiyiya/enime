@@ -1,5 +1,6 @@
 //Imports
   import * as Regexs from "./regexs/_"
+import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
 
 /**
  * Rakun

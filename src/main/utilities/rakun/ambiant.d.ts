@@ -1,3 +1,5 @@
+import * as Regexes from "./regexs/_";
+
 /** Torrent informations. */
   interface TorrentInfos {
     //Original filename
@@ -47,7 +49,7 @@
     //Rejected matchs to re-add
       readonly rejects:string[]
     //Regexs collections
-      readonly regexs:Regexs
+      readonly regexs:any
     //Options
       readonly options:parser_options
   }
