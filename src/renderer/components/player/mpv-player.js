@@ -118,9 +118,11 @@ export class MpvPlayer extends React.PureComponent {
       })
     );
     return (
-      <div className="episode-player">
-        {Embed}
-        <div className="episode-player-control">
+      <div className="episode">
+        <div className="episode-page">
+          {Embed}
+        </div>
+        <div className="episode-player-control top">
           <input
             className="episode-player-control-slider"
             type="range"
@@ -132,24 +134,28 @@ export class MpvPlayer extends React.PureComponent {
             onMouseDown={this.handleSeekMouseDown}
             onMouseUp={this.handleSeekMouseUp}
           />
-          <button className="control" onClick={this.togglePause}>
-            { this.state.pause ? <FontAwesomeIcon icon={faPlay}/> : <FontAwesomeIcon icon={faPause}/> }
-          </button>
-          <button className="control" onClick={this.toggleMute}>
-            { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
-              this.state.volume <= 0 ? faVolumeOff :
-              this.state.volume <= 65 ? faVolumeDown : faVolumeUp
-            }/> }
-          </button>
-          <input
-            className="episode-player-control-slider"
-            type="range"
-            min={0}
-            step={1}
-            max={130}
-            value={this.state['volume']}
-            onChange={this.handleVolume}
-          />
+          <div className="bottom">
+            <button className="control" onClick={this.togglePause}>
+              { this.state.pause ? <FontAwesomeIcon icon={faPlay}/> : <FontAwesomeIcon icon={faPause}/> }
+            </button>
+            <div className="volume">
+              <button className="control" onClick={this.toggleMute}>
+                { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
+                  this.state.volume <= 0 ? faVolumeOff :
+                  this.state.volume <= 65 ? faVolumeDown : faVolumeUp
+                }/> }
+              </button>
+              <input
+                className="episode-player-volume-slider"
+                type="range"
+                min={0}
+                step={1}
+                max={130}
+                value={this.state['volume']}
+                onChange={this.handleVolume}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
