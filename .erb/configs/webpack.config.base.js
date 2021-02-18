@@ -12,12 +12,12 @@ export default {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.[jt]s?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            cacheDirectory: true,
+            cacheDirectory: true
           },
         },
       },

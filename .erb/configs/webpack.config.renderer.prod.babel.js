@@ -42,16 +42,16 @@ export default merge(baseConfig, {
   module: {
     rules: [
       {
-        test: /\.[jt]sx?$/,
+        test: /\.[jt]s?$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: require.resolve('babel-loader'),
+            loader: require.resolve('babel-loader')
           },
         ],
       },
       {
-        test: /.s?css$/,
+        test: /.s?[ac]ss$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
