@@ -3,7 +3,7 @@ import { MpvJs } from 'mpv.js-vanilla';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
-export class MpvPlayer extends React.PureComponent {
+export default class MpvPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -135,7 +135,7 @@ export class MpvPlayer extends React.PureComponent {
             onMouseUp={this.handleSeekMouseUp}
           />
           <div className="bottom">
-            <button className={"control" + this.state.paused ? " paused" : ""} onClick={this.togglePause}></button>
+            <button className={"control" + this.state.paused ? " paused" : ""} onClick={this.togglePause}/>
             <div className="volume">
               <button className="control" onClick={this.toggleMute}>
                 { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
