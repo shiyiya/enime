@@ -29,7 +29,7 @@ export default function EpisodeCard(props) {
   }, [])
 
   return (
-    <div className={"episode-card"} onClick={() => {
+    <div className="episode-card" onClick={() => {
       history.push({
         pathname: "/watch-episode",
         state: {
@@ -39,18 +39,13 @@ export default function EpisodeCard(props) {
         }
       })
     }}>
-      {!result.updated &&
-      <EpisodeCardLoader/>
-      }
-      {result.updated &&
-      <><img draggable={false} src={result.data.thumbnail.large} alt={result.data.title.primary}
-             className={"episode-preview-thumbnail"}/>
-        <div className={"episode-preview-title-container"}>
-          <div className={"episode-preview-anime-name"}>{result.data.title.primary}</div>
-          <div className={"episode-preview-title"}>Episode {episodeNumber}</div>
-        </div>
-      </>
-      }
-    </div>
-  )
+      {!result.updated ? <EpisodeCardLoader/> :
+    <>
+    <img draggable="false" src={result.data.thumbnail.large} alt={result.data.title.primary}
+          className="episode-preview-thumbnail"/>
+    <div className="episode-preview-title-container">
+      <div className="episode-preview-title">Episode {episodeNumber}</div>
+      <div className="episode-preview-anime-name">{result.data.title.primary}</div>
+    </div></>}
+    </div>)
 }
