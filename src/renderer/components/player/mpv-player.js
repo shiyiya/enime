@@ -3,7 +3,7 @@ import { MpvJs } from 'mpv.js-vanilla';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
-export default class MpvPlayer extends React.PureComponent {
+export class MpvPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'cache-buffering-state', 'paused-for-cache', 'volume', 'mute', 'name'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -61,7 +61,7 @@ export default class MpvPlayer extends React.PureComponent {
     } else if (name === 'eof-reached' && value) {
       this.mpv.property('time-pos', 0);
     } else {
-      if (name === 'cache-buffering-state') console.log('buffering', value)
+      if (name === 'demuxer-cache-idle') console.log('buffering', value)
       this.setState({ [name]: value });
       this.handlePropertyChangeExternal(name, value);
     }
@@ -118,38 +118,42 @@ export default class MpvPlayer extends React.PureComponent {
       })
     );
     return (
-      <div className="episode-player">
-        {Embed}
-        <div className="episode-player-control">
+      <div className="episode">
+        <div className="episode-page">
+          {Embed}
+        </div>
+        <div className="episode-player-control top">
           <input
             className="episode-player-control-slider"
             type="range"
-            min={0}
-            step={0.1}
+            min="0"
+            step="0.1"
             max={this.state.duration}
             value={this.state['time-pos']}
             onChange={this.handleSeek}
             onMouseDown={this.handleSeekMouseDown}
             onMouseUp={this.handleSeekMouseUp}
           />
-          <button className="control" onClick={this.togglePause}>
-            { this.state.pause ? <FontAwesomeIcon icon={faPlay}/> : <FontAwesomeIcon icon={faPause}/> }
-          </button>
-          <button className="control" onClick={this.toggleMute}>
-            { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
-              this.state.volume <= 0 ? faVolumeOff :
-                this.state.volume <= 65 ? faVolumeDown : faVolumeUp
-            }/> }
-          </button>
-          <input
-            className="episode-player-control-slider"
-            type="range"
-            min={0}
-            step={1}
-            max={130}
-            value={this.state.volume}
-            onChange={this.handleVolume}
-          />
+          <div className="bottom">
+            <button className={"control" + this.state.paused ? " paused" : ""} onClick={this.togglePause}></button>
+            <div className="volume">
+              <button className="control" onClick={this.toggleMute}>
+                { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
+                  this.state.volume <= 0 ? faVolumeOff :
+                  this.state.volume <= 65 ? faVolumeDown : faVolumeUp
+                }/> }
+              </button>
+              <input
+                className="episode-player-volume-slider"
+                type="range"
+                min="0"
+                step="1"
+                max="130"
+                value={this.state['volume']}
+                onChange={this.handleVolume}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
