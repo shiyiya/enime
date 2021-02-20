@@ -3,7 +3,7 @@ import { MpvJs } from 'mpv.js-vanilla';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
-export class MpvPlayer extends React.PureComponent {
+export default class MpvPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ export class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'cache-buffering-state', 'paused-for-cache', 'volume', 'mute', 'name'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -61,7 +61,7 @@ export class MpvPlayer extends React.PureComponent {
     } else if (name === 'eof-reached' && value) {
       this.mpv.property('time-pos', 0);
     } else {
-      if (name === 'demuxer-cache-idle') console.log('buffering', value)
+      if (name === 'cache-buffering-state') console.log('buffering', value)
       this.setState({ [name]: value });
       this.handlePropertyChangeExternal(name, value);
     }
@@ -138,7 +138,7 @@ export class MpvPlayer extends React.PureComponent {
           <button className="control" onClick={this.toggleMute}>
             { this.state.mute ? <FontAwesomeIcon icon={faVolumeMute}/> : <FontAwesomeIcon icon={
               this.state.volume <= 0 ? faVolumeOff :
-              this.state.volume <= 65 ? faVolumeDown : faVolumeUp
+                this.state.volume <= 65 ? faVolumeDown : faVolumeUp
             }/> }
           </button>
           <input
@@ -147,7 +147,7 @@ export class MpvPlayer extends React.PureComponent {
             min={0}
             step={1}
             max={130}
-            value={this.state['volume']}
+            value={this.state.volume}
             onChange={this.handleVolume}
           />
         </div>

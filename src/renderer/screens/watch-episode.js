@@ -1,5 +1,5 @@
 import * as React from "react";
-import {MpvPlayer} from "../components/player/mpv-player";
+import MpvPlayer from "../components/player/mpv-player";
 import { ipcRenderer } from 'electron';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useStore} from "react-redux";
