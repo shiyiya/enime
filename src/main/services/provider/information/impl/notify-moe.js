@@ -1,4 +1,3 @@
-import cheerio from "cheerio";
 import request from "request-promise"
 import InformationProvider from "../information-provider";
 
@@ -15,12 +14,9 @@ export default class NotifyMoe extends InformationProvider {
     return new Promise((resolve, reject) => {
       request.get(`${BASE_URL_SEARCH}${encodeURIComponent(title)}`)
         .then(response => {
-          const $ = cheerio.load(response);
-          let animeIds = [];
-
-          $('.anime-search').children('a').map((_index, element) => {
-            animeIds.push($(element).attr('href').replace("/anime/", ""));
-          }).get();
+          let animeIds = response.match(/href='\/anime\/(\S*)/gi).map(a => {
+            return a.replace("href='/anime/", "").replace("'", "");
+          });
 
           let promises = [];
 

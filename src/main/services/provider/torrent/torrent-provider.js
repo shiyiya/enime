@@ -12,5 +12,9 @@ export default class TorrentProvider {
   recentReleases(page) {
     return Promise.reject("The provider recent releases needs an implementation")
   }
+
+  search(query, page) {
+    return Promise.reject("The provider search needs an implementation")
+  }
 }
 
