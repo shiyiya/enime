@@ -10,7 +10,7 @@ export default function RecentEpisodes(props) {
   const [recent, setRecent] = useState([]);
   const [updated, setUpdated] = useState(false);
   const [page, setPage] = useState(1);
-  const [atInitialCardPosition, setAtInitialCardPosition] = useState(false);
+  const [atLeftBound, setAtLeftBound] = useState(true);
 
   const episodeCards = React.createRef();
 
@@ -27,10 +27,10 @@ export default function RecentEpisodes(props) {
     if (direction === "right") {
       cardsElement.scrollLeft += cardsElement.clientWidth;
       props.onPageFlip();
-      setAtInitialCardPosition(false);
+      setAtLeftBound(false);
     } else {
       cardsElement.scrollLeft -= cardsElement.clientWidth;
-      setAtInitialCardPosition(cardsElement.scrollLeft <= cardsElement.clientWidth);
+      setAtLeftBound(cardsElement.scrollLeft <= cardsElement.clientWidth);
     }
   };
 
@@ -41,7 +41,7 @@ export default function RecentEpisodes(props) {
         <ScrollButton
           direction={"left"}
           scrollFunction={scrollPage}
-          display={!atInitialCardPosition}
+          display={!atLeftBound}
         />
 
         <div className={"episode-releases"} ref={episodeCards}>
