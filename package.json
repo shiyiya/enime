@@ -4,14 +4,14 @@
   "description": "A desktop app for everyone to freely watch anime without interruptions",
   "scripts": {
     "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
-    "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
-    "build:renderer": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.renderer.prod.babel.js",
+    "build:main": "cross-env NODE_ENV=production webpack --config ./.bootstrap/configs/webpack.config.main.prod.babel.js",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config ./.bootstrap/configs/webpack.config.renderer.prod.babel.js",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir src",
     "package": "rm -rf src/dist && yarn build && electron-builder build --publish never",
-    "postinstall": "node -r @babel/register .erb/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.babel.js && opencollective-postinstall && yarn-deduplicate yarn.lock",
-    "start": "set MPVJS_TERMINAL=1 && set MPVJS_VERBOSE=1 && node -r @babel/register ./.erb/scripts/CheckPortInUse.js && cross-env yarn start:renderer",
-    "start:main": "cross-env NODE_ENV=development ELECTRON_DISABLE_SECURITY_WARNINGS=true electron -r ./.erb/scripts/BabelRegister src/main.dev.js",
-    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.erb/configs/webpack.config.renderer.dev.babel.js"
+    "postinstall": "node -r @babel/register ./.bootstrap/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn cross-env NODE_ENV=development webpack --config ./.bootstrap/configs/webpack.config.renderer.dev.dll.babel.js && opencollective-postinstall && yarn-deduplicate yarn.lock",
+    "start": "set MPVJS_TERMINAL=1 && set MPVJS_VERBOSE=1 && node -r @babel/register ./.bootstrap/scripts/CheckPortInUse.js && cross-env yarn start:renderer",
+    "start:main": "cross-env NODE_ENV=development ELECTRON_DISABLE_SECURITY_WARNINGS=true electron -r ./.bootstrap/scripts/BabelRegister src/main.dev.js",
+    "start:renderer": "cross-env NODE_ENV=development webpack serve --config ./.bootstrap/configs/webpack.config.renderer.dev.babel.js"
   },
   "lint-staged": {
     "{*.json,.{babelrc,eslintrc,prettierrc}}": [
@@ -35,7 +35,7 @@
       "main.prod.js.map",
       "package.json"
     ],
-    "afterSign": ".erb/scripts/Notarize.js",
+    "afterSign": ".bootstrap/scripts/Notarize.js",
     "mac": {
       "target": [
         "dmg"
@@ -97,7 +97,7 @@
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.bootstrap/mocks/fileMock.js",
       "\\.(css|less|sass|scss)$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
@@ -112,7 +112,7 @@
       "src/node_modules"
     ],
     "setupFiles": [
-      "./.erb/scripts/CheckBuildsExist.js"
+      "./.bootstrap/scripts/CheckBuildsExist.js"
     ]
   },
   "devDependencies": {

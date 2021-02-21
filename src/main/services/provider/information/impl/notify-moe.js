@@ -14,7 +14,7 @@ export default class NotifyMoe extends InformationProvider {
     return new Promise((resolve, reject) => {
       request.get(`${BASE_URL_SEARCH}${encodeURIComponent(title)}`)
         .then(response => {
-          let animeIds = response.match(/href='\/anime\/(\S*)/gi).map(a => {
+          let animeIds = (response.match(/href='\/anime\/(\S*)/gi) || []).map(a => {
             return a.replace("href='/anime/", "").replace("'", "");
           });
 
@@ -32,6 +32,8 @@ export default class NotifyMoe extends InformationProvider {
                 let responseAnime = JSON.parse(response);
                 if (!anime || (anime && Date.parse(responseAnime.startDate) > Date.parse(anime.startDate))) anime = responseAnime;
               })
+
+              if (!anime) return resolve(null);
 
               anime.title.primary = anime.title.english.length > 0 ? anime.title.english : anime.title.canonical;
 
