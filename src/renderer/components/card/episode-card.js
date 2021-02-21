@@ -30,6 +30,8 @@ export default function EpisodeCard(props) {
 
   return (
     <div className="episode-card" onClick={() => {
+      if (!result.updated) return;
+
       history.push({
         pathname: "/watch-episode",
         state: {
