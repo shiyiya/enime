@@ -16,18 +16,22 @@ export default function RecentEpisodes(props) {
   const store = useStore();
 
   let currentRecent;
-  const handleRecentUpdates = () => {
-    let previousRecent = currentRecent
+
+  useEffect(() => refreshRecent(), []);
+
+  const refreshRecent = () => {
+    let previousRecent = currentRecent;
     currentRecent = store.getState()['recent-releases'];
 
-    if (JSON.stringify(previousRecent) !== JSON.stringify(currentRecent)) {
-      setRecent(Object.values(currentRecent));
+    if ((JSON.stringify(previousRecent) !== JSON.stringify(currentRecent))) {
+      const values = Object.values(currentRecent);
 
-      if (recent.length > 0) setUpdated(true);
+      setRecent(values);
+      if (values.length > 0) setUpdated(true);
     }
   }
 
-  store.subscribe(handleRecentUpdates);
+  store.subscribe(refreshRecent);
 
   const scrollPage = (direction) => {
     const cardsElement = episodeCards.current;

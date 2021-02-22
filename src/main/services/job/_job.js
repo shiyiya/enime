@@ -8,6 +8,7 @@ export function start() {
   jobs().forEach(job => {
     cron.schedule(job.cron(), () => job.run(), {
       scheduled: true
-    });
+    }).start();
+    job.run();
   })
 }

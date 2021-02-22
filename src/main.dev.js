@@ -162,6 +162,9 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+import * as stateStorage from "./shared/storage/state-storage";
+global.store = stateStorage.configureStore(null, 'main');
+
 import * as discordRpc from "../src/main/services/presence/discord-rpc";
 discordRpc.start();
 
@@ -173,11 +176,9 @@ for (let [channel, func] of Object.entries(getHandlers())) {
   })
 }
 
+
 import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
 torrentStream.start();
 
 import * as job from "./main/services/job/_job";
 job.start();
-
-import * as stateStorage from "./shared/storage/state-storage";
-global.store = stateStorage.configureStore(null, 'main');

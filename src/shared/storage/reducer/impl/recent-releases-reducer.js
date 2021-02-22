@@ -2,9 +2,7 @@ import StateReducer from "../state-reducer";
 import StateActions from "../../action/state-actions";
 
 export default class RecentReleasesReducer extends StateReducer {
-  static INITIAL_STATE = {
-    'recent-releases': []
-  }
+  static INITIAL_STATE = [];
 
   constructor() {
     super();
