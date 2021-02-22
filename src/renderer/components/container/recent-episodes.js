@@ -2,25 +2,32 @@ import * as React from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
 
-import providers from "../../../main/services/provider/providers";
 import {useEffect, useState} from "react";
+import {useStore} from "react-redux";
 
 export default function RecentEpisodes(props) {
 
   const [recent, setRecent] = useState([]);
   const [updated, setUpdated] = useState(false);
-  const [page, setPage] = useState(1);
   const [atLeftBound, setAtLeftBound] = useState(true);
 
   const episodeCards = React.createRef();
 
-  useEffect(() => {
-    providers.getTorrentProvider().recentReleases(page).then(result => {
-      setRecent(result);
-      setUpdated(true);
-      setPage(page);
-    })
-  }, []);
+  const store = useStore();
+
+  let currentRecent;
+  const handleRecentUpdates = () => {
+    let previousRecent = currentRecent
+    currentRecent = store.getState()['recent-releases'];
+
+    if (JSON.stringify(previousRecent) !== JSON.stringify(currentRecent)) {
+      setRecent(Object.values(currentRecent));
+
+      if (recent.length > 0) setUpdated(true);
+    }
+  }
+
+  store.subscribe(handleRecentUpdates);
 
   const scrollPage = (direction) => {
     const cardsElement = episodeCards.current;

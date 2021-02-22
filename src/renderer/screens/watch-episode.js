@@ -35,7 +35,7 @@ export default function WatchEpisode(props) {
   }
 
   if (!torrent || !anime || !episode) {
-    let data = store.getState();
+    let data = store.getState()['watching-anime'];
     torrent = data.source.link;
     anime = data.props;
     episode = data.episode;
