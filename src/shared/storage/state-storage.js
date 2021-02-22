@@ -6,7 +6,6 @@ import {
 } from 'electron-redux';
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 
-import { composeWithDevTools } from 'remote-redux-devtools';
 import WatchingAnimeReducer from "./reducer/impl/watching-anime-reducer";
 export const WATCHING_ANIME = new WatchingAnimeReducer();
 
@@ -41,7 +40,15 @@ export function configureStore(initialState, scope = 'main') {
 
   const reducer = combineReducers(reducers);
 
-  const enhancer = composeWithDevTools(...enhanced);
+  let composeEnhancers;
+
+  if (scope === 'renderer') {
+    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  } else {
+    composeEnhancers = compose;
+  }
+
+  const enhancer = composeEnhancers(...enhanced);
 
   const store = createStore(
     reducer,

@@ -37,16 +37,18 @@ if (
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from '@nadeshikon/electron-devtools-installer';
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
+const installExtensions = async () => {
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+
+  return installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], {
+    forceDownload,
+    loadExtensionOptions: {
+      allowFileAccess: true
+    }
+  })
+    .then(console.log)
     .catch(console.log);
 };
 
