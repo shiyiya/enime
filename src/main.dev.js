@@ -23,6 +23,8 @@ export default class AppUpdater {
   }
 }
 
+const development = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -31,8 +33,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
+  development
 ) {
   require('electron-debug')();
 }
@@ -96,12 +97,7 @@ const getAssetPath = paths => {
 };
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    await installExtensions();
-  }
+  if (development) await installExtensions();
 
   mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
@@ -188,4 +184,4 @@ import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
 torrentStream.start();
 
 import * as stateStorage from "./shared/storage/state-storage";
-stateStorage.configureStore(null, 'main');
+global.store = stateStorage.configureStore(null, 'main');
