@@ -22,7 +22,7 @@ Enime is a cross-platform desktop app that allows you to enjoy your anime time
 
 ## Screenshots
 
-_Note: The currents screenshot are from the (very) initial version of the project and do not possibly indicate the final product, they will be periodically updated as the project progresses_
+_Note: The current screenshots are from the (very) initial version of the project and do not possibly indicate the final product, they will be periodically updated as the project progresses_
 ![](./screenshots/screenshot-1.png)
 ![](./screenshots/screenshot-2.png)
 ![](./screenshots/screenshot-3.png)
