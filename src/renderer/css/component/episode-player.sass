@@ -1,33 +1,163 @@
-.episode-player
-  height: 80vh
-
-.episode-player-control
-  text-align: center
-
-.episode-player-control-slider
-  -webkit-appearance: none
-  appearance: slider
-  width: 100%
-  height: 5px
-  background: #d3d3d3
-  outline: none
-  opacity: 0.7
-  -webkit-transition: .2s
-  transition: opacity .2s
-	
-  &:hover
+.episode
+  &:hover .player-control
     opacity: 1
+  &-page
+    position: relative
+    padding-bottom: 56.25% // 16:9
+    height: 0
 
-  &::-webkit-slider-thumb
-    -webkit-appearance: none
-    appearance: none
-    width: 25px
-    height: 25px
-    background: black
-    cursor: pointer
+.control
+  background: transparent
+  color: white
+  border: none
 
-  &::-moz-range-thumb
-    width: 25px
-    height: 25px
-    background: black
-    cursor: pointer
+  &-playstate
+    $size: 10px
+    
+    width: $size
+    height: $size
+    position: relative
+    //background: transparent
+    border: none
+    //box-shadow: none
+    
+    &:before, &:after
+      content: ""
+      position: absolute
+      width: 0
+      border-style: solid
+      border-color: transparent
+      border-left-color: #fff
+      transition: .1s
+
+    &:before
+      left: 0
+      top: 0
+      height: $size / 2
+      border-width: $size / 4 $size / 2 $size / 4 $size / 2
+
+    &:after
+      left: $size / 2
+      top: $size / 4
+      height: 0
+      border-width: $size / 4 0 $size / 4 $size / 2
+
+    &.paused
+      &:before
+        height: $size
+        border-width: 0 0 0 $size / 3
+
+      &:after
+        left: $size / 1.5
+        top: 0
+        height: $size
+        border-width: 0 0 0 $size / 3
+
+
+/* Volumee contrals
+.volume
+  display: flex
+  flex-direction: row
+
+  &-control
+    background: transparent
+    color: white
+    font-size: 18px
+    outline: none
+    border: none
+
+.bottom
+  display: flex
+  justify-content: space-between
+  flex-direction: row
+  padding-top: 5px
+  width: 90%
+
+.player
+  position: absolute
+  top: 0
+  bottom: 0
+  width: 100%
+  height: 100%
+
+  &-info-time
+    font-family: Roboto
+    font-size: 14px
+    font-weight: 700
+    color: white
+
+  &-control
+    position: relative
+    display: flex
+    flex-direction: column
+    align-items: center
+    top: -40px
+    background: linear-gradient(to bottom, #00000000, #00000090)
+    height: 40px
+    opacity: 0
+    transition: opacity 0.3s
+    /*text-align: center
+
+    /*&:hover
+      opacity: 1
+
+    &-slider
+
+      $height: 7px
+      $rad: $height / 2
+
+      width: 95%
+      height:  $height
+      outline: none
+      background: gray
+      opacity: 0.7
+      -webkit-transition: .2s
+      transition: opacity .2s
+      margin: none
+      padding: 0
+      border-radius: $rad
+
+      &-buffer
+        background: #333
+        height: $height
+        border-radius: $rad
+        position: relative
+      
+      /*&-before, &-ball, &-buffer
+        //float: left
+        //display: inline
+        position: absolute
+        //box-sizing: content-box
+
+      &-before
+        left: 0px
+        width: 0px
+        //bottom: 0px
+        top: - $height
+        position: relative
+        background: red
+        height: $height
+        border-radius: $rad
+        display: flex
+        justify-content: flex-end
+        flex-direction: row
+        align-items: center
+        //overflow: normal
+
+      &-ball
+        width: 0px
+        //bottom: $height / 2
+        height: 0px
+        //right: 0px
+        //position: absolute
+        border: none
+        //box-sizing: border-box
+        transition-property: width, height
+        transition-duration: .5s
+        transition-timing-function: ease
+
+      &:hover &-ball
+        height: $height * 2
+        width: $height * 2
+        background: red
+        border-radius: $height
