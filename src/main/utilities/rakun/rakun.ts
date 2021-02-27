@@ -110,14 +110,11 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                 //Parse key
                   if (key) {
                     //Search for matches
-                      console.debug(`${key} > process`)
                       const matches = Parser.test({collection, value:cleaned, get})
                       if (matches.length) {
                         //Retrieve group names (or values) and remove leading underscore
-                          console.debug(`${key} > process > ${matches.length} regex matches`)
                           const {[key]:previous = ""} = result
                         //Evaluate mode
-                          console.debug(`${key} > process > mode ${mode}`)
                           switch (mode) {
                             case "append":{
                               result[key] = [...new Set([...previous.split(" "), ...matches.matches.flat()].sort())].join(" ")
@@ -129,33 +126,24 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                             }
                             case "skip":{
                               if (result[key]) {
-                                console.debug(`${key} > process > mode skip > value already defined, skipping`)
                                 continue
                               }
                               result[key] = matches.matches[0].join(" ")
                               break
                             }
                           }
-                          console.debug(`${key} > process > previous value = ${previous||"(none)"}`)
-                          console.debug(`${key} > process > current value = ${result[key]}`)
                         //Put matching regex in queue for removal
                           removes.push(...matches.regexs)
                       }
-                    //No matches
-                      else
-                        console.debug(`${key} > process > no matches`)
-
                   }
                 //Clean if needed
                   if (clean) {
                     cleaned = Parser.clean({value:cleaned, removes:[...removes, ...cleaners]})
-                    console.debug(`${key||"(meta)"} > process > cleaned value = ${cleaned}`)
                     removes.splice(0)
                   }
             }
           //Register name
             result.name = cleaned
-            console.debug(`name > process > current value = ${cleaned}`)
           },
 
         /**
@@ -175,7 +163,6 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                       result[key] = (value === result.filename) ? value : Parser.clean({value, removes})
                     //Delete property if empty
                       if (!result[key]) {
-                        console.debug(`${key} > post-process > deleted because empty`)
                         delete result[key]
                       }
                   }
@@ -194,10 +181,8 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                       for (const [duplicates, kept] of regexs.processors.post.codecs.duplicates) {
                         if (duplicates.map((regex:RegExp) => regex.test(codecs)).filter((match:boolean) => match).length === duplicates.length) {
                           codecs = [...Parser.clean({value:codecs, removes:duplicates}).split(" "), kept].sort().join(" ")
-                          console.debug(`codecs > post-process > found duplicate codecs for ${kept}`)
                         }
                       }
-                    console.debug(`codecs > post-process > current codecs = ${codecs}`)
                     result.codecs = codecs
                   }
               },
@@ -214,18 +199,15 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                   while (regexs.cleaners.special.unparsable.test(value)) {
                     //Edge case : title is in brackets
                       if (regexs.cleaners.special.only_brackets.test(value)) {
-                        console.debug(`name > post-process > last attribute, assuming it is name`)
                         value = value.match(regexs.cleaners.special.only_brackets)?.groups?.name as string
                         break
                       }
                     //Edge case : no subber has been detected yet but attribute is candidate for it
                       else if ((!result.subber)&&(regexs.processors.post.subber.possible_subber_name.test(value))) {
                         result.subber = [...value.match(regexs.processors.post.subber.possible_subber_name)?.groups?.subber as string].reverse().join("")
-                        console.debug(`name > post-process > found unparsable value which may be subber (${result.subber})`)
                       }
                     //Remove unparsable brackets
                       else
-                        console.debug(`name > post-process > found unparsable value ${value.match(regexs.cleaners.special.unparsable)?.groups?.unparsable}`)
                       value = Parser.clean({value, removes:[regexs.cleaners.special.unparsable], empty:{parenthesis:false}})
                   }
                 //Re-reverse string
@@ -235,20 +217,17 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                     //If audio is not defined or doesn't include multi but post processor test is positive
                       if (((!result.audio)||(!result.audio.includes("multi")))&&(regexs.processors.post.audio.possible_multi_audio.test(value))) {
                         result.audio = [...new Set([...(result.audio||"").split(" "), "multi"].sort())].join(" ")
-                        console.debug(`audio > post-process > current value = ${result.audio}`)
                         value = Parser.clean({value, removes:[regexs.processors.post.audio.possible_multi_audio]})
                       }
                     //If episode is not definned, we may be able to find it
                       if ((!result.episode)&&(regexs.processors.post.serie.possible_episode.test(value))) {
                         result.episode = value.match(regexs.processors.post.serie.possible_episode)?.groups?.episode
-                        console.debug(`episode > post-process > current value = ${result.episode}`)
                         value = Parser.clean({value, removes:[regexs.processors.post.serie.possible_episode]})
                       }
                   }
                 //Replace special characters with spaces if needed
                   for (const regex of [...regexs.processors.post.name.special_to_space, ...regexs.processors.post.name.isolated])
                     value = value.replace(regex, " ")
-                console.debug(`name > post-process > current value = ${value}`)
                 result.name = value
               },
 
@@ -271,8 +250,6 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                         //Clean
                           result.name = Parser.clean({value:name, removes:[regex]})
                         //Update resolution
-                          console.debug(`resolution > post-process > found remamining number which may be resolution (${match})`)
-                          console.debug(`resolution > post-process > current resolution = ${resolution}`)
                           result.resolution = resolution
                       }
                   }
@@ -294,7 +271,6 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                             const [a, b] = value.trim().split(" ")
                             //If range is not ascending or upper limit has leading zero while lower hasn't, lower limit is probably not part of a range
                               if ((Number(a) > Number(b))||((regexs.processors.post.serie.leading_zero.test(b))&&(!regexs.processors.post.serie.leading_zero.test(a)))) {
-                                console.debug(`${key} > post-process > invalid range or formatting mistmatch, accepting ${b} but rejecting ${a}`)
                                 value = Number(b).toString()
                                 rejects.push(a)
                               }
@@ -304,7 +280,6 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                         //Detect single
                           else if (regexs.processors.post.serie.single.test(value))
                             value = Number(value).toString()
-                        console.debug(`${key} > post-process > current ${key} = ${value}`)
                         result[key] = value
                       }
                   }
@@ -326,7 +301,6 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
                 //Iterate on asian content regexs
                   for (const regex of regexs.processors.pre.name.asian_content)
                     cleaned = cleaned.replace(regex, "$<content>")
-                  console.debug(`(meta) > pre-process > cleaned value = ${cleaned}`)
                 data.cleaned = cleaned
               },
 

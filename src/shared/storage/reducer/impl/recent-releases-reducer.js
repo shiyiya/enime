@@ -1,30 +1,23 @@
 import StateReducer from "../state-reducer";
 import StateActions from "../../action/state-actions";
 
-export default class WatchingAnimeReducer extends StateReducer {
-  static INITIAL_STATE = {
-    props: null,
-    episode: null,
-    source: {
-      type: 'torrent', // `torrent` or `direct`,
-      source: null
-    }
-  }
+export default class RecentReleasesReducer extends StateReducer {
+  static INITIAL_STATE = [];
 
   constructor() {
     super();
   }
 
   name() {
-    return "watching-anime";
+    return "recent-releases";
   }
 
   get(state, action) {
-    if (!state) return WatchingAnimeReducer.INITIAL_STATE;
+    if (!state) return RecentReleasesReducer.INITIAL_STATE;
     if (!action) return state;
 
     switch (action.type.toLowerCase()) {
-      case StateActions.UPDATE_CURRENT_ANIME:
+      case StateActions.UPDATE_RECENT_RELEASES:
         return {
           ...state,
           ...action.payload

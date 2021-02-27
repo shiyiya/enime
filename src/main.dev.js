@@ -28,14 +28,16 @@ const development = process.env.NODE_ENV === 'development' || process.env.DEBUG_
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
+  (async () => {
+    const sourceMapSupport = await import('source-map-support');
+    sourceMapSupport.install()
+  })()
 }
 
 if (
   development
 ) {
-  require('electron-debug')();
+  require('electron-debug')()
 }
 
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from '@nadeshikon/electron-devtools-installer';
@@ -73,13 +75,8 @@ const RESOURCES_PATH = app.isPackaged
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
-console.log(pluginDir);
-// See pitfalls section for details.
-if (process.platform !== 'linux') {
-  process.chdir(pluginDir);
-}
 
+const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // Fix for latest Electron.
@@ -165,14 +162,13 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+import * as stateStorage from "./shared/storage/state-storage";
+global.store = stateStorage.configureStore(null, 'main');
+
 import * as discordRpc from "../src/main/services/presence/discord-rpc";
 discordRpc.start();
 
-import {getHandlers, register} from "./main/services/ipc/ipc-handler";
-import RecentReleases from "./main/services/ipc/impl/recent-releases";
-import PresenceStatus from "./main/services/ipc/impl/presence-status";
-register(new RecentReleases());
-register(new PresenceStatus());
+import getHandlers from "./main/services/ipc/_ipc-handler";
 
 for (let [channel, func] of Object.entries(getHandlers())) {
   ipcMain.handle(channel, async (event, data) => {
@@ -180,8 +176,9 @@ for (let [channel, func] of Object.entries(getHandlers())) {
   })
 }
 
+
 import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
 torrentStream.start();
 
-import * as stateStorage from "./shared/storage/state-storage";
-global.store = stateStorage.configureStore(null, 'main');
+import * as job from "./main/services/job/_job";
+job.start();

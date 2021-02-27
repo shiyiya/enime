@@ -53,7 +53,34 @@ export default class NotifyMoe extends InformationProvider {
 
   information(id) {
     return new Promise((resolve, reject) => {
-      request.get(`${BASE_URL_ANIME}`)
+      request.get({
+        uri: `${BASE_URL_ANIME}/${id}`,
+        json: true
+      })
+        .then(response => {
+          response.title.primary = response.title.english.length > 0 ? response.title.english : response.title.canonical;
+
+          resolve({
+            airing: {
+              start: Date.parse(response.startDate),
+              end: Date.parse(response.endDate)
+            },
+            episode: {
+              count: response.episodeCount,
+              length: response.episodeLength,
+              episodes: response.episodes
+            },
+            information: {
+              title: response.title,
+              summary: response.summary,
+              source: response.source,
+              type: response.type,
+              rating: response.rating
+            },
+          });
+        }).catch(error => {
+          reject(error);
+      })
     })
   }
 }

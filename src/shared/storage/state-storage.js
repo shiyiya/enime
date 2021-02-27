@@ -1,42 +1,37 @@
-import {
-  forwardToMain,
-  replayActionRenderer,
-  forwardToRenderer,
-  replayActionMain
-} from 'electron-redux';
+import { mainStateSyncEnhancer, rendererStateSyncEnhancer } from 'electron-redux'
+
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 
 import WatchingAnimeReducer from "./reducer/impl/watching-anime-reducer";
 export const WATCHING_ANIME = new WatchingAnimeReducer();
 
-const reducers = [
-  WATCHING_ANIME.get,
-]
+import RecentReleasesReducer from "./reducer/impl/recent-releases-reducer";
+export const RECENT_RELEASES = new RecentReleasesReducer();
+
+const reducers = {
+  [WATCHING_ANIME.name()]: WATCHING_ANIME.get,
+  [RECENT_RELEASES.name()]: RECENT_RELEASES.get
+}
 
 const initialStateRemote = {
-  ...WatchingAnimeReducer.INITIAL_STATE
+  [WATCHING_ANIME.name()]: WatchingAnimeReducer.INITIAL_STATE,
+  [RECENT_RELEASES.name()]: RecentReleasesReducer.INITIAL_STATE
 }
 
 export function configureStore(initialState, scope = 'main') {
   if (!initialState) initialState = initialStateRemote;
 
-  let middleware = [];
+  let enhancers = [];
 
   if (scope === 'main') {
-    middleware = [
-      ...middleware,
-      forwardToRenderer,
-    ];
+    enhancers = [
+      mainStateSyncEnhancer()
+    ]
   } else if (scope === 'renderer') {
-    middleware = [
-      forwardToMain,
-      ...middleware,
-    ];
+    enhancers = [
+      rendererStateSyncEnhancer()
+    ]
   }
-
-  const enhanced = [
-    applyMiddleware(...middleware),
-  ]
 
   const reducer = combineReducers(reducers);
 
@@ -48,19 +43,11 @@ export function configureStore(initialState, scope = 'main') {
     composeEnhancers = compose;
   }
 
-  const enhancer = composeEnhancers(...enhanced);
+  const enhancer = composeEnhancers(...enhancers);
 
-  const store = createStore(
+  return createStore(
     reducer,
     initialState,
     enhancer
   );
-
-  if (scope === 'main') {
-    replayActionMain(store);
-  } else {
-    replayActionRenderer(store);
-  }
-
-  return store;
 }
