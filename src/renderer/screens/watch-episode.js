@@ -67,7 +67,8 @@ export default function WatchEpisode(props) {
               anime: {
                 title: anime.title.primary,
                 episode: episode
-              }
+              },
+              paused: false
             }
           };
 

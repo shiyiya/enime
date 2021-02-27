@@ -19,6 +19,8 @@ export default class DiscordPresence extends Job {
   }
 
   run() {
+    const SMALL_TEXT = "Enime Desktop", LARGE_TEXT = "Enime version DEV";
+
     RPC.register(CLIENT_ID);
 
     let statusToState = [
@@ -44,17 +46,17 @@ export default class DiscordPresence extends Job {
         }
 
         let activity = {
-          details: "Watching Anime",
+          details: state === 1 ? "Watching Anime" : "Home",
           state: statusText,
           largeImageKey: 'ganyu',
-          largeImageText: "Enime",
-          smallImageKey: data.player.paused ? 'pause' : 'play',
-          smallImageText: data.player.paused ? 'Paused' : 'Watching',
+          largeImageText: LARGE_TEXT,
+          smallImageKey: state === 1 ? (data.player.paused ? 'pause' : 'play') : 'ganyu',
+          smallImageText: state === 1 ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
           instance: false,
         };
 
-        if (data.startTimestamp) activity.startTimestamp = data.startTimestamp;
-        if (data.endTimestamp) activity.endTimestamp = data.endTimestamp;
+        if (state === 1 && data.startTimestamp) activity.startTimestamp = data.startTimestamp;
+        if (state === 1 && data.endTimestamp) activity.endTimestamp = data.endTimestamp;
 
         client.setActivity(activity)
 
@@ -70,9 +72,9 @@ export default class DiscordPresence extends Job {
         state: statusToState[0],
         startTimestamp,
         largeImageKey: 'ganyu',
-        largeImageText: 'Life is anime',
+        largeImageText: LARGE_TEXT,
         smallImageKey: 'ganyu',
-        smallImageText: 'Enime v0.01-DEV',
+        smallImageText: SMALL_TEXT,
         instance: false,
       })
     });
