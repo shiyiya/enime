@@ -4,6 +4,7 @@ import ScrollButton from "../scroll-button";
 
 import {useEffect, useState} from "react";
 import {useStore} from "react-redux";
+import _ from 'lodash';
 
 export default function RecentEpisodes(props) {
 
@@ -23,7 +24,7 @@ export default function RecentEpisodes(props) {
     let previousRecent = currentRecent;
     currentRecent = store.getState()['recent-releases'];
 
-    if ((JSON.stringify(previousRecent) !== JSON.stringify(currentRecent))) {
+    if (!_.isEqual(previousRecent, currentRecent)) {
       const values = Object.values(currentRecent);
 
       setRecent(values);

@@ -226,6 +226,7 @@
     "electron-redux": "^2.0.0-alpha.5",
     "electron-updater": "^4.3.4",
     "fast-xml-parser": "^3.18.0",
+    "lodash": "^4.17.21",
     "mime": "^2.5.0",
     "mpv.js-vanilla": "^0.3.4",
     "node-cron": "^2.0.3",

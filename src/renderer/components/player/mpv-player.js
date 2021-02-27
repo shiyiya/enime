@@ -28,6 +28,7 @@ export default class MpvPlayer extends React.PureComponent {
     this.mpv = new MpvJs(this.handleMPVReady, this.handlePropertyChange);
     this.url = props.url;
     this.buffering = false;
+    this.seeking = false;
   }
 
   componentDidMount() {
@@ -111,10 +112,10 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleSeek(e) {
     //e.target.blur();
-    let { target } = e; 
+    let { target } = e;
     if(target.className === "player-control-slider") target = target.lastChild;
     const timePos = (target.clientWidth / target.parentNode.clientWidth) * this.state.duration;
-    this.setState({ 'time-pos': timePos }); 
+    this.setState({ 'time-pos': timePos });
     this.mpv.property('time-pos', timePos);
     this.handleSeekMove(e);
     this.down = false;
@@ -143,7 +144,7 @@ export default class MpvPlayer extends React.PureComponent {
             onMouseDown={this.handleSeekMouseDown}
             onMouseMove={this.handleSeekMove}
             onMouseUp={this.handleSeek}
-            > 
+            >
             <div className="player-control-slider-buffer" style={{ left: width, width: (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}></div>
             <div className="player-control-slider-before" style={this.down ? {} : { width: width }}><div className="player-control-slider-ball"></div></div>
           </div>

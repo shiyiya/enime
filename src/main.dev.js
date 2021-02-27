@@ -165,18 +165,6 @@ app.on('activate', () => {
 import * as stateStorage from "./shared/storage/state-storage";
 global.store = stateStorage.configureStore(null, 'main');
 
-import * as discordRpc from "../src/main/services/presence/discord-rpc";
-discordRpc.start();
-
-import getHandlers from "./main/services/ipc/_ipc-handler";
-
-for (let [channel, func] of Object.entries(getHandlers())) {
-  ipcMain.handle(channel, async (event, data) => {
-    return await func(event, data);
-  })
-}
-
-
 import * as torrentStream from "./main/services/stream/torrent/stream-torrent";
 torrentStream.start();
 

@@ -8,11 +8,11 @@ export default class RecentRelease extends Job {
   }
 
   name() {
-    return "Recent Release"
+    return "Recent Release";
   }
 
   cron() {
-    return "*/5 * * * *"
+    return "*/5 * * * *";
   }
 
   run() {

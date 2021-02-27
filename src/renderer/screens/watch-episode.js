@@ -1,6 +1,5 @@
 import * as React from "react";
 import MpvPlayer from "../components/player/mpv-player";
-import { ipcRenderer } from 'electron';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useStore} from "react-redux";
 import StateActions from "../../shared/storage/action/state-actions";
@@ -63,19 +62,27 @@ export default function WatchEpisode(props) {
           const now = Date.now();
 
           let activity = {
-            status: 1,
-            anime: anime,
-            episode: episode
+            state: 1,
+            player: {
+              anime: {
+                title: anime.title.primary,
+                episode: episode
+              }
+            }
           };
 
           if (name === 'pause') {
-            if (value) activity.paused = value;
+            if (value) activity.player.paused = value;
             if (value !== prevPlayerData.paused) {
               prevPlayerData.paused = value;
               activity.startTimestamp = value ? null : now + prevPlayerData.position * 1000;
               activity.endTimestamp = value ? null : now + (prevPlayerData.duration - prevPlayerData.position) * 1000;
             }
-            ipcRenderer.invoke('enime:presence-status', activity);
+
+            dispatch({
+              type: StateActions.UPDATE_CURRENT_PRESENCE,
+              payload: activity
+            })
           }
 
           if (!prevPlayerData.paused && (name === 'duration' || name === 'time-pos')) {
@@ -86,7 +93,10 @@ export default function WatchEpisode(props) {
               activity.startTimestamp = now + prevPlayerData.position * 1000;
               activity.endTimestamp = now + (prevPlayerData.duration - prevPlayerData.position) * 1000;
 
-              ipcRenderer.invoke('enime:presence-status', activity);
+              dispatch({
+                type: StateActions.UPDATE_CURRENT_PRESENCE,
+                payload: activity
+              })
             }
           }
         }
