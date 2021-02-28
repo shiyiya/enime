@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Enime-Project/enime/blob/master/icon/icon.png?raw=true" />
+  <img src="https://github.com/Enime-Project/enime/blob/master/images/icon/icon-medium.png?raw=true" />
 </p>
 
 # Enime
