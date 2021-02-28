@@ -11,11 +11,11 @@
 [![Release](https://img.shields.io/github/release/Enime-Project/enime.svg?style=flat-square)](https://github.com/Enime-Project/enime/releases/)
 [![License](https://img.shields.io/github/license/Enime-Project/enime.svg?style=flat-square)](https://github.com/Enime-Project/enime/blob/master/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/Enime-Project/enime/total?style=flat-square)](https://github.com/Enime-Project/enime/releases/latest)
-[![HitCount](http://hits.dwyl.io/Enime-Project/enime.svg)](http://hits.dwyl.io/Enime-Project/enime)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FEnime-Project%2Fenime&count_bg=%236EFF00&title_bg=%23555555&icon=&icon_color=%23FFFFFF&title=hits&edge_flat=true)](https://hits.seeyoufarm.com)
 
-Leave a star to the repository is you like this project and believes in the potential of it :)
+Leave a star to the repository is you like this project and believe in its potential :)
 
-Enime is a cross-platform desktop app that allows you to enjoy your anime time
+Enime is a cross-platform desktop app that allows you to watch anime without disruptions
 
 ## Features
 
