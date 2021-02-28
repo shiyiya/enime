@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/Enime-Project/enime/blob/master/icon/icon.png?raw=true" />
+</p>
+
 # Enime
 
 ## _Electron Anime Desktop App_
@@ -15,17 +19,27 @@ Enime is a cross-platform desktop app that allows you to enjoy your anime time
 
 ## Features
 
-- Built-in [mpv](https://github.com/mpv-player/mpv) player powered by [mpv.js](https://github.com/Kagami/mpv.js) that allows on-fly multi-language subtitle embedded in the video
-- Discord RPC integrated, you can optionally show your friends what anime and what episode you are currently watching!
-- Fetch recent releases. Enime automatically parse corresponding anime from various sub teams from [nyaa](https://nyaa.si) and obtain video source from the torrents
+- Built-in [mpv](https://github.com/mpv-player/mpv) player powered by [mpv.js](https://github.com/Kagami/mpv.js) that allows on-fly multi-language subtitle embedded in the video among with various controls in the interface!
+- Integrated Discord RPC, you can optionally show your friends what anime and what episode you are currently watching!
+- Fetch recent releases. Enime automatically parse corresponding anime from various sub teams from [nyaa](https://nyaa.si) and obtain video source from the torrents, a special algorithm has been deployed to ensure the information are as accurate as possible
 - _More to be included_
 
-## Screenshots
+## Installations
+
+Enime is currently not publicly available to download via GitHub Releases. However, you can attempt to run the application in test mode:
+
+1. Clone the repository
+   - If you don't have yarn installed, please install yarn via `npm install -g yarn`
+2. Head to the terminal with directory pointed to the project folder, execute `yarn install`
+3. Run the app via `yarn start`
+
+## Demo
 
 _Note: The current screenshots are from the (very) initial version of the project and do not possibly indicate the final product, they will be periodically updated as the project progresses_
-![](./screenshots/screenshot-1.png)
-![](./screenshots/screenshot-2.png)
-![](./screenshots/screenshot-3.png)
+![](images/screenshots/screenshot-1.png)
+![](images/screenshots/screenshot-2.png)
+![](images/screenshots/screenshot-3.png)
+![](images/screenshots/screenshot-4.png)
 
 ## Contributing
 
