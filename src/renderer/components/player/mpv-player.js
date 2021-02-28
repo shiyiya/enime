@@ -97,6 +97,7 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handleSeekMouseDown(e) {
+    console.log('seek but down')
     this.down = true;
     this.handleSeekMove(e);
     this.handleSeek(e);
@@ -111,7 +112,7 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handleSeek(e) {
-    //e.target.blur();
+    console.log('seek')
     let { target } = e;
     if(target.className === "player-control-slider") target = target.lastChild;
     const timePos = (target.clientWidth / target.parentNode.clientWidth) * this.state.duration;
@@ -151,7 +152,7 @@ export default class MpvPlayer extends React.PureComponent {
           </div>
           <div className="bottom">
             <div className="player-control-left">
-            <div className={"control-playstate" + this.state.paused ? " paused" : ""} onClick={this.togglePause}/>
+            <div className={`control-playstate${!this.state.pause ? " paused" : ""}`} onClick={this.togglePause}/>
             <div className="player-info-time">{Math.floor(this.state["time-pos"] / 60)}:{this.zero(Math.round(this.state["time-pos"] % 60))} / {~~(this.state.duration / 60)}:{this.zero(Math.round(this.state.duration % 60))}</div>
             </div>
             <div className="volume">
