@@ -115,9 +115,10 @@ export default class MpvPlayer extends React.PureComponent {
     let { target } = e;
     if(target.className === "player-control-slider") target = target.lastChild;
     const timePos = (target.clientWidth / target.parentNode.clientWidth) * this.state.duration;
+    console.log(timePos)
     this.setState({ 'time-pos': timePos });
     this.mpv.property('time-pos', timePos);
-    this.handleSeekMove(e);
+    //this.handleSeekMove(e);
     this.down = false;
   }
 
@@ -145,12 +146,12 @@ export default class MpvPlayer extends React.PureComponent {
             onMouseMove={this.handleSeekMove}
             onMouseUp={this.handleSeek}
             >
-            <div className="player-control-slider-buffer" style={{ left: width, width: (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}></div>
-            <div className="player-control-slider-before" style={this.down ? {} : { width: width }}><div className="player-control-slider-ball"></div></div>
+            <div className="player-control-slider-buffer" style={{ left: width, width: (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}/>
+            <div className="player-control-slider-before" style={this.down ? {} : { width: width }}><div className="player-control-slider-ball"/></div>
           </div>
           <div className="bottom">
             <div className="player-control-left">
-            <div className={"control-playstate" + this.state.paused ? " paused" : ""} onClick={this.togglePause}></div>
+            <div className={"control-playstate" + this.state.paused ? " paused" : ""} onClick={this.togglePause}/>
             <div className="player-info-time">{Math.floor(this.state["time-pos"] / 60)}:{this.zero(Math.round(this.state["time-pos"] % 60))} / {~~(this.state.duration / 60)}:{this.zero(Math.round(this.state.duration % 60))}</div>
             </div>
             <div className="volume">

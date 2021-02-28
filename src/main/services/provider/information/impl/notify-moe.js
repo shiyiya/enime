@@ -4,6 +4,7 @@ import InformationProvider from "../information-provider";
 const BASE_URL_SEARCH = "https://notify.moe/_/anime-search/";
 const BASE_URL_ANIME = "https://notify.moe/api/anime/";
 const BASE_URL_IMAGE = "https://media.notify.moe/images/anime";
+import rakun from "../../../../utilities";
 
 export default class NotifyMoe extends InformationProvider {
   name() {
@@ -18,6 +19,8 @@ export default class NotifyMoe extends InformationProvider {
             return a.replace("href='/anime/", "").replace("'", "");
           });
 
+          let actualTitle = this.extractActualTitle(title);
+
           let promises = [];
 
           animeIds.forEach(animeId => {
@@ -26,12 +29,34 @@ export default class NotifyMoe extends InformationProvider {
 
           Promise.all(promises)
             .then(values => {
-              let anime = null;
+              let anime, exactTitleMatches = [], estimatedMatches = [];
 
               values.forEach(response => {
                 let responseAnime = JSON.parse(response);
-                if (!anime || (anime && Date.parse(responseAnime.startDate) > Date.parse(anime.startDate))) anime = responseAnime;
+
+                let actualResponseTitle = this.extractActualTitle(responseAnime.title.canonical);
+
+                if (actualTitle.replaceAll('(TV)', '').trim().toLowerCase() === actualResponseTitle.replaceAll('(TV)', '').trim().toLowerCase()) exactTitleMatches.push(responseAnime);
+                else estimatedMatches.push(responseAnime);
               })
+
+              let lowerPriorityAnime = [], higherPriorityAnime = [], primaryPriorityAnime = [];
+
+              if (exactTitleMatches.length) {
+                exactTitleMatches.forEach(titleMatchedAnime => {
+                  if (Date.now() > Date.parse(titleMatchedAnime.endDate)) lowerPriorityAnime.push(titleMatchedAnime);
+                  else if (titleMatchedAnime.type !== 'tv') lowerPriorityAnime.push(titleMatchedAnime);
+                  else primaryPriorityAnime.push(titleMatchedAnime);
+                })
+              } else {
+                estimatedMatches.forEach(estimateMatchedAnime => {
+                  if (Date.now() > Date.parse(estimateMatchedAnime.endDate)) lowerPriorityAnime.push(estimateMatchedAnime);
+                  else if (estimateMatchedAnime.type !== 'tv') lowerPriorityAnime.push(estimateMatchedAnime);
+                  else higherPriorityAnime.push(estimateMatchedAnime);
+                })
+              }
+
+              anime = (primaryPriorityAnime.length ? primaryPriorityAnime : (higherPriorityAnime.length ? higherPriorityAnime : lowerPriorityAnime)).sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate))[0];
 
               if (!anime) return resolve(null);
 
