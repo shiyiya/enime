@@ -5,15 +5,15 @@ export default function EpisodeCardLoader(props) {
   return (
     <ContentLoader
       speed={2}
-      width={142}
+      width={160}
       height={303}
-      viewBox="0 0 142 303"
+      viewBox="0 0 160 303"
       backgroundColor="#f3f3f3"
       foregroundColor="#000000"
     >
-      <rect x="-6" y="238" rx="2" ry="2" width="142" height="18" />
-      <rect x="-6" y="217" rx="2" ry="2" width="142" height="10" />
-      <rect x="-10" y="-1" rx="5" ry="5" width="142" height="200" />
+      <rect x="0" y="251" rx="2" ry="2" width="160" height="18" />
+      <rect x="0" y="282" rx="2" ry="2" width="160" height="10" />
+      <rect x="0" y="10" rx="5" ry="5" width="160" height="224" />
     </ContentLoader>
   );
 }
