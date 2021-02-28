@@ -17,12 +17,12 @@ export default class RecentRelease extends Job {
 
   run() {
     const store = global.store;
-    providers.getTorrentProvider()
-      .recentReleases(1)
-      .then(result => {
+
+    providers.getTorrentProvider().recentReleases()
+      .then(values => {
         store.dispatch({
           type: StateActions.UPDATE_RECENT_RELEASES,
-          payload: result
+          payload: values
         })
       })
   }

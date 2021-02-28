@@ -142,6 +142,8 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
+app.disableHardwareAcceleration();
+
 /**
  * Add event listeners...
  */

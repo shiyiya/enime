@@ -24,7 +24,7 @@ export default class Nyaa extends TorrentProvider {
 
   recentReleases(page) {
     return new Promise((resolve, reject) => {
-      this.readXML(BASE_URL + page)
+      this.readXML(BASE_URL)
         .then(xml => this.extractInfoFromXML(xml))
         .then(result => resolve(result))
         .catch(error => reject(error))
