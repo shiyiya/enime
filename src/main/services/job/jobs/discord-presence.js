@@ -48,9 +48,9 @@ export default class DiscordPresence extends Job {
         let activity = {
           details: state === 1 ? "Watching Anime" : "Home",
           state: statusText,
-          largeImageKey: 'ganyu',
+          largeImageKey: 'elaina',
           largeImageText: LARGE_TEXT,
-          smallImageKey: state === 1 ? (data.player.paused ? 'pause' : 'play') : 'ganyu',
+          ...(state === 1 && { smallImageKey: data.player.paused ? 'pause' : 'play' } ),
           smallImageText: state === 1 ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
           instance: false,
         };
@@ -71,9 +71,8 @@ export default class DiscordPresence extends Job {
       client.setActivity({
         state: statusToState[0],
         startTimestamp,
-        largeImageKey: 'ganyu',
+        largeImageKey: 'elaina',
         largeImageText: LARGE_TEXT,
-        smallImageKey: 'ganyu',
         smallImageText: SMALL_TEXT,
         instance: false,
       })

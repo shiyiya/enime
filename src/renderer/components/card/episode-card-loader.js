@@ -8,8 +8,8 @@ export default function EpisodeCardLoader(props) {
       width={160}
       height={303}
       viewBox="0 0 160 303"
-      backgroundColor="#f3f3f3"
-      foregroundColor="#000000"
+      backgroundColor="#2e2e2e"
+      foregroundColor="#545454"
     >
       <rect x="0" y="251" rx="2" ry="2" width="160" height="18" />
       <rect x="0" y="282" rx="2" ry="2" width="160" height="10" />
