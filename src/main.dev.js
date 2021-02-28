@@ -51,8 +51,6 @@ const installExtensions = async () => {
       allowFileAccess: true
     }
   })
-    .then(console.log)
-    .catch(console.log);
 };
 
 // @ts-ignore
@@ -89,9 +87,16 @@ app.commandLine.appendSwitch(
   getPluginEntry(pluginDir)
 );
 
-const getAssetPath = paths => {
-  return path.join(RESOURCES_PATH, ...paths);
-};
+const getAppIcon = () => {
+  switch (process.platform) {
+    case 'win32':
+      return path.join(RESOURCES_PATH, 'icon.ico');
+    case 'darwin':
+      return path.join(RESOURCES_PATH, 'icon.icns');
+    default:
+      return path.join(RESOURCES_PATH, 'icon.png');
+  }
+}
 
 const createWindow = async () => {
   if (development) await installExtensions();
@@ -101,7 +106,7 @@ const createWindow = async () => {
     useContentSize: process.platform !== "linux",
     title: "Enime",
     show: false,
-    icon: getAssetPath('icon.png'),
+    icon: getAppIcon(),
     webPreferences: {
       nodeIntegration: true,
       plugins: true,
