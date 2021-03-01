@@ -122,9 +122,8 @@ export default function WatchEpisode(props) {
               })
 
               setPrevPlayerData({
-                paused: updatedData.paused,
-                duration: updatedData.duration,
-                position: updatedData.position
+                ...prevPlayerData,
+                ...updatedData
               })
             }
           }

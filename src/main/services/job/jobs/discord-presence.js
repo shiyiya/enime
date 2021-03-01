@@ -50,7 +50,7 @@ export default class DiscordPresence extends Job {
           state: statusText,
           largeImageKey: 'elaina',
           largeImageText: LARGE_TEXT,
-          ...(state === 1 && { smallImageKey: data.player.paused ? 'pause' : 'play' } ),
+          ...(state === 1 && { smallImageKey: !data.player.paused ? 'pause' : 'play' } ),
           smallImageText: state === 1 ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
           instance: false,
         };
