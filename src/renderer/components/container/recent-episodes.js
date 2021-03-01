@@ -16,13 +16,11 @@ export default function RecentEpisodes(props) {
 
   const store = useStore();
 
-  let currentRecent;
-
   useEffect(() => refreshRecent(), []);
 
   const refreshRecent = () => {
-    let previousRecent = currentRecent;
-    currentRecent = store.getState()['recent-releases'];
+    let previousRecent = recent;
+    let currentRecent = store.getState()['recent-releases'];
 
     if (!_.isEqual(previousRecent, currentRecent)) {
       const values = Object.values(currentRecent);

@@ -29,8 +29,7 @@ let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
   (async () => {
-    const sourceMapSupport = await import('source-map-support');
-    sourceMapSupport.install()
+    (await import('source-map-support')).install();
   })()
 }
 
@@ -146,8 +145,6 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 };
-
-app.disableHardwareAcceleration();
 
 /**
  * Add event listeners...
