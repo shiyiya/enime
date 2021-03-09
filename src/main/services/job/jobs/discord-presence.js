@@ -25,7 +25,7 @@ export default class DiscordPresence extends Job {
 
     let statusToState = [
       "Idle",
-      "Watching"
+      "Watching Anime"
     ]
 
     const store = global.store;
@@ -38,7 +38,7 @@ export default class DiscordPresence extends Job {
       if (!_.isEqual(prevPresenceData, data)) {
         let statusText = statusToState[state];
         switch (state) {
-          case 1:
+          case PresenceState.WATCHING_ANIME:
             statusText = `${data.player.anime.title} Episode ${data.player.anime.episode}`;
             break;
           default:
@@ -46,17 +46,19 @@ export default class DiscordPresence extends Job {
         }
 
         let activity = {
-          details: state === 1 ? "Watching Anime" : "Home",
+          details: statusToState[state],
           state: statusText,
           largeImageKey: 'elaina',
           largeImageText: LARGE_TEXT,
-          ...(state === 1 && { smallImageKey: !data.player.paused ? 'pause' : 'play' } ),
-          smallImageText: state === 1 ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
+          ...(state === PresenceState.WATCHING_ANIME && { smallImageKey: !data.player.paused ? 'pause' : 'play' } ),
+          smallImageText: state === PresenceState.WATCHING_ANIME ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
           instance: false,
         };
 
-        if (state === 1 && data.startTimestamp) activity.startTimestamp = data.startTimestamp;
-        if (state === 1 && data.endTimestamp) activity.endTimestamp = data.endTimestamp;
+        if (state === PresenceState.WATCHING_ANIME) {
+          if (data.startTimestamp) activity.startTimestamp = data.startTimestamp;
+          if (data.endTimestamp) activity.endTimestamp = data.endTimestamp;
+        }
 
         client.setActivity(activity)
 
@@ -69,7 +71,7 @@ export default class DiscordPresence extends Job {
     client.on('ready', () => {
       let startTimestamp = new Date();
       client.setActivity({
-        state: statusToState[0],
+        state: statusToState[PresenceState.IDLE],
         startTimestamp,
         largeImageKey: 'elaina',
         largeImageText: LARGE_TEXT,
@@ -82,4 +84,9 @@ export default class DiscordPresence extends Job {
       clientId: CLIENT_ID
     });
   }
+}
+
+class PresenceState {
+  static IDLE = 0;
+  static WATCHING_ANIME = 1;
 }

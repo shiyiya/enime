@@ -64,11 +64,12 @@ export default function WatchEpisode(props) {
     }
   }, []);
 
-  const [prevPlayerData, setPrevPlayerData] = useState({
+  const [playerData, setPlayerData] = useState({
     duration: 0,
     position: 0,
     remaining: 0,
-    paused: false
+    paused: false,
+    loaded: false
   });
 
   const player = React.createRef();
@@ -76,6 +77,11 @@ export default function WatchEpisode(props) {
   return (
     <div>
       <MpvPlayer ref={player} url={"http://localhost:8888/" + torrent} handlePropertyChange={(name, value) => {
+        if (name === 'duration' && !playerData.loaded) setPlayerData({
+          ...playerData,
+          loaded: true
+        });
+
         if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining') {
           const now = Date.now();
 
@@ -92,13 +98,13 @@ export default function WatchEpisode(props) {
 
           if (name === 'pause') {
             if (value) activity.player.paused = value;
-            if (value !== prevPlayerData.paused) {
-              setPrevPlayerData({
-                ...prevPlayerData,
+            if (value !== playerData.paused) {
+              setPlayerData({
+                ...playerData,
                 paused: value
               });
-              activity.startTimestamp = value ? null : now + Math.ceil(prevPlayerData.position) * 1000;
-              activity.endTimestamp = value ? null : now + Math.ceil(prevPlayerData.remaining) * 1000;
+              activity.startTimestamp = value ? null : now + Math.ceil(playerData.position) * 1000;
+              activity.endTimestamp = value ? null : now + Math.ceil(playerData.remaining) * 1000;
             }
 
             dispatch({
@@ -107,9 +113,9 @@ export default function WatchEpisode(props) {
             })
           }
 
-          if (!prevPlayerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining') {
-            if ((name === 'duration' && Math.abs(value - prevPlayerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - prevPlayerData.position) > 1) || (name === 'time-remaining' && Math.abs(value - prevPlayerData.remaining) > 1)) {
-              let updatedData = prevPlayerData;
+          if (!playerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining') {
+            if ((name === 'duration' && Math.abs(value - playerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - playerData.position) > 1) || (name === 'time-remaining' && Math.abs(value - playerData.remaining) > 1)) {
+              let updatedData = playerData;
 
               if (name === 'duration') updatedData.duration = value;
               if (name === 'time-pos') updatedData.position = value;
@@ -123,8 +129,8 @@ export default function WatchEpisode(props) {
                 payload: activity
               })
 
-              setPrevPlayerData({
-                ...prevPlayerData,
+              setPlayerData({
+                ...playerData,
                 ...updatedData
               })
             }
