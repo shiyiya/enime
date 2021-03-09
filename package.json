@@ -242,7 +242,8 @@
     "redux": "^4.0.5",
     "regenerator-runtime": "^0.13.5",
     "request-promise": "^4.2.6",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "v8-compile-cache": "^2.2.0"
   },
   "devEngines": {
     "node": ">=10.x",

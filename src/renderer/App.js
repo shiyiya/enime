@@ -3,6 +3,7 @@ import {
   HashRouter,
   Route
 } from "react-router-dom";
+import 'v8-compile-cache';
 
 import './App.global.sass';
 

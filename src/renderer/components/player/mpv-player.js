@@ -12,7 +12,8 @@ export default class MpvPlayer extends React.PureComponent {
       duration: 0,
       fullscreen: false,
       mute: false,
-      volume: 0
+      volume: 0,
+      loaded: false
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMPVReady = this.handleMPVReady.bind(this);
@@ -52,7 +53,7 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'percent-pos', 'media-title', 'demuxer-cache-duration', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'media-title', 'demuxer-cache-duration', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -60,6 +61,11 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handlePropertyChange(name, value) {
+    if (name === 'duration' && !this.state.loaded) this.setState({
+      ...this.state,
+      loaded: true
+    });
+
     if (name === 'time-pos' && this.seeking) {
     } else if (name === 'eof-reached' && value) {
       this.mpv.property('time-pos', 0);
@@ -120,7 +126,7 @@ export default class MpvPlayer extends React.PureComponent {
     this.down = false;
   }
 
-  // Moves the player position 
+  // Moves the player position
   playmove (time) { this.setState({ 'time-pos': time }); this.mpv.property('time-pos', time); }
 
   zero(val) { return val < 10 ? "0" + val : val; }

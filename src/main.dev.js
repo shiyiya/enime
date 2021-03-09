@@ -14,6 +14,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import 'v8-compile-cache';
 
 export default class AppUpdater {
   constructor() {
@@ -109,7 +110,8 @@ const createWindow = async () => {
     webPreferences: {
       nodeIntegration: true,
       plugins: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      nodeIntegrationInSubFrames: true
     },
   });
 

@@ -67,6 +67,7 @@ export default function WatchEpisode(props) {
   const [prevPlayerData, setPrevPlayerData] = useState({
     duration: 0,
     position: 0,
+    remaining: 0,
     paused: false
   });
 
@@ -75,7 +76,7 @@ export default function WatchEpisode(props) {
   return (
     <div>
       <MpvPlayer ref={player} url={"http://localhost:8888/" + torrent} handlePropertyChange={(name, value) => {
-        if (name === 'pause' || name === 'duration' || name === 'time-pos') {
+        if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining') {
           const now = Date.now();
 
           let activity = {
@@ -96,8 +97,8 @@ export default function WatchEpisode(props) {
                 ...prevPlayerData,
                 paused: value
               });
-              activity.startTimestamp = value ? null : now + prevPlayerData.position * 1000;
-              activity.endTimestamp = value ? null : now + (prevPlayerData.duration - prevPlayerData.position) * 1000;
+              activity.startTimestamp = value ? null : now + Math.ceil(prevPlayerData.position) * 1000;
+              activity.endTimestamp = value ? null : now + Math.ceil(prevPlayerData.remaining) * 1000;
             }
 
             dispatch({
@@ -106,15 +107,16 @@ export default function WatchEpisode(props) {
             })
           }
 
-          if (!prevPlayerData.paused && (name === 'duration' || name === 'time-pos')) {
-            if ((name === 'duration' && Math.abs(value - prevPlayerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - prevPlayerData.position) > 1)) {
+          if (!prevPlayerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining') {
+            if ((name === 'duration' && Math.abs(value - prevPlayerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - prevPlayerData.position) > 1) || (name === 'time-remaining' && Math.abs(value - prevPlayerData.remaining) > 1)) {
               let updatedData = prevPlayerData;
 
               if (name === 'duration') updatedData.duration = value;
               if (name === 'time-pos') updatedData.position = value;
+              if (name === 'time-remaining') updatedData.remaining = value;
 
-              activity.startTimestamp = now + updatedData.position * 1000;
-              activity.endTimestamp = now + (updatedData.duration - updatedData.position) * 1000;
+              activity.startTimestamp = now + Math.ceil(updatedData.position) * 1000;
+              activity.endTimestamp = now + Math.ceil(updatedData.remaining) * 1000;
 
               dispatch({
                 type: StateActions.UPDATE_CURRENT_PRESENCE,
