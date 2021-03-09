@@ -12,8 +12,9 @@
   border: none
 
   &-playstate
-    $size: 10px
+    $size: 14px
 
+    padding-right: 10px
     width: $size
     height: $size
     position: relative
@@ -27,7 +28,7 @@
       width: 0
       border-style: solid
       border-color: transparent
-      border-left-color: #fff
+      border-left-color: #ffffffaa
       transition: .1s
 
     &:before
@@ -58,6 +59,7 @@
 .volume
   display: flex
   flex-direction: row
+  align-items: center
 
   &-control
     background: transparent
@@ -99,6 +101,11 @@
     cursor: pointer
     /*text-align: center
 
+    &-left
+      display: flex
+      flex-direction: row
+      align-items: center
+
     /*&:hover
       opacity: 1
 
@@ -121,7 +128,7 @@
       &-buffer
         background: #333
         height: $height
-        border-radius: $rad
+        border-radius: 0px $rad $rad 0px
         position: relative
 
       /*&-before, &-ball, &-buffer

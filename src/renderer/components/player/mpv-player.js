@@ -29,6 +29,7 @@ export default class MpvPlayer extends React.PureComponent {
     this.url = props.url;
     this.buffering = false;
     this.seeking = false;
+    this.pw = 0;
   }
 
   componentDidMount() {
@@ -97,31 +98,30 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handleSeekMouseDown(e) {
-    console.log('seek but down')
+    // console.log('seek but down');
     this.down = true;
-    this.handleSeekMove(e);
-    this.handleSeek(e);
-    this.down = true;
+    // console.log(this.handleSeekMove(e));
+    this.slidemx(e);
+    let { currentTarget: target } = e; target = target.lastChild;
+    // console.log(target.clientWidth , target.parentNode.clientWidth, this.state.duration);
+    this.playmove((target.clientWidth / target.parentNode.clientWidth) * this.state.duration);
   }
 
-  handleSeekMove(e) {
-    if(!this.down) return;
-    let { target } = e;
-    if(target.className === "player-control-slider") target = target.lastChild;
-    target.style.width = e.nativeEvent.offsetX + "px";
-  }
+  handleSeekMove(e) { /* // console.log("move"); */ if(!this.down) return; return this.slidemx(e); }
+
+  slidemx(e) { let { currentTarget: target } = e; target = target.lastChild; return this.pw = target.style.width = e.nativeEvent.offsetX + "px"; }
 
   handleSeek(e) {
-    console.log('seek')
-    let { target } = e;
-    if(target.className === "player-control-slider") target = target.lastChild;
-    const timePos = (target.clientWidth / target.parentNode.clientWidth) * this.state.duration;
-    console.log(timePos)
-    this.setState({ 'time-pos': timePos });
-    this.mpv.property('time-pos', timePos);
+    // console.log('seek');
     //this.handleSeekMove(e);
+    let { currentTarget: target } = e; target = target.lastChild;
+    // console.log(target.clientWidth , target.parentNode.clientWidth);
+    this.playmove((target.clientWidth / target.parentNode.clientWidth) * this.state.duration);
     this.down = false;
   }
+
+  // Moves the player position 
+  playmove (time) { this.setState({ 'time-pos': time }); this.mpv.property('time-pos', time); }
 
   zero(val) { return val < 10 ? "0" + val : val; }
 
@@ -133,7 +133,7 @@ export default class MpvPlayer extends React.PureComponent {
         onMouseDown: this.togglePause,
       })
     );
-    let width = this.state.duration ? (this.state["time-pos"] * 100 / this.state.duration).toFixed(1) + "%" : "0px";
+    let width = this.state.duration ? this.state["time-pos"] * 100 / this.state.duration : 0;
     return (
       <div className="episode">
         <div className="episode-page">
@@ -147,13 +147,13 @@ export default class MpvPlayer extends React.PureComponent {
             onMouseMove={this.handleSeekMove}
             onMouseUp={this.handleSeek}
             >
-            <div className="player-control-slider-buffer" style={{ left: width, width: (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}/>
-            <div className="player-control-slider-before" style={this.down ? {} : { width: width }}><div className="player-control-slider-ball"/></div>
+            <div className="player-control-slider-buffer" style={{ width: width + (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}/>
+            <div className="player-control-slider-before" style={this.down ? { width: this.pw } : { width: width + "%" }}><div className="player-control-slider-ball"/></div>
           </div>
           <div className="bottom">
             <div className="player-control-left">
-            <div className={`control-playstate${!this.state.pause ? " paused" : ""}`} onClick={this.togglePause}/>
-            <div className="player-info-time">{Math.floor(this.state["time-pos"] / 60)}:{this.zero(Math.round(this.state["time-pos"] % 60))} / {~~(this.state.duration / 60)}:{this.zero(Math.round(this.state.duration % 60))}</div>
+              <div className={`control-playstate${!this.state.pause ? " paused" : ""}`} onClick={this.togglePause}/>
+              <div className="player-info-time">{Math.floor(this.state["time-pos"] / 60)}:{this.zero(Math.round(this.state["time-pos"] % 60))} / {~~(this.state.duration / 60)}:{this.zero(Math.round(this.state.duration % 60))}</div>
             </div>
             <div className="volume">
               <button className="volume-control" onClick={this.toggleMute}>
