@@ -1,10 +1,9 @@
 <p align="center">
-  <img src="https://github.com/Enime-Project/enime/blob/master/images/icon/icon-medium.png?raw=true" />
+  <img src="https://github.com/Enime-Project/enime/blob/master/images/icon/icon-medium.png?raw=true" />  
 </p>
-
-# Enime
-
-## _Electron Anime Desktop App_
+ 
+<h1 align="center">Enime</h1>
+<h2 align="center"><i>Anime on Desktop</i></h2>
 
 [![Love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://github.com/Enime-Project/)
 
@@ -53,4 +52,4 @@ _Note: The current screenshots are from the (very) initial version of the projec
 
 Enime is licensed under [MIT](https://github.com/Enime-Project/enime/master/LICENSE)
 
-[![Stargazers over time](https://starchart.cc/Enime-Project/enime.svg)](https://starchart.cc/Enime-Project/enime)
+[![Stargazers over time](https://starchart.cc/Enime-Project/enime.svg?version=flush-cache)](https://starchart.cc/Enime-Project/enime)
