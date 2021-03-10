@@ -68,8 +68,7 @@ export default function WatchEpisode(props) {
     duration: 0,
     position: 0,
     remaining: 0,
-    paused: false,
-    loaded: false
+    paused: false
   });
 
   const player = React.createRef();
@@ -77,11 +76,6 @@ export default function WatchEpisode(props) {
   return (
     <div>
       <MpvPlayer ref={player} url={"http://localhost:8888/" + torrent} handlePropertyChange={(name, value) => {
-        if (name === 'duration' && !playerData.loaded) setPlayerData({
-          ...playerData,
-          loaded: true
-        });
-
         if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining') {
           const now = Date.now();
 

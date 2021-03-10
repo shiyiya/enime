@@ -13,7 +13,6 @@ export default class MpvPlayer extends React.PureComponent {
       fullscreen: false,
       mute: false,
       volume: 0,
-      loaded: false
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMPVReady = this.handleMPVReady.bind(this);
@@ -28,7 +27,6 @@ export default class MpvPlayer extends React.PureComponent {
     this.handlePropertyChangeExternal = this.props.handlePropertyChange;
     this.mpv = new MpvJs(this.handleMPVReady, this.handlePropertyChange);
     this.url = props.url;
-    this.buffering = false;
     this.seeking = false;
     this.pw = 0;
   }
@@ -53,7 +51,7 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'media-title', 'demuxer-cache-duration', 'paused-for-cache', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -61,16 +59,10 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handlePropertyChange(name, value) {
-    if (name === 'duration' && !this.state.loaded) this.setState({
-      ...this.state,
-      loaded: true
-    });
-
     if (name === 'time-pos' && this.seeking) {
     } else if (name === 'eof-reached' && value) {
       this.mpv.property('time-pos', 0);
     } else {
-      if (name === 'demuxer-cache-idle') console.log('buffering', this.bufferring = value);
       this.setState({ [name]: value });
       this.handlePropertyChangeExternal(name, value);
     }
