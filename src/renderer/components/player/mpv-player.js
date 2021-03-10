@@ -53,7 +53,7 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'media-title', 'demuxer-cache-duration', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'media-title', 'demuxer-cache-duration', 'paused-for-cache', 'demuxer-cache-idle', 'volume', 'mute', 'name'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -153,7 +153,7 @@ export default class MpvPlayer extends React.PureComponent {
             onMouseMove={this.handleSeekMove}
             onMouseUp={this.handleSeek}
             >
-            <div className="player-control-slider-buffer" style={{ width: width + (this.state["demuxer-cache-duration"] - this.state["time-pos"]) * 100 / this.state.duration + "%" }}/>
+            <div className="player-control-slider-buffer" style={{ width: width + (this.state["demuxer-cache-duration"]) * 100 / this.state.duration + "%" }}/>
             <div className="player-control-slider-before" style={this.down ? { width: this.pw } : { width: width + "%" }}><div className="player-control-slider-ball"/></div>
           </div>
           <div className="bottom">

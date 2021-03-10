@@ -111,7 +111,9 @@ const createWindow = async () => {
       nodeIntegration: true,
       plugins: true,
       enableRemoteModule: true,
-      nodeIntegrationInSubFrames: true
+      nodeIntegrationInSubFrames: true,
+      contextIsolation: false,
+      worldSafeExecuteJavaScript: false
     },
   });
 

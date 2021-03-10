@@ -10,5 +10,5 @@ const store = stateStorage.configureStore(null, 'renderer');
 
 render(
   <Provider store={store}>
-    <App />
+    <App/>
   </Provider>, document.getElementById('root'));

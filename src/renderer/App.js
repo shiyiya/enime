@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   HashRouter,
-  Route
+  Route,
+  Switch
 } from "react-router-dom";
 import 'v8-compile-cache';
 
@@ -17,10 +18,10 @@ library.add(faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff
 export default function App() {
   return (
     <HashRouter>
-      <div>
+      <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/watch-episode" component={WatchEpisode} />
-      </div>
+        <Route path="/watch-episode" exact component={WatchEpisode} />
+      </Switch>
     </HashRouter>
   );
 }
