@@ -48,6 +48,17 @@ _Note: The current screenshots are from the (very) initial version of the projec
 4. Push to your forked repository's feature branch: `git push origin feature`
 5. Create a pull request at [here](https://github.com/Enime-Project/enime/pulls)
 
+## Tech Used
+
+- [electron](https://www.electronjs.org/) - Framework to create desktop app via JS
+- [React](https://reactjs.org/) - Framework to write pages in JSX and includes other nice features
+- [Redux](https://redux.js.org/) - Cross-process storage and event emitter
+- [electron-redux](https://github.com/klarna/electron-redux) - Redux adapter for electron
+- [torrent-stream](https://github.com/mafintosh/torrent-stream) - Torrent streaming service to play anime videos on fly, created an enime exclusive version to fix crucial bugs since the author remains inactive
+- [read-torrent](https://github.com/mafintosh/read-torrent) - Read the torrent metadata and file data
+- [mpv.js](https://github.com/Kagami/mpv.js) - Video player utility that has capability to display mkv subtitles on fly, created an enime exclusive binary version to fix crucial bugs
+- [lodash](https://lodash.com/) - Nice utility that saved my time
+
 ## License
 
 Enime is licensed under [MIT](https://github.com/Enime-Project/enime/master/LICENSE)
