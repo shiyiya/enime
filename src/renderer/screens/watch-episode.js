@@ -17,6 +17,7 @@ export default function WatchEpisode(props) {
   }
 
   const [currentProp, setCurrentProp] = useState({});
+  let index = props.location.state.index || 0;
   let torrent = props.location.state.torrent;
   let anime = props.location.state.anime;
   let episode = props.location.state.episode;
@@ -71,11 +72,18 @@ export default function WatchEpisode(props) {
     paused: false
   });
 
+  const [fetchedMetadata, setFetchedMetadata] = useState(false);
+
+  fetch('http://localhost:8888/metadata/' + torrent)
+    .then(response => {
+      setFetchedMetadata(true);
+    })
+
   const player = React.createRef();
 
   return (
     <div>
-      <MpvPlayer ref={player} url={"http://localhost:8888/" + torrent} handlePropertyChange={(name, value) => {
+      {fetchedMetadata && <MpvPlayer ref={player} url={"http://localhost:8888/read/" + index + "/" + torrent} handlePropertyChange={(name, value) => {
         if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining') {
           const now = Date.now();
 
@@ -130,7 +138,7 @@ export default function WatchEpisode(props) {
             }
           }
         }
-      }}/>
+      }}/>}
       <button className={"back"} onClick={() => {
         history.push({
           pathname: "/"
