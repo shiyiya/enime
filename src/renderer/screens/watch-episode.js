@@ -3,7 +3,7 @@ import MpvPlayer from "../components/player/mpv-player";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useStore} from "react-redux";
 import StateActions from "../../shared/storage/action/state-actions";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export default function WatchEpisode(props) {
   const history = useHistory();
@@ -79,7 +79,7 @@ export default function WatchEpisode(props) {
       setFetchedMetadata(true);
     })
 
-  const player = React.createRef();
+  const player = useRef();
 
   return (
     <div>
@@ -140,6 +140,7 @@ export default function WatchEpisode(props) {
         }
       }}/>}
       <button className={"back"} onClick={() => {
+        player.current.destroy();
         history.push({
           pathname: "/"
         })

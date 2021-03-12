@@ -40,6 +40,10 @@ export default class MpvPlayer extends React.PureComponent {
     document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 
+  destroy() {
+    this.mpv.destroy();
+  }
+
   handleKeyDown(e) {
     e.preventDefault();
     if (e.key === 'f' || (e.key === 'Escape' && this.state.fullscreen)) {
