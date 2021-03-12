@@ -140,7 +140,7 @@ export default function WatchEpisode(props) {
         }
       }}/>}
       <button className={"back"} onClick={() => {
-        player.current.destroy();
+        if (player.current) player.current.destroy();
         history.push({
           pathname: "/"
         })

@@ -56,11 +56,13 @@ export default function RecentEpisodes(props) {
 
         <div className={"episode-releases"} ref={episodeCards}>
           {updated && recent.map(element => {
+            let index = recent.indexOf(element);
+
             element = element[1][0];
 
             return (
               <EpisodeCard
-                key={element.name}
+                key={index}
                 anime_name={element.name}
                 season={element.season}
                 episode_number={element.episode}

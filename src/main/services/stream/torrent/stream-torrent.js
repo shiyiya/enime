@@ -73,8 +73,6 @@ export function start() {
         })
 
         engine.ready(() => {
-          console.log('ready')
-
           const file = engine.files[index];
 
           metadata.files[index] = {

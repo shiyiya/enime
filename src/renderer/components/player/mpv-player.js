@@ -13,6 +13,7 @@ export default class MpvPlayer extends React.PureComponent {
       fullscreen: false,
       mute: false,
       volume: 0,
+      tracks: {}
     };
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMPVReady = this.handleMPVReady.bind(this);
@@ -29,6 +30,8 @@ export default class MpvPlayer extends React.PureComponent {
     this.url = props.url;
     this.seeking = false;
     this.pw = 0;
+
+    this.indexToIdMap = {};
   }
 
   componentDidMount() {
@@ -55,7 +58,7 @@ export default class MpvPlayer extends React.PureComponent {
 
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
-    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute', 'track-list'].forEach(observe);
+    ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute', 'track-list/count'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
@@ -63,13 +66,46 @@ export default class MpvPlayer extends React.PureComponent {
   }
 
   handlePropertyChange(name, value) {
-    if (name === 'time-pos' && this.seeking) {
+    if (name === 'track-list/count') {
+      for (let i = 0; i <= value; ++i) {
+        this.mpv.observe(`track-list/${i}/id`)
+        this.mpv.observe(`track-list/${i}/type`)
+        this.mpv.observe(`track-list/${i}/lang`)
+        this.mpv.observe(`track-list/${i}/default`)
+        this.mpv.observe(`track-list/${i}/type`)
+        this.mpv.observe(`track-list/${i}/src`)
+        this.mpv.observe(`track-list/${i}/title`)
+        this.mpv.observe(`track-list/${i}/lang`)
+        this.mpv.observe(`track-list/${i}/selected`)
+      }
+    } else if (/track-list\/\d+/.test(name)) {
+      const parts = name.split('/'), index = parts[1], type = parts[2];
+
+      if (type === 'id') this.indexToIdMap[index] = value;
+
+      this.setState({
+        ...this.state,
+        tracks: {
+          ...this.state.tracks,
+          [this.indexToIdMap[index]]: {
+            ...this.state.tracks[this.indexToIdMap[index]],
+            [type]: value
+          }
+        }
+      })
+    } else if (name === 'time-pos' && this.seeking) {
     } else if (name === 'eof-reached' && value) {
       this.mpv.property('time-pos', 0);
     } else {
       this.setState({ [name]: value });
       this.handlePropertyChangeExternal(name, value);
     }
+  }
+
+  selectTrack(index) {
+    if (index > Object.keys(this.state.tracks).length - 1) return;
+
+    this.mpv.property('sid', index);
   }
 
   toggleFullscreen() {
