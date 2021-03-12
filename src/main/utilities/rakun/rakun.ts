@@ -38,8 +38,7 @@ import {loose, parser_data, parser_options, TorrentInfos} from "./ambiant";
         //Apply removals
           for (const remove of [...removes, ...this.regexs.cleaners.global, ...(parenthesis ? this.regexs.cleaners.special.empty.parenthesis : [])])
             value = value.replace(remove, " ")
-
-        return value.trim()
+       return value.trim()
       }
 
     /**

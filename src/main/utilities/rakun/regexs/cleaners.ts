@@ -28,7 +28,7 @@
     //Miscelleanous cleaners
       misc:[
         /\bNHKG\b/,
-        /\b(?<size>\d+GB)\b/,
+        /\b(?<size>\d+GB)\b/
       ],
 
     //Special cleaners

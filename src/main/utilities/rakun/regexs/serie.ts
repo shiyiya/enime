@@ -80,7 +80,7 @@
             /\b[\(\[)]?[Ss]aison (?<season>\d+)[\)\]]?\b/,
             /[-._ ]S(?<season>\d+)(?=E\d)/,
             /\bS(?<season>\d+)\b/,
-            /\b(?<season>\d+)[-._ ]/
+            /\b(?<season>\d+)[-._ ]+(?=\d)/
           ],
           keep:[],
         },
