@@ -185,7 +185,7 @@ export default class MpvPlayer extends React.PureComponent {
             onMouseMove={this.handleSeekMove}
             onMouseUp={this.handleSeek}
             >
-            <div className="player-control-slider-buffer" style={{ width: width + (this.state["demuxer-cache-duration"]) * 100 / this.state.duration + "%" }}/>
+            <div className="player-control-slider-buffer" style={{ width: Math.min(95, width + (this.state["demuxer-cache-duration"]) * 100 / this.state.duration) + "%" }}/>
             <div className="player-control-slider-before" style={this.down ? { width: this.pw } : { width: width + "%" }}><div className="player-control-slider-ball"/></div>
           </div>
           <div className="bottom">

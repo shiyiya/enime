@@ -7,7 +7,7 @@ const CONFIG_NAME = "config.json";
 
 const DEFAULT_CONFIGURATION = {
   providers: {
-    torrent: "nyaa.si",
+    torrent: "animetosho",
     information: "notify.moe"
   }
 }
