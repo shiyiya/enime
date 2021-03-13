@@ -39,5 +39,6 @@ function ensureDirectoryExistence(filePath) {
 export default {
   getPath,
   getFile,
-  writeFile
+  writeFile,
+  exists
 }

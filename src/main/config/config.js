@@ -14,7 +14,7 @@ const DEFAULT_CONFIGURATION = {
 export default {
   get() {
     if (!configuration) {
-      if (!util.file.existsSync(CONFIG_NAME)) {
+      if (!util.file.exists(CONFIG_NAME)) {
         util.file.writeFile(DEFAULT_CONFIGURATION, CONFIG_NAME);
       }
 
