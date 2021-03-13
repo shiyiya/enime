@@ -10,6 +10,10 @@ function getPath (...paths) {
   )
 }
 
+function exists(...paths) {
+  return existsSync(getPath(...paths));
+}
+
 function getFile (...paths) {
   const path = getPath(...paths)
 

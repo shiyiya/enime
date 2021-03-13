@@ -1,7 +1,6 @@
 import util from "../utilities";
-import fs from "fs";
 
-let configuration = null;
+let configuration;
 
 const CONFIG_NAME = "config.json";
 
@@ -13,9 +12,9 @@ const DEFAULT_CONFIGURATION = {
 }
 
 export default {
-  getMainConfiguration() {
+  get() {
     if (!configuration) {
-      if (!fs.existsSync(CONFIG_NAME)) {
+      if (!util.file.existsSync(CONFIG_NAME)) {
         util.file.writeFile(DEFAULT_CONFIGURATION, CONFIG_NAME);
       }
 

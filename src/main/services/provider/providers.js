@@ -3,12 +3,12 @@ import config from "../../config/config";
 import NotifyMoe from "./information/impl/notify-moe";
 import Animetosho from "./torrent/impl/animetosho";
 
-let torrentProvider = null, informationProvider = null;
+let torrentProvider, informationProvider;
 
 export default {
   getTorrentProvider() {
     if (!torrentProvider) {
-      switch (config.getMainConfiguration().providers.torrent.toLowerCase()) {
+      switch (config.get().providers.torrent.toLowerCase()) {
         case "nyaa.si":
           torrentProvider = new Nyaa();
           break;
@@ -26,7 +26,7 @@ export default {
 
   getInformationProvider() {
     if (!informationProvider) {
-      switch (config.getMainConfiguration().providers.information.toLowerCase()) {
+      switch (config.get().providers.information.toLowerCase()) {
         case "notify.moe":
           informationProvider = new NotifyMoe();
           break;
