@@ -3,6 +3,20 @@ import { MpvJs } from 'mpv.js-vanilla';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
+const INITIAL_PROPERTY = {
+  hwdec:  'vaapi-copy',
+  scale: 'bilinear',
+  cscale: 'bilinear',
+  dscale: 'bilinear',
+  'scale-antiring': 0,
+  'cscale-antiring': 0,
+  'dither-depth': 'no',
+  'correct-downscaling': 'no',
+  'sigmoid-upscaling': 'no',
+  deband: 'no',
+  profile: 'low-latency',
+}
+
 export default class MpvPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -59,9 +73,11 @@ export default class MpvPlayer extends React.PureComponent {
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
     ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute', 'track-list/count'].forEach(observe);
-    this.mpv.property('hwdec', 'vaapi-copy');
+    for (let property in INITIAL_PROPERTY) {
+      this.mpv.property(property, INITIAL_PROPERTY[property]);
+    }
+
     this.mpv.property('pause', this.state.pause)
-    this.mpv.property('profile', 'low-latency');
     this.mpv.command('loadfile', this.url);
   }
 
