@@ -69,7 +69,9 @@ export default class Nyaa extends TorrentProvider {
         episode: information.episode,
         season: information.season,
         link: torrent.link,
-        resolution: information.resolution.replaceAll("p", "")
+        resolution: information.resolution.replaceAll("p", ""),
+        seeders: torrent['nyaa:seeders'],
+        leechers: torrent['nyaa:leechers']
       });
 
       entries = entries.sort((a, b) => -(Number.parseInt(a.resolution) - Number.parseInt(b.resolution)));

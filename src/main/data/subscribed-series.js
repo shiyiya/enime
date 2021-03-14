@@ -51,10 +51,7 @@ export default {
         anilistId: anime.mappings.anilistId,
         malId: anime.mappings.malId
       },
-      status: {
-        watched: [],
-        watching: [],
-      },
+      episodes: [],
       created: Date.now()
     }
   }

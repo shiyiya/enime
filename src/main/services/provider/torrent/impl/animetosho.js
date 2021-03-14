@@ -10,8 +10,8 @@ const allowedSubs = [
   "HorribleSubs"
 ]
 
-const BASE_URL = "https://feed.animetosho.org/rss2?filter%5B0%5D%5Bt%5D=nyaa_class&filter%5B0%5D%5Bv%5D=trusted&page={page}";
-const SEARCH_URL = "https://feed.animetosho.org/rss2?&filter%5B0%5D%5Bt%5D=nyaa_class&filter%5B0%5D%5Bv%5D=trusted&q={query}&page={page}";
+const BASE_URL = "https://feed.animetosho.org/json?filter%5B0%5D%5Bt%5D=nyaa_class&filter%5B0%5D%5Bv%5D=trusted&page={page}";
+const SEARCH_URL = "https://feed.animetosho.org/json?&filter%5B0%5D%5Bt%5D=nyaa_class&filter%5B0%5D%5Bv%5D=trusted&q={query}&page={page}";
 
 export default class Animetosho extends TorrentProvider {
   constructor() {
@@ -24,8 +24,8 @@ export default class Animetosho extends TorrentProvider {
 
   recentReleases(page) {
     return new Promise((resolve, reject) => {
-      this.readXML(BASE_URL.replace("{page}", page || "1"))
-        .then(xml => this.extractInfoFromXML(xml))
+      request.get(BASE_URL.replace("{page}", page || "1"))
+        .then(json => this.extractInfoFromJSON(JSON.parse(json)))
         .then(result => resolve(result))
         .catch(error => reject(error))
     })
@@ -33,35 +33,18 @@ export default class Animetosho extends TorrentProvider {
 
   search(query, page) {
     return new Promise((resolve, reject) => {
-      this.readXML(SEARCH_URL.replaceAll("{query}", query).replaceAll("{page}", page))
-        .then(xml => this.extractInfoFromXML(xml))
+      request.get(SEARCH_URL.replaceAll("{query}", query).replaceAll("{page}", page))
+        .then(json => this.extractInfoFromJSON(JSON.parse(json)))
         .then(result => resolve(result))
         .catch(error => reject(error))
     })
   }
 
-  readXML(url) {
-    return new Promise((resolve, reject) => {
-      request.get(url)
-        .catch(error => reject(error))
-        .then(response => {
-          return xmlParser.parse(response, {
-            parseAttributeValue: true,
-            ignoreAttributes: false
-          });
-        })
-        .catch(error => reject(error))
-        .then(parsedXML => {
-          resolve(parsedXML);
-        })
-    })
-  }
-
-  extractInfoFromXML(parsedXML) {
+  extractInfoFromJSON(json) {
     let result = {};
 
-    for (let torrent of parsedXML.rss.channel.item) {
-      let information = util.rakun.parse(torrent.title);
+    for (let torrent of json) {
+      let information = util.rakun.parse(torrent.torrent_name);
       if (!allowedSubs.includes(information.subber)) continue;
 
       const key = information.name + "###" + information.season;
@@ -72,8 +55,10 @@ export default class Animetosho extends TorrentProvider {
         name: information.name,
         episode: information.episode,
         season: information.season,
-        link: torrent.enclosure[0]['@_url'],
-        resolution: information.resolution.replaceAll("p", "")
+        link: torrent.torrent_url,
+        resolution: information.resolution.replaceAll("p", ""),
+        seeders: torrent.seeders,
+        leechers: torrent.leechers
       });
 
       entries = entries.sort((a, b) => -(Number.parseInt(a.resolution) - Number.parseInt(b.resolution)));
@@ -81,6 +66,6 @@ export default class Animetosho extends TorrentProvider {
       result[key] = entries;
     }
 
-    return Object.entries(result);
+    return  Object.entries(result);
   }
 }
