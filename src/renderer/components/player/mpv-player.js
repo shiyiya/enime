@@ -59,7 +59,7 @@ export default class MpvPlayer extends React.PureComponent {
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
     ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute', 'track-list/count'].forEach(observe);
-    this.mpv.property('hwdec', 'auto');
+    this.mpv.property('hwdec', 'vaapi-copy');
     this.mpv.property('pause', this.state.pause)
     this.mpv.property('profile', 'low-latency');
     this.mpv.command('loadfile', this.url);
