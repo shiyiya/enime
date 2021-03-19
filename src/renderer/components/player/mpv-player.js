@@ -96,8 +96,6 @@ export default class MpvPlayer extends React.PureComponent {
     } else if (/track-list\/\d+/.test(name)) {
       const parts = name.split('/'), index = parts[1], type = parts[2];
 
-      console.log(index, type, value);
-
       let tracks = this.state.tracks;
 
       if (type === 'id') {
