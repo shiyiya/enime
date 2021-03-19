@@ -3,20 +3,6 @@ import { MpvJs } from 'mpv.js-vanilla';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff } from "@fortawesome/free-solid-svg-icons";
 
-const INITIAL_PROPERTY = {
-  hwdec:  'vaapi-copy',
-  scale: 'bilinear',
-  cscale: 'bilinear',
-  dscale: 'bilinear',
-  'scale-antiring': 0,
-  'cscale-antiring': 0,
-  'dither-depth': 'no',
-  'correct-downscaling': 'no',
-  'sigmoid-upscaling': 'no',
-  deband: 'no',
-  profile: 'low-latency',
-}
-
 export default class MpvPlayer extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -73,41 +59,77 @@ export default class MpvPlayer extends React.PureComponent {
   handleMPVReady(mpv) {
     const observe = mpv.observe.bind(mpv);
     ['pause', 'time-pos', 'duration', 'eof-reached', 'time-remaining', 'percent-pos', 'demuxer-cache-duration', 'volume', 'mute', 'track-list/count'].forEach(observe);
-    for (let property in INITIAL_PROPERTY) {
-      this.mpv.property(property, INITIAL_PROPERTY[property]);
+
+    const initialProperties = {
+      hwdec:  'auto',
+      scale: 'bilinear',
+      cscale: 'bilinear',
+      dscale: 'bilinear',
+      'scale-antiring': 0,
+      'cscale-antiring': 0,
+      'dither-depth': 'no',
+      'correct-downscaling': 'no',
+      'sigmoid-upscaling': 'no',
+      deband: 'no',
+      hwaccel: 'auto',
+      'blend-subtitles': 'yes',
+      'osd-bar': 'no',
+      ytdl: 'no',
+      profile: 'low-latency',
+      pause: this.state.pause
     }
 
-    this.mpv.property('pause', this.state.pause)
+    for (let property in initialProperties) {
+      this.mpv.property(property, initialProperties[property]);
+    }
+
     this.mpv.command('loadfile', this.url);
   }
 
   handlePropertyChange(name, value) {
     if (name === 'track-list/count') {
-      for (let i = 0; i <= value; ++i) {
-        this.mpv.observe(`track-list/${i}/id`)
-        this.mpv.observe(`track-list/${i}/type`)
-        this.mpv.observe(`track-list/${i}/lang`)
-        this.mpv.observe(`track-list/${i}/default`)
-        this.mpv.observe(`track-list/${i}/type`)
-        this.mpv.observe(`track-list/${i}/src`)
-        this.mpv.observe(`track-list/${i}/title`)
-        this.mpv.observe(`track-list/${i}/lang`)
-        this.mpv.observe(`track-list/${i}/selected`)
+      if (value <= 0) return;
+
+      for (let i = 0; i <= value; i++) {
+        this.mpv.observe(`track-list/${i}/id`);
       }
     } else if (/track-list\/\d+/.test(name)) {
       const parts = name.split('/'), index = parts[1], type = parts[2];
 
-      if (type === 'id') this.indexToIdMap[index] = value;
+      let tracks = this.state.tracks;
+
+      if (type === 'id') {
+        this.indexToIdMap[index] = value;
+        this.mpv.observe(`track-list/${index}/type`);
+      } else if (type === 'type') {
+        let currentTrack = tracks[this.indexToIdMap[index]] || {};
+
+        currentTrack.types = currentTrack.types || {};
+
+        currentTrack.types[index] = {
+          type: value
+        }
+
+        this.mpv.observe(`track-list/${index}/lang`);
+        this.mpv.observe(`track-list/${index}/default`);
+        this.mpv.observe(`track-list/${index}/type`);
+        this.mpv.observe(`track-list/${index}/src`);
+        this.mpv.observe(`track-list/${index}/title`);
+        this.mpv.observe(`track-list/${index}/lang`);
+        this.mpv.observe(`track-list/${index}/selected`);
+
+        if (!tracks[this.indexToIdMap[index]]) tracks[this.indexToIdMap[index]] = currentTrack;
+      } else {
+        let currentTrack = tracks[this.indexToIdMap[index]];
+        currentTrack.types[index] = {
+          ...currentTrack.types[index],
+          [type]: value
+        }
+      }
 
       this.setState({
         ...this.state,
-        tracks: {
-          ...this.state.tracks,
-          [this.indexToIdMap[index]]: {
-            ...this.state.tracks[this.indexToIdMap[index]],
-            [type]: value
-          }
-        }
+        tracks: tracks
       })
     } else if (name === 'time-pos' && this.seeking) {
     } else if (name === 'eof-reached' && value) {

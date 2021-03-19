@@ -48,6 +48,10 @@ _Note: The current screenshots are from the (very) initial version of the projec
 4. Push to your forked repository's feature branch: `git push origin feature`
 5. Create a pull request at [here](https://github.com/Enime-Project/enime/pulls)
 
+## Contributors
+
+[![](https://opencollective.com/enime/contributors.svg?width=890&button=false)](https://github.com/remarkablemark/enime/graphs/contributors)
+
 ## Tech Used
 
 - [electron](https://www.electronjs.org/) - Framework to create desktop app via JS
