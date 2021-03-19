@@ -11,10 +11,16 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, crashReporter } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import 'v8-compile-cache';
+
+console.log(app.getPath('crashDumps'))
+crashReporter.start({
+  submitURL: '',
+  uploadToServer: false
+})
 
 export default class AppUpdater {
   constructor() {
