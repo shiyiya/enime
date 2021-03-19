@@ -1,9 +1,9 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 
 import providers from "../../../main/services/provider/providers";
 import EpisodeCardLoader from "./episode-card-loader";
-import {useEffect, useState} from "react";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function EpisodeCard(props) {
   const episodeNumber = props.episode_number;
@@ -24,9 +24,9 @@ export default function EpisodeCard(props) {
         setResult({
           updated: true,
           data: result
-        })
-      })
-  }, [])
+        });
+      });
+  }, []);
 
   return (
     <div className="episode-card" onClick={() => {
@@ -39,15 +39,16 @@ export default function EpisodeCard(props) {
           anime: result.data,
           episode: episodeNumber
         }
-      })
+      });
     }}>
-      {!result.updated ? <EpisodeCardLoader/> :
-    <>
-    <img draggable="false" src={result.data.thumbnail.large} alt={result.data.title.primary}
-          className="episode-preview-thumbnail"/>
-    <div className="episode-preview-title-container">
-      <div className="episode-preview-title">Episode {episodeNumber}</div>
-      <div className="episode-preview-anime-name">{result.data.title.primary}</div>
-    </div></>}
-    </div>)
+      {!result.updated ? <EpisodeCardLoader /> :
+        <>
+          <img draggable="false" src={result.data.thumbnail.large} alt={result.data.title.primary}
+               className="episode-preview-thumbnail" />
+          <div className="episode-preview-title-container">
+            <div className="episode-preview-title">Episode {episodeNumber}</div>
+            <div className="episode-preview-anime-name">{result.data.title.primary}</div>
+          </div>
+        </>}
+    </div>);
 }
