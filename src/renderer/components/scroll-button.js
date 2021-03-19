@@ -1,34 +1,64 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-export default function scrollButton({display, direction, scrollFunction}) {
-  const [scrollActionID, setScrollActionID] = useState(0);
+export default function scrollButton(props) {
+  const [scrollHandle, setScrollHandle] = useState({})
+
+  const scrollPage = (targetRef) => {
+    if (targetRef.current) {
+      const targetElement = targetRef.current
+      if (props.direction === "right") {
+        targetElement.scrollLeft += targetElement.clientWidth;
+      } else {
+        targetElement.scrollLeft -= targetElement.clientWidth;
+      }
+      props.onScroll(props.direction, targetElement)
+    }
+  }
+
+  const requestInterval = (fn, delay) => {
+    let start = new Date().getTime()
+    let handle = {};
+
+    function loop() {
+      const current = new Date().getTime()
+      const delta = current - start
+
+      if (delta >= delay) {
+        fn()
+        start = new Date().getTime()
+      }
+      handle.value = requestAnimationFrame(loop)
+    }
+    handle.value = requestAnimationFrame(loop)
+    return handle
+  }
 
   useEffect(
     () => {
-      if (!display) {
-        clearInterval(scrollActionID)
+      if (!props.display) {
+        cancelAnimationFrame(scrollHandle.value)
       }
-    }, [display]
+    }, [props.display]
   )
 
-  return display ? (
+  return props.display ? (
     <button
-      className={"scroll-button-" + direction}
+      className={"scroll-button-" + props.direction}
       onMouseDown={() => {
-        scrollFunction(direction);
-        setScrollActionID(setInterval(
-          () => {scrollFunction(direction)}, 350
+        scrollPage(props.targetRef)
+        setScrollHandle(requestInterval(
+          () => {scrollPage(props.targetRef)}, 350
         ))
       }}
       onMouseLeave={() => {
-        clearInterval(scrollActionID);
+        cancelAnimationFrame(scrollHandle.value)
       }}
       onMouseUp={() => {
-        clearInterval(scrollActionID);
+        cancelAnimationFrame(scrollHandle.value)
       }}
     >
-      {direction === "right" ? "→" : "←"}
+      {props.direction === "right" ? "→" : "←"}
     </button>
   ) : null
 }

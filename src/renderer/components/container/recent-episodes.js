@@ -1,10 +1,9 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
-
-import {useEffect, useState} from "react";
-import {useStore} from "react-redux";
-import _ from 'lodash';
+import { useStore } from "react-redux";
+import _ from "lodash";
 
 export default function RecentEpisodes(props) {
 
@@ -20,7 +19,7 @@ export default function RecentEpisodes(props) {
 
   const refreshRecent = () => {
     let previousRecent = recent;
-    let currentRecent = store.getState()['recent-releases'];
+    let currentRecent = store.getState()["recent-releases"];
 
     if (!_.isEqual(previousRecent, currentRecent)) {
       const values = Object.values(currentRecent);
@@ -28,19 +27,16 @@ export default function RecentEpisodes(props) {
       setRecent(values);
       if (values.length > 0) setUpdated(true);
     }
-  }
+  };
 
   store.subscribe(refreshRecent);
 
-  const scrollPage = (direction) => {
-    const cardsElement = episodeCards.current;
+  const onScroll = (direction, targetElement) => {
     if (direction === "right") {
-      cardsElement.scrollLeft += cardsElement.clientWidth;
       props.onPageFlip();
       setAtLeftBound(false);
     } else {
-      cardsElement.scrollLeft -= cardsElement.clientWidth;
-      setAtLeftBound(cardsElement.scrollLeft <= cardsElement.clientWidth);
+      setAtLeftBound(targetElement.scrollLeft <= targetElement.clientWidth);
     }
   };
 
@@ -49,11 +45,11 @@ export default function RecentEpisodes(props) {
       <h1 className={"recent-episodes-title"}>Recent</h1>
       <div className={"episode-releases-container"}>
         <ScrollButton
+          targetRef={episodeCards}
           direction={"left"}
-          scrollFunction={scrollPage}
           display={!atLeftBound}
+          onScroll={onScroll}
         />
-
         <div className={"episode-releases"} ref={episodeCards}>
           {updated && recent.map(element => {
             let index = recent.indexOf(element);
@@ -71,11 +67,11 @@ export default function RecentEpisodes(props) {
               />);
           })}
         </div>
-
         <ScrollButton
+          targetRef={episodeCards}
           direction={"right"}
-          scrollFunction={scrollPage}
           display={true}
+          onScroll={onScroll}
         />
       </div>
     </div>
