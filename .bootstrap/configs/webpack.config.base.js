@@ -4,6 +4,7 @@
 
 import path from 'path';
 import webpack from 'webpack';
+import LodashModuleReplacementPlugin from "lodash-webpack-plugin";
 import { dependencies as externals } from '../../src/package.json';
 
 export default {
@@ -39,6 +40,7 @@ export default {
   },
 
   plugins: [
+    new LodashModuleReplacementPlugin,
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
     }),

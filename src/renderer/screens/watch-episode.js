@@ -84,7 +84,7 @@ export default function WatchEpisode(props) {
   return (
     <div>
       {fetchedMetadata && <MpvPlayer ref={player} url={"http://localhost:8888/read/" + index + "/" + torrent} handlePropertyChange={(name, value) => {
-        if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining') {
+        if (name === 'pause' || name === 'duration' || name === 'time-pos' || name === 'time-remaining' || name === 'demuxer-cache-duration') {
           const now = Date.now();
 
           let activity = {
@@ -115,8 +115,8 @@ export default function WatchEpisode(props) {
             })
           }
 
-          if (!playerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining') {
-            if ((name === 'duration' && Math.abs(value - playerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - playerData.position) > 1) || (name === 'time-remaining' && Math.abs(value - playerData.remaining) > 1)) {
+          if (!playerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining' || name === 'demuxer-cache-duration') {
+            if ((name === 'duration' && Math.abs(value - playerData.duration) > 1) || (name === 'time-pos' && Math.abs(value - playerData.position) > 1) || (name === 'time-remaining' && Math.abs(value - playerData.remaining) > 1) || (name === 'demuxer-cache-duration' && value <= 0)) {
               let updatedData = playerData;
 
               if (name === 'duration') updatedData.duration = value;
