@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
+import ScrollContainer from "react-indiana-drag-scroll";
 import { useStore } from "react-redux";
 import _ from "lodash";
 
@@ -11,7 +12,7 @@ export default function RecentEpisodes(props) {
   const [updated, setUpdated] = useState(false);
   const [atLeftBound, setAtLeftBound] = useState(true);
 
-  const episodeCards = React.createRef();
+  const scrollContainerRef = React.createRef();
 
   const store = useStore();
 
@@ -45,14 +46,20 @@ export default function RecentEpisodes(props) {
       <h1 className={"recent-episodes-title"}>Recent</h1>
       <div className={"episode-releases-container"}>
         <ScrollButton
-          targetRef={episodeCards}
+          targetRef={scrollContainerRef}
           direction={"left"}
           display={!atLeftBound}
           onScroll={onScroll}
         />
-        <div className={"episode-releases"} ref={episodeCards}>
-          {updated && recent.map(element => {
-            let index = recent.indexOf(element);
+        <ScrollContainer
+          className={"episode-releases"}
+          ref={scrollContainerRef}
+          onEndScroll={() => {
+            const targetElement = scrollContainerRef.current.getElement();
+            setAtLeftBound(targetElement.scrollLeft === 0);
+          }}
+        >
+          {updated && recent.map((element, index) => {
 
             element = element[1][0];
 
@@ -66,9 +73,9 @@ export default function RecentEpisodes(props) {
                 history={props.history}
               />);
           })}
-        </div>
+        </ScrollContainer>
         <ScrollButton
-          targetRef={episodeCards}
+          targetRef={scrollContainerRef}
           direction={"right"}
           display={true}
           onScroll={onScroll}
