@@ -8,6 +8,12 @@ const DEFAULT_CONFIGURATION = {
   providers: {
     torrent: "animetosho",
     information: "notify.moe"
+  },
+  integrations: {
+    anilist: {
+      enabled: true,
+      token: undefined
+    }
   }
 }
 
@@ -22,5 +28,14 @@ export default {
     }
 
     return configuration;
+  },
+
+  set(section, key, value, save = true) {
+    configuration[section][key] = value;
+    if (save) this.save();
+  },
+
+  save() {
+    util.file.writeFile(configuration, CONFIG_NAME);
   }
 }

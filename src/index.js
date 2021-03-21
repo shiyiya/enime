@@ -5,8 +5,10 @@ import App from './renderer/App';
 import { Provider } from 'react-redux'
 
 import * as stateStorage from "./shared/storage/state-storage";
+import Modal from "react-modal";
 
 const store = stateStorage.configureStore(null, 'renderer');
+Modal.setAppElement(document.getElementById('root'))
 
 render(
   <Provider store={store}>

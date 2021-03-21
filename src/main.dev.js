@@ -80,6 +80,8 @@ const RESOURCES_PATH = app.isPackaged
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
+app.commandLine.appendSwitch('disable-site-isolation-trials')
+
 const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
@@ -119,9 +121,22 @@ const createWindow = async () => {
       enableRemoteModule: true,
       nodeIntegrationInSubFrames: true,
       contextIsolation: false,
-      worldSafeExecuteJavaScript: false
+      worldSafeExecuteJavaScript: false,
+      webSecurity: false
     },
   });
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived({ urls: [ "*://*/*" ] },
+    (d, c)=>{
+      if(d.responseHeaders['X-Frame-Options']){
+        delete d.responseHeaders['X-Frame-Options'];
+      } else if(d.responseHeaders['x-frame-options']) {
+        delete d.responseHeaders['x-frame-options'];
+      }
+
+      c({cancel: false, responseHeaders: d.responseHeaders});
+    }
+  );
 
   mainWindow.maximize();
 
