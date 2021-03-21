@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
 import ScrollContainer from "react-indiana-drag-scroll";
@@ -12,7 +12,7 @@ export default function RecentEpisodes(props) {
   const [updated, setUpdated] = useState(false);
   const [atLeftBound, setAtLeftBound] = useState(true);
 
-  const scrollContainerRef = React.createRef();
+  const scrollContainerRef = useRef();
 
   const store = useStore();
 
