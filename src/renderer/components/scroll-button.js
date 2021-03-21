@@ -5,7 +5,6 @@ export default function ScrollButton(props) {
   const [scrollHandle, setScrollHandle] = useState({});
 
   const scrollPage = () => {
-    console.log(props.targetRef);
     const targetElement = props.targetRef.current.getElement();
     if (props.direction === "right") {
       targetElement.scrollLeft += targetElement.clientWidth;
