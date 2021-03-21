@@ -1,4 +1,3 @@
-import {DEFAULT_CONFIGURATION} from "../../shared/settings/settings";
 import {useDispatch, useStore} from "react-redux";
 import StateActions from "../../shared/storage/action/state-actions";
 import _ from "lodash";
@@ -6,7 +5,7 @@ import _ from "lodash";
 export function useConfig() {
   const store = useStore(), dispatch = useDispatch();
 
-  let currentConfig = DEFAULT_CONFIGURATION;
+  let currentConfig = store.getState()['config'];
 
   store.subscribe(() => {
     let config = store.getState()['config'];
@@ -15,10 +14,6 @@ export function useConfig() {
   })
 
   return new Proxy(currentConfig, {
-    get(target, p, receiver) {
-      return Reflect.get(...arguments);
-    },
-
     set(target, p, value, receiver) {
       Reflect.set(...arguments);
       dispatch({

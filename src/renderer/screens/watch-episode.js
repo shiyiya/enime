@@ -4,10 +4,12 @@ import {useHistory} from "react-router-dom";
 import {useDispatch, useStore} from "react-redux";
 import StateActions from "../../shared/storage/action/state-actions";
 import {useEffect, useRef, useState} from "react";
+import {usePresence} from "../hooks/presence";
+import PresenceState from "../../shared/presence/presence-state";
 
 export default function WatchEpisode(props) {
   const history = useHistory();
-  const dispatch = useDispatch(), store = useStore();
+  const dispatch = useDispatch(), store = useStore(), presence = usePresence(PresenceState.WATCHING_ANIME);
 
   if (!props.location.state) {
     history.push({
@@ -88,7 +90,6 @@ export default function WatchEpisode(props) {
           const now = Date.now();
 
           let activity = {
-            state: 1,
             player: {
               anime: {
                 title: anime.title.primary,
@@ -109,10 +110,7 @@ export default function WatchEpisode(props) {
               activity.endTimestamp = value ? null : now + Math.ceil(playerData.remaining) * 1000;
             }
 
-            dispatch({
-              type: StateActions.UPDATE_CURRENT_PRESENCE,
-              payload: activity
-            })
+            presence.update(activity);
           }
 
           if (!playerData.paused && (name === 'duration' || name === 'time-pos') || name === 'time-remaining' || name === 'demuxer-cache-duration') {
@@ -126,10 +124,7 @@ export default function WatchEpisode(props) {
               activity.startTimestamp = now + Math.ceil(updatedData.position) * 1000;
               activity.endTimestamp = now + Math.ceil(updatedData.remaining) * 1000;
 
-              dispatch({
-                type: StateActions.UPDATE_CURRENT_PRESENCE,
-                payload: activity
-              })
+              presence.update(activity);
 
               setPlayerData({
                 ...playerData,

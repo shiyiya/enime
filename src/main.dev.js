@@ -80,7 +80,8 @@ const RESOURCES_PATH = app.isPackaged
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
-//app.commandLine.appendSwitch('disable-site-isolation-trials');
+app.commandLine.appendSwitch('disable-web-security')
+app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
@@ -133,6 +134,8 @@ const createWindow = async () => {
       } else if(d.responseHeaders['x-frame-options']) {
         delete d.responseHeaders['x-frame-options'];
       }
+
+      if (d.responseHeaders['x-content-type-options']) delete d.responseHeaders['x-content-type-options'];
 
       c({cancel: false, responseHeaders: d.responseHeaders});
     }

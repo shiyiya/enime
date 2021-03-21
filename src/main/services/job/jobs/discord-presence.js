@@ -5,6 +5,9 @@ const CLIENT_ID = '781044799716720680';
 import RPC from "discord-rpc";
 import Job from "../job";
 
+import PresenceConstants from "../../../../shared/presence/presence-constants";
+import PresenceState from "../../../../shared/presence/presence-state";
+
 export default class DiscordPresence extends Job {
   constructor(props) {
     super(props);
@@ -19,24 +22,17 @@ export default class DiscordPresence extends Job {
   }
 
   run() {
-    const SMALL_TEXT = "Enime Desktop", LARGE_TEXT = "Enime version DEV";
-
     RPC.register(CLIENT_ID);
-
-    let statusToState = [
-      "Idle",
-      "Watching Anime"
-    ]
 
     const store = global.store;
 
-    let prevPresenceData = null;
+    let prevPresenceData;
 
     store.subscribe(() => {
       let data = store.getState()['current-presence'], state = data.state;
 
       if (data && !_.isEqual(prevPresenceData, data)) {
-        let statusText = statusToState[state];
+        let statusText = PresenceConstants.STATUS_TO_STATE[state];
         switch (state) {
           case PresenceState.WATCHING_ANIME:
             statusText = `${data.player.anime.title} Episode ${data.player.anime.episode}`;
@@ -46,12 +42,12 @@ export default class DiscordPresence extends Job {
         }
 
         let activity = {
-          details: statusToState[state],
+          details: PresenceConstants.STATUS_TO_STATE[state],
           state: statusText,
-          largeImageKey: 'elaina',
-          largeImageText: LARGE_TEXT,
-          ...(state === PresenceState.WATCHING_ANIME && { smallImageKey: !data.player.paused ? 'pause' : 'play' } ),
-          smallImageText: state === PresenceState.WATCHING_ANIME ? (data.player.paused ? 'Paused' : 'Watching') : SMALL_TEXT,
+          largeImageKey: PresenceConstants.IMAGE_KEY,
+          largeImageText: PresenceConstants.LARGE_TEXT,
+          ...(state === PresenceState.WATCHING_ANIME && { smallImageKey: !data.player.paused ? PresenceConstants.PLAYER_ICON_PAUSE : PresenceConstants.PLAYER_ICON_PLAY } ),
+          smallImageText: state === PresenceState.WATCHING_ANIME ? (data.player.paused ? PresenceConstants.PLAYER_PAUSED : PresenceConstants.PLAYER_WATCHING) : PresenceConstants.SMALL_TEXT,
           instance: false,
         };
 
@@ -60,7 +56,7 @@ export default class DiscordPresence extends Job {
           if (data.endTimestamp) activity.endTimestamp = data.endTimestamp;
         }
 
-        client.setActivity(activity)
+        if (activity) client.setActivity(activity)
 
         prevPresenceData = data;
       }
@@ -71,11 +67,11 @@ export default class DiscordPresence extends Job {
     client.on('ready', () => {
       let startTimestamp = new Date();
       client.setActivity({
-        state: statusToState[PresenceState.IDLE],
+        state: PresenceConstants.STATUS_TO_STATE[PresenceState.IDLE],
         startTimestamp,
-        largeImageKey: 'elaina',
-        largeImageText: LARGE_TEXT,
-        smallImageText: SMALL_TEXT,
+        largeImageKey: PresenceConstants.IMAGE_KEY,
+        largeImageText: PresenceConstants.LARGE_TEXT,
+        smallImageText: PresenceConstants.SMALL_TEXT,
         instance: false,
       })
     });
@@ -84,9 +80,4 @@ export default class DiscordPresence extends Job {
       clientId: CLIENT_ID
     });
   }
-}
-
-class PresenceState {
-  static IDLE = 0;
-  static WATCHING_ANIME = 1;
 }

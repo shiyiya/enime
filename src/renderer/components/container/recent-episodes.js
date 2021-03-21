@@ -16,8 +16,6 @@ export default function RecentEpisodes(props) {
 
   const store = useStore();
 
-  useEffect(() => refreshRecent(), []);
-
   const refreshRecent = () => {
     let previousRecent = recent;
     let currentRecent = store.getState()["recent-releases"];
@@ -30,7 +28,15 @@ export default function RecentEpisodes(props) {
     }
   };
 
-  store.subscribe(refreshRecent);
+  const unsubscribe = store.subscribe(refreshRecent);
+
+  useEffect(() => {
+    refreshRecent();
+
+    return () => {
+      unsubscribe();
+    }
+  }, []);
 
   const onScroll = (direction, targetElement) => {
     if (direction === "right") {
