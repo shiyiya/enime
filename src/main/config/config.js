@@ -1,21 +1,9 @@
 import util from "../utilities";
 
+import { CONFIG_NAME, DEFAULT_CONFIGURATION } from "../../shared/settings/settings";
+import StateActions from "../../shared/storage/action/state-actions";
+
 let configuration;
-
-const CONFIG_NAME = "config.json";
-
-const DEFAULT_CONFIGURATION = {
-  providers: {
-    torrent: "animetosho",
-    information: "notify.moe"
-  },
-  integrations: {
-    anilist: {
-      enabled: true,
-      token: undefined
-    }
-  }
-}
 
 export default {
   get() {
@@ -37,5 +25,17 @@ export default {
 
   save() {
     util.file.writeFile(configuration, CONFIG_NAME);
+    this.sync();
+  },
+
+  sync() {
+    const store = global.store;
+
+    store.dispatch({
+      type: StateActions.UPDATE_CONFIGURATION,
+      payload: {
+        ...configuration
+      }
+    })
   }
 }

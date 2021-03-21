@@ -2,8 +2,6 @@ import * as React from "react";
 import RecentEpisodes from "../components/container/recent-episodes";
 import {useDispatch} from "react-redux";
 import StateActions from "../../shared/storage/action/state-actions";
-import {Link, Switch} from "react-router-dom";
-import AnilistLogin from "../components/container/anilist-login";
 
 export default function Home() {
   let dispatch = useDispatch();

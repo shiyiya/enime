@@ -35,7 +35,7 @@ export default class DiscordPresence extends Job {
     store.subscribe(() => {
       let data = store.getState()['current-presence'], state = data.state;
 
-      if (!_.isEqual(prevPresenceData, data)) {
+      if (data && !_.isEqual(prevPresenceData, data)) {
         let statusText = statusToState[state];
         switch (state) {
           case PresenceState.WATCHING_ANIME:
