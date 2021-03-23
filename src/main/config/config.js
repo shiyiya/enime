@@ -34,8 +34,6 @@ export default new Proxy({
     if(t[p]) return t[p];
     if (!SETTINGS[p]) return undefined;
 
-    console.log(SETTINGS[p]);
-
     return new Proxy(SETTINGS[p], {
       set(t, k, v, r) {
         if(t.choices && !t.choices.includes(v))
