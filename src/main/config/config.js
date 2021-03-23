@@ -1,41 +1,49 @@
-import util from "../utilities";
+import { exists, writeFile, getFile } from "../utilities";
 
-import { CONFIG_NAME, DEFAULT_CONFIGURATION } from "../../shared/settings/settings";
+import { CONFIG_NAME, SETTINGS } from "../../shared/settings/settings";
 import StateActions from "../../shared/storage/action/state-actions";
 
-let configuration;
+export default new Proxy({
 
-export default {
-  get() {
-    if (!configuration) {
-      if (!util.file.exists(CONFIG_NAME)) {
-        util.file.writeFile(DEFAULT_CONFIGURATION, CONFIG_NAME);
+  init() {
+    if (!exists(CONFIG_NAME)) {
+      const def = {};
+      for(let i in SETTINGS) {
+        def[i] = {};
+        for(let j in SETTINGS[i])
+          def[i][j] = SETTINGS[i][j].default;
       }
-
-      configuration = util.file.getFile(CONFIG_NAME);
+      writeFile(global.config = def, CONFIG_NAME);
     }
-
-    return configuration;
-  },
-
-  set(section, key, value, save = true) {
-    configuration[section][key] = value;
-    if (save) this.save();
+    else global.config = getFile(CONFIG_NAME);
   },
 
   save() {
-    util.file.writeFile(configuration, CONFIG_NAME);
-    this.sync();
-  },
-
-  sync() {
-    const store = global.store;
-
-    store.dispatch({
+    writeFile(global.config, CONFIG_NAME);
+    global.store.dispatch({
       type: StateActions.UPDATE_CONFIGURATION,
       payload: {
-        ...configuration
+        ...global.config
       }
     })
   }
-}
+}, {
+  
+  get(t, p) {
+    if (!global.config) t.init();
+    if(t[p]) return t[p];
+
+    console.log(SETTINGS, p);
+
+    return new Proxy(SETTINGS[p], {
+      set(t, k, v, r) {
+        if(t.choices && !t.choices.includes(v))
+          throw new Error("Configuration edit on " + k + " in section " + p + " has been set invalidly. The choices are [" + t.choices + "] but '" + v + "' was inputted.");
+        else if (typeof v !== typeof t.default)
+          throw new Error("Configuration edit on " + k + " in section " + p + " set to invalid type. Expected '" + typeof t.default + "' but got '" + typeof v + "' with the actual value being: " + v + ". plsfix");
+        
+        global.config[p][k] = v; this.save();
+      }
+    });
+  },
+})

@@ -15,7 +15,7 @@ export default class ConfigSync extends Job {
   }
 
   run() {
-    config.get();
-    config.sync();
+    config.init();
+    config.save();
   }
 }

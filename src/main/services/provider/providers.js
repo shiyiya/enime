@@ -8,7 +8,8 @@ let torrentProvider, informationProvider;
 export default {
   getTorrentProvider() {
     if (!torrentProvider) {
-      switch (config.get().providers.torrent.toLowerCase()) {
+      config.init();
+      switch (global.config.providers.torrent.toLowerCase()) {
         case "nyaa.si":
           torrentProvider = new Nyaa();
           break;
@@ -26,7 +27,8 @@ export default {
 
   getInformationProvider() {
     if (!informationProvider) {
-      switch (config.get().providers.information.toLowerCase()) {
+      config.init();
+      switch (global.config.providers.information.toLowerCase()) {
         case "notify.moe":
           informationProvider = new NotifyMoe();
           break;
