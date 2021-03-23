@@ -1,4 +1,4 @@
-import util from "../../../../utilities";
+import { rakun } from "../../../../utilities";
 import xmlParser from "fast-xml-parser"
 import request from "request-promise"
 
@@ -44,7 +44,7 @@ export default class Animetosho extends TorrentProvider {
     let result = {};
 
     for (let torrent of json) {
-      let information = util.rakun.parse(torrent.torrent_name);
+      let information = rakun.parse(torrent.torrent_name);
       if (!allowedSubs.includes(information.subber)) continue;
 
       const key = information.name + "###" + information.season;

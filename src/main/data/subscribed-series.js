@@ -1,4 +1,4 @@
-import util from "../utilities";
+import { writeFile, existsSync, getFile } from "../utilities";
 
 let localData;
 
@@ -13,11 +13,11 @@ const OBSERVE_LIST = [
 export default {
   all() {
     if (!localData) {
-      if (!util.file.existsSync(DATA_NAME)) {
-        util.file.writeFile({}, DATA_NAME);
+      if (!existsSync(DATA_NAME)) {
+        writeFile({}, DATA_NAME);
       }
 
-      localData = util.file.getFile(DATA_NAME);
+      localData = getFile(DATA_NAME);
     }
 
     return localData;

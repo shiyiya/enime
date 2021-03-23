@@ -1,4 +1,4 @@
-import util from "../../../../utilities";
+import { raku } from "../../../../utilities";
 import xmlParser from "fast-xml-parser"
 import request from "request-promise"
 
@@ -58,7 +58,7 @@ export default class Nyaa extends TorrentProvider {
     let result = {};
 
     for (let torrent of parsedXML.rss.channel.item) {
-      let information = util.rakun.parse(torrent.title);
+      let information = raku.parse(torrent.title);
       if (!allowedSubs.includes(information.subber)) continue;
 
       const key = information.name + "###" + information.season;
