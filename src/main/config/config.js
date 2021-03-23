@@ -28,12 +28,13 @@ export default new Proxy({
     })
   }
 }, {
-  
+
   get(t, p) {
     if (!global.config) t.init();
     if(t[p]) return t[p];
+    if (!SETTINGS[p]) return undefined;
 
-    console.log(SETTINGS, p);
+    console.log(SETTINGS[p]);
 
     return new Proxy(SETTINGS[p], {
       set(t, k, v, r) {
@@ -41,7 +42,7 @@ export default new Proxy({
           throw new Error("Configuration edit on " + k + " in section " + p + " has been set invalidly. The choices are [" + t.choices + "] but '" + v + "' was inputted.");
         else if (typeof v !== typeof t.default)
           throw new Error("Configuration edit on " + k + " in section " + p + " set to invalid type. Expected '" + typeof t.default + "' but got '" + typeof v + "' with the actual value being: " + v + ". plsfix");
-        
+
         global.config[p][k] = v; this.save();
       }
     });

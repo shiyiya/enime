@@ -21,7 +21,6 @@ const reducers = {
   [CONFIG.name()]: CONFIG.get
 }
 
-console.log(reducers)
 const initialStateRemote = {
   [WATCHING_ANIME.name()]: WatchingAnimeReducer.INITIAL_STATE,
   [RECENT_RELEASES.name()]: RecentReleasesReducer.INITIAL_STATE,
