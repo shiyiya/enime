@@ -56,6 +56,7 @@ export default class DiscordPresence extends Job {
           if (data.endTimestamp) activity.endTimestamp = data.endTimestamp;
         }
 
+        console.log(activity)
         if (activity) client.setActivity(activity)
 
         prevPresenceData = data;
