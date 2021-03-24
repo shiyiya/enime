@@ -1,11 +1,13 @@
 <p align="center">
   <img src="https://github.com/Enime-Project/enime/blob/master/images/icon/icon-medium.png?raw=true" />  
 </p>
- 
+
+<p align="center">
+  <img src="http://ForTheBadge.com/images/badges/built-with-love.svg" />  
+</p>
+
 <h1 align="center">Enime</h1>
 <h2 align="center"><i>Anime on Desktop</i></h2>
-
-[![Love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://github.com/Enime-Project/)
 
 [![Release](https://img.shields.io/github/release/Enime-Project/enime.svg?style=flat-square)](https://github.com/Enime-Project/enime/releases/)
 [![License](https://img.shields.io/github/license/Enime-Project/enime.svg?style=flat-square)](https://github.com/Enime-Project/enime/blob/master/LICENSE)
@@ -14,13 +16,14 @@
 
 Leave a star to the repository if you like this project and believe in its potential :)
 
-Enime is a cross-platform desktop app that allows you to watch anime without disruptions
+Enime is a cross-platform desktop app that allows you to experience ad-free anime without disruptions
 
 ## Features
 
 - Built-in [mpv](https://github.com/mpv-player/mpv) player powered by [mpv.js](https://github.com/Kagami/mpv.js) that allows on-fly multi-language subtitle embedded in the video among with various controls in the interface!
 - Integrated Discord RPC, you can optionally show your friends what anime and what episode you are currently watching!
-- Fetch recent releases. Enime automatically parse corresponding anime from various sub teams from [nyaa](https://nyaa.si) and obtain video source from the torrents, a special algorithm has been deployed to ensure the information are as accurate as possible
+- Fetch recent releases. Enime automatically parse corresponding anime from various sub teams from [nyaa](https://nyaa.si) and [animetosho](https://animetosho.org/) to obtain a video source from the torrents. A special algorithm has been deployed to ensure the information are as accurate as possible
+- Synchronize your watchlist from [anilist](https://anilist.co/home) and watch the anime episodes directly! (No need to find a source anymore) **_[Working on]_**
 - _More to be included_
 
 ## Installations
@@ -50,7 +53,7 @@ _Note: The current screenshots are from the (very) initial version of the projec
 
 ## Contributors
 
-[![](https://opencollective.com/enime/contributors.svg?width=890&button=false)](https://github.com/remarkablemark/enime/graphs/contributors)
+[![](https://opencollective.com/enime/contributors.svg?width=890&button=false)](https://github.com/Enime-Project/enime/graphs/contributors)
 
 ## Tech Used
 
@@ -62,6 +65,7 @@ _Note: The current screenshots are from the (very) initial version of the projec
 - [read-torrent](https://github.com/mafintosh/read-torrent) - Read the torrent metadata and file data
 - [mpv.js](https://github.com/Kagami/mpv.js) - Video player utility that has capability to display mkv subtitles on fly, created an enime exclusive binary version to fix crucial bugs
 - [lodash](https://lodash.com/) - Nice utility that saved my time
+- [apollo](https://www.apollographql.com/) - GraphQL client
 
 ## License
 
