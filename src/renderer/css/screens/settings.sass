@@ -1,0 +1,123 @@
+.settings
+	&-top
+		display: block
+		margin-left: auto
+		margin-right: auto
+		margin-top: 10%
+		width: 55%
+		font-family: Roboto
+		color: #fff
+
+	&-opts
+		background: #121212
+		padding: 50px
+		border-radius: 70px
+	
+	&-opt
+		display: flex
+		align-items: center
+		justify-content: space-between
+		padding-bottom: 10px
+		font-size: 18px
+		color: #ccc
+	
+	&-title
+		font-weight: 500
+
+h2
+	text-align: center
+	font-size: 60px
+
+h3
+	font-size: 30px
+	margin: 40px 0 20px 0
+
+	&:first-child
+		margin-top: 0 !important
+
+select
+	width: 150px
+	padding: 5px 35px 7px 10px
+	font-size: 16px
+	border: none
+	height: 30px
+	-webkit-appearance: none
+	appearance: none
+	border-radius: 5px
+	color: #ccc
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='rgb(119, 119, 119)'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M8.71 11.71l2.59 2.59c.39.39 1.02.39 1.41 0l2.59-2.59c.63-.63.18-1.71-.71-1.71H9.41c-.89 0-1.33 1.08-.7 1.71z'/%3E%3C/svg%3E") 96% / 15% no-repeat #222
+
+	&:hover
+		background-color: #282828
+	
+	&:focus
+		outline: none
+		background-color: #333
+
+input
+	padding: 0 0 0 10px
+	background-color: #222
+	border: none
+	height: 30px
+	color: #ccc
+	border-radius: 5px
+	min-width: 150px
+	width: min-content
+
+	&:hover
+		background-color: #282828
+	
+	&:focus
+		outline: none
+		background-color: #333
+
+/* The cool toggle switch thing :D */
+.switch
+	$size: 20px
+
+	position: relative
+	display: inline-block
+	width: $size * 2
+
+	&-input
+		display: none
+		
+		&:checked + .switch-label::before
+			background-color: red
+
+		&:checked + .switch-label::after
+			left: $size
+
+	&-label
+		display: block
+		width: $size * 2
+		height: $size
+		text-indent: -150%
+		clip: rect(0 0 0 0)
+		color: transparent
+		user-select: none
+
+		&::before, &::after
+			content: ""
+			display: block
+			position: absolute
+			cursor: pointer
+
+		&::before
+			width: 100%
+			height: 100%
+			background-color: #222
+			border-radius: 9999em
+			-webkit-transition: background-color 0.25s ease
+			transition: background-color 0.25s ease
+
+		&::after 
+			top: $size - $size * 1.1
+			left: 0
+			width: $size * 1.2
+			height: $size * 1.2
+			border-radius: 50%
+			background-color: #666
+			box-shadow: 0 0 2px rgba(0, 0, 0, 0.45)
+			-webkit-transition: left 0.25s ease
+			transition: left 0.25s ease
