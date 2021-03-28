@@ -56,8 +56,6 @@ export default function ScrollButton(props) {
       onMouseUp={() => {
         cancelAnimationFrame(scrollHandle.value);
       }}
-    >
-      {props.direction === "right" ? "→" : "←"}
-    </button>
+    ></button>
   ) : null;
 }

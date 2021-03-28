@@ -1,5 +1,6 @@
-@import "./screens/home.sass";
-@import "./screens/watch-episode.sass";
+@import "./screens/home.sass"
+@import "./screens/watch-episode.sass"
+@import "./screens/settings.sass"
 
 .no-selection
   -webkit-touch-callout: none
@@ -8,3 +9,19 @@
   -moz-user-select: none
   -ms-user-select: none
   user-select: none
+  
+button
+	padding: 10px
+	background-color: #222
+	border: none
+	height: 30px
+	color: #ccc
+	border-radius: 5px
+	width: min-content
+
+	&:hover
+		background-color: #282828
+	
+	&:focus
+		outline: none
+		background-color: #333

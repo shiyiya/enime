@@ -48,17 +48,17 @@ export default function RecentEpisodes(props) {
   };
 
   return (
-    <div className={"no-selection"}>
-      <h1 className={"recent-episodes-title"}>Recent</h1>
-      <div className={"episode-releases-container"}>
+    <div className="no-selection">
+      <h1 className="recent-episodes-title">Recent</h1>
+      <div className="episode-releases-container">
         <ScrollButton
           targetRef={scrollContainerRef}
-          direction={"left"}
+          direction="left"
           display={!atLeftBound}
           onScroll={onScroll}
         />
         <ScrollContainer
-          className={"episode-releases"}
+          className="episode-releases"
           ref={scrollContainerRef}
           onEndScroll={() => {
             const targetElement = scrollContainerRef.current.getElement();
@@ -82,7 +82,7 @@ export default function RecentEpisodes(props) {
         </ScrollContainer>
         <ScrollButton
           targetRef={scrollContainerRef}
-          direction={"right"}
+          direction="right"
           display={true}
           onScroll={onScroll}
         />
