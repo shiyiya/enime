@@ -7,13 +7,14 @@ import {
 import 'v8-compile-cache';
 
 import './App.global.sass';
+import "../shared/settings/init.js";
 
 import WatchEpisode from "./screens/watch-episode";
 import Home from "./screens/home";
 import Setting from "./screens/setting";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff} from "@fortawesome/free-solid-svg-icons";
-
+console.log(global);
 library.add(faPlay, faPause, faVolumeMute, faVolumeUp, faVolumeDown, faVolumeOff);
 
 export default function App() {

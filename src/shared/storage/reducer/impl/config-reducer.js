@@ -1,11 +1,8 @@
 import StateReducer from "../state-reducer";
 import StateActions from "../../action/state-actions";
-import { DEFAULT_CONFIGURATION } from "../../../settings/settings";
+import { SETTINGS } from "../../../settings/settings";
 
 export default class ConfigReducer extends StateReducer {
-  static INITIAL_STATE = {
-    ...DEFAULT_CONFIGURATION
-  }
 
   constructor() {
     super();
@@ -16,7 +13,7 @@ export default class ConfigReducer extends StateReducer {
   }
 
   get(state, action) {
-    if (!state) return ConfigReducer.INITIAL_STATE;
+    if (!state) return {};
     if (!action) return state;
 
     switch (action.type.toLowerCase()) {

@@ -1,5 +1,7 @@
 import Job from "../job";
-import config from "../../../config/config";
+import { CONFIG_NAME, SETTINGS } from "../../../../shared/settings/settings";
+import { exists, writeFile, getFile } from "../../../utilities";
+import StateActions from "../../../../shared/storage/action/state-actions";
 
 export default class ConfigSync extends Job {
   constructor(props) {
@@ -15,7 +17,6 @@ export default class ConfigSync extends Job {
   }
 
   run() {
-    config.init();
-    config.save();
+    import("../../../../shared/settings/init.js");
   }
 }

@@ -1,6 +1,5 @@
-const CONFIG_NAME = "config.json";
-
-const SETTINGS = {
+export const CONFIG_NAME = "config.json";
+export const SETTINGS = {
   providers: {
     torrent: {
       title: "Anime torrent provider",
@@ -23,7 +22,7 @@ const SETTINGS = {
     },
     account: {
       default: "anilist", choices: ["anilist"],
-      title: "Account and Watch List integration.",
+      title: "Account and Watch List integration",
       desc: "What online service we sync your account and watch list information to."
     }
   },
@@ -35,9 +34,3 @@ const SETTINGS = {
     }
   }
 };
-
-export {
-  CONFIG_NAME,
-  SETTINGS
-}
-
