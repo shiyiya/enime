@@ -15,7 +15,9 @@ export default class RecentRelease extends Job {
     return "*/5 * * * *";
   }
 
-  run() {
+  async run() {
+    console.log('ok2')
+
     const store = global.store;
 
     providers.getTorrentProvider().recentReleases()

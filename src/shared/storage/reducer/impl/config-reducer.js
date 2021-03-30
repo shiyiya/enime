@@ -1,8 +1,10 @@
 import StateReducer from "../state-reducer";
 import StateActions from "../../action/state-actions";
-import { SETTINGS } from "../../../settings/settings";
 
 export default class ConfigReducer extends StateReducer {
+  static INITIAL_STATE = {
+    timestamp: undefined
+  }
 
   constructor() {
     super();

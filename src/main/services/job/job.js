@@ -13,7 +13,7 @@ export default class Job {
     throw Error("The cron need an implementation");
   }
 
-  run() {
+  async run() {
 
   }
 }

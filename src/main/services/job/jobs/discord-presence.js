@@ -21,7 +21,7 @@ export default class DiscordPresence extends Job {
     return null;
   }
 
-  run() {
+  async run() {
     RPC.register(CLIENT_ID);
 
     const store = global.store;

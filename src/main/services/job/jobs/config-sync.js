@@ -1,7 +1,5 @@
 import Job from "../job";
-import { CONFIG_NAME, SETTINGS } from "../../../../shared/settings/settings";
-import { exists, writeFile, getFile } from "../../../utilities";
-import StateActions from "../../../../shared/storage/action/state-actions";
+import { start } from "../../../../shared/settings/init.js";
 
 export default class ConfigSync extends Job {
   constructor(props) {
@@ -16,7 +14,7 @@ export default class ConfigSync extends Job {
     return null;
   }
 
-  run() {
-    import("../../../../shared/settings/init.js");
+  async run() {
+    await start();
   }
 }

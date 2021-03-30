@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Modal from 'react-modal';
 
 const OAUTH_URL = 'https://anilist.co/api/v2/oauth/authorize?client_id=5121&response_type=token';

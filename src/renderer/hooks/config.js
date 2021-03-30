@@ -1,27 +1,31 @@
-import {useDispatch, useStore} from "react-redux";
-import StateActions from "../../shared/storage/action/state-actions";
-import _ from "lodash";
+import { remote, ipcRenderer } from "electron";
+import {useCallback, useEffect, useState} from "react";
+import {useStore} from "react-redux";
+import { isEqual } from "lodash";
 
-export function useConfig() {
-  const store = useStore(), dispatch = useDispatch();
+export function useConfig(callback) {
+  let config = remote.getGlobal('config'), store = useStore();
 
-  let currentConfig = store.getState()['config'];
+  let lastUpdated;
 
-  store.subscribe(() => {
-    let config = store.getState()['config'];
-
-    if (!_.isEqual(currentConfig, config)) currentConfig = config;
-  })
-
-  return new Proxy(currentConfig, {
-    set(target, p, value, receiver) {
-      Reflect.set(...arguments);
-      dispatch({
-        type: StateActions.UPDATE_CONFIGURATION,
-        payload: {
-          ...target
-        }
-      })
+  const unsubscribe = store.subscribe(() => {
+    let thisLastUpdated = store.getState().config.timestamp;
+    if (isEqual(lastUpdated, thisLastUpdated)) {
+      lastUpdated = thisLastUpdated;
+      config = remote.getGlobal('config');
+      if (callback) callback(config);
     }
-  })
+  });
+
+  useEffect(() => {
+    return unsubscribe();
+  });
+
+  return new Proxy(config, {
+    set(target, p, value, receiver) {
+      console.log(...arguments);
+      ipcRenderer.sendSync('updateConfig', arguments);
+      return true;
+    }
+  });
 }
