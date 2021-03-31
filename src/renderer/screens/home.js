@@ -17,7 +17,7 @@ export default function Home() {
       <RecentEpisodes onPageFlip={() => console.log('onPageFlip called')}/>
       <button onClick={() => {
         history.push('/setting')
-      }}>settings</button>
+      }} className="button-settings">⛭</button>
     </div>
   )
 }
