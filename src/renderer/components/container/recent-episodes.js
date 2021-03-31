@@ -1,42 +1,16 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import EpisodeCard from "../card/episode-card";
 import ScrollButton from "../scroll-button";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { useStore } from "react-redux";
-import _ from "lodash";
+import {useSelector} from "react-redux";
 
 export default function RecentEpisodes(props) {
 
-  const [recent, setRecent] = useState([]);
-  const [updated, setUpdated] = useState(false);
   const [atLeftBound, setAtLeftBound] = useState(true);
-
   const scrollContainerRef = useRef();
 
-  const store = useStore();
-
-  const refreshRecent = () => {
-    let previousRecent = recent;
-    let currentRecent = store.getState()["recent-releases"];
-
-    if (!_.isEqual(previousRecent, currentRecent)) {
-      const values = Object.values(currentRecent);
-
-      setRecent(values);
-      if (values.length > 0) setUpdated(true);
-    }
-  };
-
-  const unsubscribe = store.subscribe(refreshRecent);
-
-  useEffect(() => {
-    refreshRecent();
-
-    return () => {
-      unsubscribe();
-    }
-  }, []);
+  const recentEpisodes = useSelector(state => state['recent-releases']);
 
   const onScroll = (direction, targetElement) => {
     if (direction === "right") {
@@ -65,7 +39,7 @@ export default function RecentEpisodes(props) {
             setAtLeftBound(targetElement.scrollLeft === 0);
           }}
         >
-          {updated && recent.map((element, index) => {
+          {recentEpisodes && Object.values(recentEpisodes).map((element, index) => {
 
             element = element[1][0];
 
