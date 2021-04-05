@@ -1,75 +1,151 @@
+body
+	background: #111
+
+.back-button
+	border-radius: 50%
+	padding-top: 16px
+	padding-bottom: 13px
+	padding-left: 1.3em
+	padding-right: .8em
+	margin-right: 2em
+	//height: 100%
+	width: 100%
+	margin: 0
+	border: 3px solid transparent
+
+	&:hover
+		border-color: #222
+
+.back-arrow
+	border: solid white
+	box-sizing: content-box
+	border-width: 3px 0 0 3px
+	display: inline-block
+	padding: 0
+	height: 10px
+	width: 10px
+	margin: 0
+	transform: rotate(-45deg)
+
 .settings
+	&-heading
+		position: relative
+		left: -54px
+		display: flex
+		flex-direction: row
+		width: fit-content
+		align-items: center
+		height: 3em
+		margin-bottom: 3em
+
 	&-top
-		display: block
+		//display: block
 		margin-left: auto
 		margin-right: auto
-		margin-top: 10%
-		width: 55%
-		font-family: Roboto
+		margin-top: 15%
+		width: fit-content
+		min-width: 60%
+		max-width: 80%
+		font-family: "Youtube Sans"
 		color: #fff
 
-	&-opts
+	/*&-opts
 		background: #121212
-		padding: 50px
+		padding: 40px
 		border-radius: 70px
 	
 	&-opt
 		display: flex
 		align-items: center
 		justify-content: space-between
-		padding-bottom: 10px
-		font-size: 18px
+		//padding: 10px
+		// padding-left: 20px
+		// padding-right: 25px
+		margin-bottom: 20px
 		color: #ccc
+		font-size: 22px
+		padding-bottom: 14px
+		border-bottom: 1px solid #181818
+
+		&:last-child
+			margin-bottom: 10%
+
+		/*&:hover
+			background: #181818
 	
 	&-title
 		font-weight: 500
+		margin-right: 20px
+	
+	&-desc
+		display: block
+		width: 70%
+		margin-top: 8px
+		font-size: 11px
+		font-weight: 400
+		color: #666
+		line-height: 1.4
+
 
 h2
-	text-align: center
-	font-size: 60px
+	//text-align: center
+	font-size: 40px
+	font-weight: 400
+	//margin-left: 10px
 
 h3
-	font-size: 30px
-	margin: 40px 0 20px 0
+	font-size: 12px
+	margin: 40px 0 5px 0
+	font-weight: 999
+	color: #333
+	// padding-left: 20px
+	// padding-right: 25px
 
 	&:first-child
 		margin-top: 0 !important
 
 select
+	font-family: "Youtube Sans"
+	box-sizing: content-box
 	width: 150px
-	padding: 5px 35px 7px 10px
+	padding: 0 20px 0 13px
 	font-size: 16px
-	border: none
-	height: 30px
-	-webkit-appearance: none
+	border: 1px solid transparent //1px solid #0e0e0e
+	height: 37px
+	// -webkit-appearance: none
 	appearance: none
-	border-radius: 5px
+	border-radius: 7px
 	color: #ccc
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='rgb(119, 119, 119)'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M8.71 11.71l2.59 2.59c.39.39 1.02.39 1.41 0l2.59-2.59c.63-.63.18-1.71-.71-1.71H9.41c-.89 0-1.33 1.08-.7 1.71z'/%3E%3C/svg%3E") 96% / 15% no-repeat #222
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='rgb(204, 204, 204)'%3E%3Cpath d='M0 0h24v24H0V0z' fill='none'/%3E%3Cpath d='M8.71 11.71l2.59 2.59c.39.39 1.02.39 1.41 0l2.59-2.59c.63-.63.18-1.71-.71-1.71H9.41c-.89 0-1.33 1.08-.7 1.71z'/%3E%3C/svg%3E") 96% / 15% no-repeat transparent
+	transition-duration: 0.25s
+	transition-property: background-color, border
+	transition-timing-function: ease
 
 	&:hover
-		background-color: #282828
+		//background-color: #282828
+		border: 1px solid #282828
 	
 	&:focus
 		outline: none
-		background-color: #333
+		background-color: #222
 
-input
-	padding: 0 0 0 10px
-	background-color: #222
+input[type="text"]
+	padding: 3px 3px 3px 13px
+	transition: background-color 0.25s ease
+	background-color: #161616
 	border: none
 	height: 30px
-	color: #ccc
-	border-radius: 5px
+	color: #aaa
+	border-radius: 7px
 	min-width: 150px
 	width: min-content
 
 	&:hover
-		background-color: #282828
+		background-color: #181818
 	
 	&:focus
 		outline: none
-		background-color: #333
+		background-color: #222
 
 /* The cool toggle switch thing :D */
 .switch
@@ -77,25 +153,26 @@ input
 
 	position: relative
 	display: inline-block
-	width: $size * 2
+	width: $size * 2.5
 
 	&-input
 		display: none
 		
 		&:checked + .switch-label::before
-			background-color: red
+			background-color: #a00
 
 		&:checked + .switch-label::after
-			left: $size
+			left: calc(100% - #{$size * 1.25})
 
 	&-label
 		display: block
-		width: $size * 2
-		height: $size
+		width: $size * 2.5
+		height: $size * 1.4
 		text-indent: -150%
 		clip: rect(0 0 0 0)
 		color: transparent
 		user-select: none
+		box-sizing: border-box
 
 		&::before, &::after
 			content: ""
@@ -106,18 +183,19 @@ input
 		&::before
 			width: 100%
 			height: 100%
-			background-color: #222
+			background-color: #222 //#181818 //transparent
 			border-radius: 9999em
 			-webkit-transition: background-color 0.25s ease
 			transition: background-color 0.25s ease
+			//border: 1px solid #222
 
 		&::after 
-			top: $size - $size * 1.1
-			left: 0
-			width: $size * 1.2
-			height: $size * 1.2
+			top: $size * .2
+			left: $size * .25
+			width: $size
+			height: $size
 			border-radius: 50%
-			background-color: #666
+			background-color: #121212
 			box-shadow: 0 0 2px rgba(0, 0, 0, 0.45)
 			-webkit-transition: left 0.25s ease
 			transition: left 0.25s ease

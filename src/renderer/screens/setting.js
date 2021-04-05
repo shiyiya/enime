@@ -1,56 +1,78 @@
 import React, {useEffect, useState} from 'react';
-import {useConfig} from "../hooks/config";
+import { ipcRenderer } from "electron";
 import { SETTINGS } from "../../shared/settings/settings";
 import { useHistory } from "react-router-dom";
 
-const cap = str => str[0].toUpperCase() + str.slice(1);
+const cap = str => str[0].toUpperCase() + str.slice(1),
+  update = async (key, val) => {
+    //console.log(key, val);
+    if(!await ipcRenderer.invoke("save", key, val))
+      return false;
+    //console.log("suceeded");
+    const [cat, kat] = key.split(".");
+    global.config[cat][kat] = val;
+    return true;
+  };
+
+
 
 export default function Setting() {
-  const [config, setConfig] = useState(useConfig(updatedConfig => {
-    setConfig(updatedConfig);
-  })), hist = useHistory();
+  const forceUpdate = useState()[1].bind(null, {}), hist = useHistory();
   let boolcount = 0;
 
   return (
     <div className="settings-top">
-      <h2>Settings</h2>
+      <div className="settings-heading"><div className="back-button" onClick={() => hist.push("/")}><div className="back-arrow"></div></div><h2>Settings</h2></div>
       <div className="settings-opts">
         {
           Object.keys(SETTINGS).map((i, _) => {
             return (
               <>
-                <h3 className="settings-sec">{cap(i)}</h3>
+                <h3 className="settings-sec" key={_}>{cap(i.toUpperCase())}</h3>
                 {
-                  Object.keys(SETTINGS[i]).map((j, _) => {
-                    const pog = SETTINGS[i][j], t = typeof pog.default;
+                  Object.keys(SETTINGS[i]).map(j => {
+                    const pog = SETTINGS[i][j], t = typeof pog.default, 
+                      propname = i + "." + j;
 
-                    if (t === "boolean") {
+                    if (t === "boolean")
                       return (
                         <div className="settings-opt bool">
-                          <span className="settings-title">{SETTINGS[i][j].title}</span>
+                          <div className="settings-text">
+                            <span className="settings-title">{SETTINGS[i][j].title}</span>
+                            <span className="settings-desc">{SETTINGS[i][j].desc}</span>
+                          </div>
                           <div className="switch">
-                            <input type="checkbox" id={"switch-" + (++boolcount)} className="switch-input"/>
+                            <input type="checkbox" id={"switch-" + (++boolcount)} className="switch-input" checked={global.config[i][j]} onChange={async v => {
+                              if(await update(propname, v.target.checked)) forceUpdate();
+                            }}/>
                             <label htmlFor={"switch-" + boolcount} className="switch-label"/>
                           </div>
                         </div>
                       )
-                    } else if (pog.choices) {
+                    else if (pog.choices)
                       return (
                         <div className="settings-opt select">
-                          <span className="settings-title">{SETTINGS[i][j].title}</span>
-                          <select value={config[i][j]} onChange={v => {
-                            config[i][j] = v.target.value; console.log("changed", v.target.value);
+                          <div className="settings-text">
+                            <span className="settings-title">{SETTINGS[i][j].title}</span>
+                            <span className="settings-desc">{SETTINGS[i][j].desc}</span>
+                          </div>
+                          <select value={global.config[i][j]} onChange={async v => {
+                            if(await update(propname, v.target.value)) forceUpdate();
                           }}>
                             {pog.choices.map(c => <option value={c}>{c}</option>)}
                           </select></div>
                       )
-                    } else if (t === "string") {
+                    else if (t === "string")
                       return (
                         <div className="settings-opt text">
-                          <span className="settings-title">{SETTINGS[i][j].title}</span>
-                          <input type="text" className="txtinpt"/></div>
+                          <div className="settings-text">
+                            <span className="settings-title">{SETTINGS[i][j].title}</span>
+                            <span className="settings-desc">{SETTINGS[i][j].desc}</span>
+                          </div>
+                          <input type="text" className="txtinpt" value={global.config[i][j]} onChange={async v => {
+                            if(await update(propname, v.target.value)) forceUpdate();
+                          }}/></div>
                       )
-                    }
                   })
                 }
               </>
@@ -58,7 +80,6 @@ export default function Setting() {
           })
         }
       </div>
-      <button onClick={() => hist.push("/")}>back</button>
     </div>
   )
 }
