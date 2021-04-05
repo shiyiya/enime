@@ -11,21 +11,16 @@ const RECENT_RELEASES = new RecentReleasesReducer();
 import CurrentPresenceReducer from "./reducer/impl/current-presence-reducer";
 const CURRENT_PRESENCE = new CurrentPresenceReducer();
 
-import ConfigReducer from "./reducer/impl/config-reducer";
-const CONFIG = new ConfigReducer();
-
 const reducers = {
   [WATCHING_ANIME.name()]: WATCHING_ANIME.get,
   [RECENT_RELEASES.name()]: RECENT_RELEASES.get,
-  [CURRENT_PRESENCE.name()]: CURRENT_PRESENCE.get,
-  [CONFIG.name()]: CONFIG.get
-}
+  [CURRENT_PRESENCE.name()]: CURRENT_PRESENCE.get
+};
 
 const initialStateRemote = {
   [WATCHING_ANIME.name()]: WatchingAnimeReducer.INITIAL_STATE,
   [RECENT_RELEASES.name()]: RecentReleasesReducer.INITIAL_STATE,
-  [CURRENT_PRESENCE.name()]: CurrentPresenceReducer.INITIAL_STATE,
-  [CONFIG.name()]: ConfigReducer.INITIAL_STATE
+  [CURRENT_PRESENCE.name()]: CurrentPresenceReducer.INITIAL_STATE
 }
 
 export function configureStore(initialState, scope = 'main') {

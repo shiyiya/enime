@@ -9,9 +9,7 @@ let torrentProvider, informationProvider;
 export default {
   getTorrentProvider() {
     if (!torrentProvider) {
-      const config = isRenderer() ? remote.getGlobal('config') : global.config;
-
-      switch (config.providers.torrent.toLowerCase()) {
+      switch (global.config.providers.torrent.toLowerCase()) {
         case "nyaa.si":
           torrentProvider = new Nyaa();
           break;
@@ -29,9 +27,7 @@ export default {
 
   getInformationProvider() {
     if (!informationProvider) {
-      const config = isRenderer() ? remote.getGlobal('config') : global.config;
-
-      switch (config.providers.information.toLowerCase()) {
+      switch (global.config.providers.information.toLowerCase()) {
         case "notify.moe":
           informationProvider = new NotifyMoe();
           break;

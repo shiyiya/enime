@@ -17,6 +17,7 @@ export const SETTINGS = {
   integrations: {
     rpc: {
       default: true,
+      change: v => global.events.emit("rpc", v),
       title: "Discord RPC",
       desc: "Turns Discord RPC on and off. Discord RPC is the small message under your profile that displays the anime you are watching, how long, and how far you're into it."
     },

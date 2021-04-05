@@ -1,13 +1,15 @@
 import React from 'react';
+import { ipcRenderer } from 'electron';
 import {
   HashRouter,
   Route,
   Switch
 } from "react-router-dom";
 import 'v8-compile-cache';
-
 import './App.global.sass';
-import "../shared/settings/init.js";
+
+ipcRenderer.on("config", (_, config) => global.config = JSON.parse(config));
+global.config = JSON.parse(await ipcRenderer.invoke("sendmeconfigyoufrick"));
 
 import WatchEpisode from "./screens/watch-episode";
 import Home from "./screens/home";
