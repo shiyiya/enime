@@ -25,6 +25,8 @@ export default {
     ],
   },
 
+  experiments: { topLevelAwait: true },
+
   output: {
     path: path.join(__dirname, '../../src'),
     // https://github.com/webpack/webpack/issues/1114

@@ -62,6 +62,7 @@ export default merge(baseConfig, {
             loader: require.resolve('babel-loader'),
             options: {
               plugins: [
+                '@babel/plugin-syntax-top-level-await',
                 'lodash',
                 require.resolve('react-refresh/babel'),
               ].filter(Boolean),
