@@ -9,7 +9,7 @@ import 'v8-compile-cache';
 import './App.global.sass';
 
 ipcRenderer.on("config", (_, config) => global.config = JSON.parse(config));
-global.config = JSON.parse(await ipcRenderer.invoke("sendmeconfigyoufrick"));
+global.config = JSON.parse(await ipcRenderer.invoke("config-info"));
 
 import WatchEpisode from "./screens/watch-episode";
 import Home from "./screens/home";

@@ -5,10 +5,8 @@ import { useHistory } from "react-router-dom";
 
 const cap = str => str[0].toUpperCase() + str.slice(1),
   update = async (key, val) => {
-    //console.log(key, val);
-    if(!await ipcRenderer.invoke("save", key, val))
+    if(!await ipcRenderer.invoke("config-save", key, val))
       return false;
-    //console.log("suceeded");
     const [cat, kat] = key.split(".");
     global.config[cat][kat] = val;
     return true;
@@ -31,7 +29,7 @@ export default function Setting() {
                 <h3 className="settings-sec" key={_}>{cap(i.toUpperCase())}</h3>
                 {
                   Object.keys(SETTINGS[i]).map(j => {
-                    const pog = SETTINGS[i][j], t = typeof pog.default, 
+                    const pog = SETTINGS[i][j], t = typeof pog.default,
                       propname = i + "." + j;
 
                     if (t === "boolean")
@@ -69,9 +67,15 @@ export default function Setting() {
                             <span className="settings-title">{SETTINGS[i][j].title}</span>
                             <span className="settings-desc">{SETTINGS[i][j].desc}</span>
                           </div>
+                          {SETTINGS[i][j].oauth &&
+                          <button className="settings-oauth" onClick={async () => { if(await update(propname, await SETTINGS[i][j].oauth.auth())) forceUpdate();}}>{SETTINGS[i][j].oauth.text}</button>
+                          }
+                          {!SETTINGS[i][j].oauth &&
                           <input type="text" className="txtinpt" value={global.config[i][j]} onChange={async v => {
                             if(await update(propname, v.target.value)) forceUpdate();
-                          }}/></div>
+                          }}/>
+                          }
+                        </div>
                       )
                   })
                 }

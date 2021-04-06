@@ -1,14 +1,16 @@
+import Anilist from "../../renderer/external/anilist";
+
 export const CONFIG_NAME = "config.json";
 export const SETTINGS = {
   providers: {
     torrent: {
-      title: "Anime torrent provider",
+      title: "Torrent Source",
       desc: "Where we download the torrent files from, to get you the anime. Usually doesn't matter much.",
       default: "animetosho",
       choices: ["animetosho", "nyaa.si"],
     },
     information: {
-      title: "Anime data provider",
+      title: "Anime Information",
       desc: "Where to get anime info like descriptions, anime id, thumbnails, and a ton of other stuff.",
       default: "notify.moe",
       choices: ["notify.moe"],
@@ -23,15 +25,19 @@ export const SETTINGS = {
     },
     account: {
       default: "anilist", choices: ["anilist"],
-      title: "Account and Watch List integration",
+      title: "Account and Watch List",
       desc: "What online service we sync your account and watch list information to."
     }
   },
   tokens: {
     anilist: {
       default: "",
-      title: "AniList Token",
-      desc: "The provided token the app uses to access your AniList account data and modify watch list."
+      title: "AniList",
+      desc: "The provided token the app uses to access your AniList account data and modify watch list.",
+      oauth: {
+        text: "Login with AniList",
+        auth: async () => await Anilist.login()
+      }
     }
   }
 };

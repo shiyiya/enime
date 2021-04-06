@@ -58,7 +58,7 @@ export default class Nyaa extends TorrentProvider {
     let result = {};
 
     for (let torrent of parsedXML.rss.channel.item) {
-      let information = raku.parse(torrent.title);
+      let information = rakun.parse(torrent.title);
       if (!allowedSubs.includes(information.subber)) continue;
 
       const key = information.name + "###" + information.season;

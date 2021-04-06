@@ -1,8 +1,6 @@
 import Nyaa from "./torrent/impl/nyaa";
 import NotifyMoe from "./information/impl/notify-moe";
 import Animetosho from "./torrent/impl/animetosho";
-import { isRenderer } from "../../../shared/utilities/process";
-import { remote } from "electron";
 
 let torrentProvider, informationProvider;
 

@@ -61,15 +61,14 @@ export default class DiscordPresence extends Job {
     global.events.on('rpc', val => {
       if(val === lastval) return;
       lastval = val;
-      if(val) { console.log("rpc should be on"); unsub = store.subscribe(subfun); connectv2(); }
-      else { console.log("unrpc"); unsub(); client.destroy(); }
+      if(val) { unsub = store.subscribe(subfun); connectv2(); }
+      else { unsub(); client.destroy(); }
     })
 
     let client;
     const connectv2 = async function() {
       client = new RPC.Client({ transport: 'ipc' });
       client.on('ready', () => {
-        console.log("ready");
         let startTimestamp = new Date();
         client.setActivity({
           state: PresenceConstants.STATUS_TO_STATE[PresenceState.IDLE],

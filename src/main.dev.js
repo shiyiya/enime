@@ -15,12 +15,15 @@ import { app, BrowserWindow, shell, crashReporter, session } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import 'v8-compile-cache';
+import * as electronRemoteMain from "@electron/remote/main";
 
 console.log(app.getPath('crashDumps'))
 crashReporter.start({
   submitURL: '',
   uploadToServer: false
 })
+
+electronRemoteMain.initialize();
 
 export default class AppUpdater {
   constructor() {
@@ -80,8 +83,15 @@ const RESOURCES_PATH = app.isPackaged
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
+app.setAsDefaultProtocolClient(
+  'enime',
+  process.platform === 'darwin'
+    ? undefined
+    : app.getPath('exe')
+)
+
 app.commandLine.appendSwitch('disable-web-security')
-app.commandLine.appendSwitch('disable-site-isolation-trials');
+//app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 const pluginDir = path.join(RESOURCES_PATH, "libraries", 'mpv', os);
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');

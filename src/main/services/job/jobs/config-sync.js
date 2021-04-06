@@ -54,15 +54,14 @@ export default class ConfigSync extends Job {
 
     // Fills in default values for all the values that aren't filled already, and creates a proxy in the global object for those properties at the same time.
     for(let i in SETTINGS) {
-      console.log(i);
       global.config[i] = new Proxy(config[i] ||= {}, handle(SETTINGS[i]));
       for(let j in SETTINGS[i])
         if(!config[i][j]) s = true, config[i][j] = SETTINGS[i][j].default;
     }
 
     // Literally just innocently sends the config object.
-    ipcMain.handle("sendmeconfigyoufrick", async () => JSON.stringify(global.config));
-    ipcMain.handle("save", async (_, key, val) => {
+    ipcMain.handle("config-info", async () => JSON.stringify(global.config));
+    ipcMain.handle("config-save", async (_, key, val) => {
       const [cat, kat] = key.split(".");
       try {
         global.config[cat][kat] = val;
