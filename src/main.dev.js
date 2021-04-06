@@ -83,13 +83,6 @@ const RESOURCES_PATH = app.isPackaged
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
-app.setAsDefaultProtocolClient(
-  'enime',
-  process.platform === 'darwin'
-    ? undefined
-    : app.getPath('exe')
-)
-
 app.commandLine.appendSwitch('disable-web-security')
 //app.commandLine.appendSwitch('disable-site-isolation-trials');
 
