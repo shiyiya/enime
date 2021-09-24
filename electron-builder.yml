@@ -1,6 +1,6 @@
-appId: moe.enime
-productName: Enime
-copyright: Copyright © 2021 Enime
+appId: com.example.nextron
+productName: My Nextron App
+copyright: Copyright © 2018 Yoshihide Shiono
 directories:
   output: dist
   buildResources: resources
