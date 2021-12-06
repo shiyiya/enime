@@ -2,6 +2,8 @@ const path = require('path');
 const zlib = require("zlib");
 const Dotenv = require('dotenv-webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { sass } = require('svelte-preprocess-sass');
 
 module.exports = {
     mode: 'production',
@@ -21,6 +23,9 @@ module.exports = {
             threshold: 10240,
             minRatio: 0.8,
             deleteOriginalAssets: false,
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
         })
     ],
     module: {
@@ -34,9 +39,28 @@ module.exports = {
                             dev: false
                         },
                         emitCss: false,
-                        hotReload: false
+                        hotReload: false,
+                        preprocess: {
+                            style: sass(),
+                        }
                     }
                 }
+            },
+            {
+                test: /\.css$/,
+                enforce: 'pre',
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')]
+                        }
+                    },
+                    'sass-loader'
+                ]
             },
         ]
     },

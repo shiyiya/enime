@@ -36,7 +36,7 @@ export class BuildWatcher {
         await this.removeFolder('dist')
 
         this.fsWatcher = chokidar
-            .watch('src/main/**', {
+            .watch(['src/main/**', 'src/common/**'], {
                 ignored: new RegExp('[-.]spec.js'),
                 usePolling: true,
                 cwd: './',

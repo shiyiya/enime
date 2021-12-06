@@ -1,12 +1,11 @@
 <script>
-    import { Router, Link, Route } from 'svelte-routing';
+    import Router from 'svelte-spa-router'
+
     import Home from './pages/home.svelte';
 
-    export let url = '';
+    const routes = {
+        '/': Home
+    }
 </script>
 
-<Router url="{url}">
-    <div>
-        <Route path="/"><Home /></Route>
-    </div>
-</Router>
+<Router {routes}/>

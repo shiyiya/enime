@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const { sass } = require('svelte-preprocess-sass');
 
 module.exports = {
     mode: 'development',
@@ -19,9 +20,27 @@ module.exports = {
                             dev: true
                         },
                         emitCss: false,
-                        hotReload: true
+                        hotReload: true,
+                        preprocess: {
+                            style: sass(),
+                        }
                     }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            ident: 'postcss',
+                            plugins: [require('autoprefixer')]
+                        }
+                    },
+                    'sass-loader'
+                ]
             },
         ]
     },

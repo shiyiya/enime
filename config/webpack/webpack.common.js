@@ -1,7 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: path.resolve(__dirname, '../..', './src/renderer/app.js'),
@@ -11,13 +10,6 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader'],
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader'
-                ]
             },
             {
                 // required to prevent errors from Svelte on Webpack 5+
@@ -40,9 +32,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Enime',
             template: path.resolve(__dirname, '../..', './public/index.html'),
-        }),
-        new MiniCssExtractPlugin({
-            filename: '[name].css'
         })
     ],
     output: {

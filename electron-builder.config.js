@@ -13,12 +13,12 @@ const config = {
     ],
     win: {
         target: ['nsis', 'nsis-web', 'portable'],
-        icon: 'build/icons/icon.png',
+        icon: 'build/icons/win/icon.ico',
         publisherName: 'Enime'
     },
     linux: {
         category: 'entertainment',
-        icon: 'build/icons/icon.png'
+        icon: 'build/icons/png/256x256.png'
     },
     nsis: {
         oneClick: false,
@@ -26,9 +26,10 @@ const config = {
         allowToChangeInstallationDirectory: true,
         createDesktopShortcut: true,
         createStartMenuShortcut: true,
-        installerIcon: 'build/icons/icon.ico',
-        uninstallerIcon: 'build/icons/icon.ico'
-    }
+        installerIcon: 'build/icons/win/icon.ico',
+        uninstallerIcon: 'build/icons/win/icon.ico'
+    },
+    asar: false
 };
 
 module.exports = config;

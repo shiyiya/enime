@@ -28,17 +28,19 @@ import { GlobalService } from '../global/global.service';
                     nodeIntegration: true,
                     webSecurity: false,
                     contextIsolation: true,
+                    nodeIntegrationInSubFrames: true,
+                    worldSafeExecuteJavaScript: false,
                     preload: resolve(__dirname, './bridge/index.js')
                 },
             });
 
             win.maximize();
 
-            const URL = !app.isPackaged
-                ? `http://localhost:${process.env.PORT}`
-                : `file://${join(app.getAppPath(), 'dist/renderer/index.html')}`;
-
-            win.loadURL(URL);
+            if (!app.isPackaged) {
+                await win.loadURL(`http://localhost:${process.env.PORT}`);
+            } else {
+                await win.loadFile('dist/renderer/index.html');
+            }
 
             win.on('closed', () => {
                 win.destroy();
