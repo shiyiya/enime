@@ -1,5 +1,5 @@
 import { Module, Logger } from '@nestjs/common';
-import {app, BrowserWindow, dialog} from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { join, resolve } from 'path';
 import { GlobalService } from '../global/global.service';
 
@@ -37,7 +37,7 @@ import { GlobalService } from '../global/global.service';
             win.maximize();
 
             if (!app.isPackaged) {
-                await win.loadURL(`http://localhost:${process.env.PORT}`);
+                await win.loadURL(`http://localhost:${process.env.PORT || 8081}`);
             } else {
                 await win.loadFile('dist/renderer/index.html');
             }
