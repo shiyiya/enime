@@ -1,6 +1,7 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack");
 
 module.exports = {
     entry: path.resolve(__dirname, '../..', './src/renderer/app.js'),
@@ -32,6 +33,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Enime',
             template: path.resolve(__dirname, '../..', './public/index.html'),
+        }),
+        new webpack.DefinePlugin({
+            "process.env": JSON.stringify(process.env)
         })
     ],
     output: {

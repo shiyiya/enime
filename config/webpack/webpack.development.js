@@ -1,6 +1,7 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const { sass } = require('svelte-preprocess-sass');
+require('dotenv').config({ path: '../.env.development' });
 
 module.exports = {
     mode: 'development',

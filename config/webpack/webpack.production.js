@@ -3,6 +3,7 @@ const Dotenv = require('dotenv-webpack');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { sass } = require('svelte-preprocess-sass');
+require('dotenv').config({ path: '../.env.production' });
 
 module.exports = {
     mode: 'production',

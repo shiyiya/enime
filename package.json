@@ -45,6 +45,7 @@
     "@nestjs/microservices": "^7.4.4",
     "@nestjs/platform-express": "^7.0.0",
     "discord-rpc": "^4.0.1",
+    "dotenv": "^10.0.0",
     "nestjs-electron-ipc-transport": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
