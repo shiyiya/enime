@@ -19,6 +19,16 @@ import { GlobalService } from '../global/global.service';
                 window.removeAllListeners('close');
             });
 
+            const pluginDir = path.join(app.getAppPath(), './build/assets/mpv');
+
+            if (process.platform !== 'linux') {
+                process.chdir(pluginDir);
+            }
+
+            app.commandLine.appendSwitch('no-sandbox');
+            app.commandLine.appendSwitch('ignore-gpu-blacklist');
+            app.commandLine.appendSwitch('register-pepper-plugins', getPluginEntry(pluginDir));
+
             await app.whenReady();
 
             const win = new BrowserWindow({
