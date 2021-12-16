@@ -12,7 +12,7 @@ const ENV = process.env.NODE_ENV;
   imports: [GlobalModule, EventEmitterModule.forRoot(), ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-  }), IpcModule, RpcModule, WindowModule, RpcModule],
+  }), WindowModule, IpcModule, RpcModule],
   controllers: [],
   providers: [],
 })

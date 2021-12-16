@@ -52,6 +52,12 @@ module.exports = {
         },
         compress: true,
         port: process.env.PORT,
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        }
     },
     devtool: 'eval-source-map',
 };

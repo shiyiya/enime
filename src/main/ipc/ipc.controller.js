@@ -13,4 +13,9 @@ export class IpcController {
     emit([event, payload]) {
         this.ipcService.emit(event, payload);
     }
+
+    @HandleIPCMessage('app.cwd')
+    cwd() {
+        console.log(process.cwd())
+    }
 }

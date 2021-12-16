@@ -6,3 +6,4 @@
 *.icns  binary
 *.dll   binary
 *.node  binary
+*.dylib binary

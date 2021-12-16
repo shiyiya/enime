@@ -3,10 +3,13 @@
  */
 
 export default class MPV {
-  constructor(container) {
+  constructor(container, ready) {
     this.embed = document.createElement('embed');
+    this.embed.id = 'mpv-player';
     this.embed.type = 'application/x-mpvjs';
-    this.events = {};
+    this.events = {
+      'ready': ready
+    };
 
     container.appendChild(this.embed);
 
@@ -44,7 +47,7 @@ export default class MPV {
   }
 
   node() {
-    return document.getElementsByTagName('embed')[0];
+    return document.getElementById('mpv-player');
   }
 
   on(event, listener) {

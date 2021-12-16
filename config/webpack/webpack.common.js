@@ -18,14 +18,17 @@ module.exports = {
                 resolve: {
                     fullySpecified: false
                 }
+            },
+            {
+                test: /\.node$/,
+                loader: 'native-ext-loader'
             }
         ],
     },
     resolve: {
         alias: {
-            svelte: path.dirname(require.resolve('svelte/package.json')),
-            pages: path.resolve(__dirname, '../../src/renderer/pages'),
-            components: path.resolve(__dirname, '../../src/renderer/components')
+            '@': path.resolve(__dirname, '../../src/renderer'),
+            svelte: path.dirname(require.resolve('svelte/package.json'))
         },
         extensions: ['.mjs', '.js', '.svelte'],
         mainFields: ['svelte', 'browser', 'module', 'main']
