@@ -1,16 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { ElectronIPCTransport } from 'nestjs-electron-ipc-transport';
+import {
+  FastifyAdapter
+} from '@nestjs/platform-fastify';
+
 import { AppModule } from './app.module';
+import { GlobalService } from './global/global.service';
 
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(
+  const app = await NestFactory.create(
     AppModule,
-    {
-      strategy: new ElectronIPCTransport(),
-    }
+    new FastifyAdapter({ logger: GlobalService.prototype.isDevelopment() })
   );
 
-  await app.close();
+  app.connectMicroservice({
+    strategy: new ElectronIPCTransport(),
+  });
+
+  await app.listen(process.env.PORT);
 }
 
 bootstrap();
