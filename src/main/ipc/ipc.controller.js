@@ -1,6 +1,6 @@
 import { Controller, Dependencies } from '@nestjs/common';
 import { IpcService } from './ipc.service';
-import { HandleIPCMessage } from 'nestjs-electron-ipc-transport';
+import { HandleIPCMessage } from 'enime-nestjs-electron-ipc-transport';
 
 @Controller()
 @Dependencies(IpcService)

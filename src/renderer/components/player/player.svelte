@@ -10,7 +10,7 @@
       mpv.property('hwdec', 'auto');
       mpv.command('loadfile', 'https://filesamples.com/samples/video/mkv/sample_1280x720_surfing_with_audio.mkv');
 
-      mpv.property('pause', false);
+      mpv.property('pause', true);
     });
   });
 </script>

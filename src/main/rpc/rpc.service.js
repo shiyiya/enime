@@ -17,7 +17,9 @@ const BASE_ACTIVITY = {
 
 @Injectable()
 export class RpcService {
-    CLIENT_ID = '781044799716720680';
+    logger = new Logger(RpcService.name);
+
+    CLIENT_ID = process.env.CLIENT_ID;
 
     client;
 
@@ -33,16 +35,29 @@ export class RpcService {
            });
         });
 
+        let failure = false;
+
+        do {
+            try {
+                await this.login();
+                failure = false;
+                this.logger.debug('Registered Discord RPC client');
+            } catch (e) {
+                this.logger.error('Discord RPC connection timeout, retrying..');
+                failure = true;
+            }
+        } while (failure);
+    }
+
+    async login() {
         await this.client.login({
             clientId: this.CLIENT_ID
         });
-
-        Logger.debug('Registered Discord RPC client');
     }
 
     @OnEvent(Events.DISCORD_PRESENCE_UPDATE)
     async handlePresenceUpdate(payload) {
-        console.log('Discord presence update event captured', payload);
+        this.logger.debug('Discord presence update event captured', payload);
         /*
         await this.client.setActivity({
             ...BASE_ACTIVITY,

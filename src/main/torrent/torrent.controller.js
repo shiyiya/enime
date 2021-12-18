@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class TorrentController {
   @Get()
   findAll() {
-    return 'This action returns all cats';
+    return [];
   }
 }

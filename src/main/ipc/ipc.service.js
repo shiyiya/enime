@@ -9,6 +9,7 @@ export class IpcService {
     }
 
     emit(event, payload) {
+        console.log(event, payload)
         this.eventEmitter.emit(event, payload);
     }
 }

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ElectronIPCTransport } from 'nestjs-electron-ipc-transport';
+import { ElectronIPCTransport } from 'enime-nestjs-electron-ipc-transport';
 import {
   FastifyAdapter
 } from '@nestjs/platform-fastify';
@@ -17,7 +17,8 @@ async function bootstrap() {
     strategy: new ElectronIPCTransport(),
   });
 
-  await app.listen(process.env.PORT);
+  await app.startAllMicroservices();
+  await app.listen(process.env.PORT_BACKEND);
 }
 
 bootstrap();

@@ -68,8 +68,6 @@ export function getPluginEntry(pluginDir, pluginName = 'mpvjs.node') {
                     break;
             }
 
-            if (development) app.commandLine.appendSwitch('enable-logging');
-
             const pluginDir = path.join(app.getAppPath(), `./build/assets/mpv/${os}`);
 
             if (process.platform !== 'linux') {
