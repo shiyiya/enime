@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TorrentService } from './torrent.service';
 import { TorrentController } from './torrent.controller';
-import { ConfigurationService } from '../config/config.service';
 import { WindowModule } from '../window/window.module';
 import { ConfigurationModule } from '../config/config.module';
+import { InMemoryDBModule } from '@nestjs-addons/in-memory-db';
 
 @Module({
-  imports: [ConfigurationModule, WindowModule],
+  imports: [InMemoryDBModule.forFeature('torrent'), ConfigurationModule, WindowModule],
   controllers: [TorrentController],
   providers: [TorrentService],
 })
