@@ -1,0 +1,59 @@
+{
+  "name": "enime",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Enime",
+    "email": "team@enime.moe",
+    "url": "https://enime.moe"
+  },
+  "description": "A desktop app for everyone to freely watch anime without interruptions",
+  "build": {
+    "appId": "moe.enime",
+    "productName": "Enime",
+    "copyright": "Copyright © 2021 ${author}",
+    "files": [
+      "dist/",
+      "node_modules/"
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
+  },
+  "scripts": {
+    "dev": "pnpm run dev:watch",
+    "dev:watch": "node scripts/watch.js"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@sveltejs/adapter-static": "^1.0.0-next.29",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.41",
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.171",
+    "@tsconfig/svelte": "^3.0.0",
+    "@types/node": "^17.0.12",
+    "cross-env": "^7.0.3",
+    "electron": "^18.1.0",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-reloader": "^1.2.3",
+    "node-sass": "^7.0.1",
+    "svelte": "^3.47.0",
+    "svelte-preprocess": "^4.10.6",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.5.3",
+    "vite": "^2.9.5",
+    "vite-plugin-commonjs-externals": "^0.1.1"
+  },
+  "dependencies": {
+    "@lowlighter/rakun": "^1.0.7",
+    "http": "^0.0.1-security",
+    "mime": "^3.0.0",
+    "parse-torrent": "^9.1.5",
+    "pump": "^3.0.0",
+    "range-parser": "^1.2.1",
+    "svelte-spa-router": "^3.2.0",
+    "svelte-video-player": "^1.2.5",
+    "torrent-stream": "^1.2.1",
+    "vite-compatible-readable-stream": "^3.6.1"
+  }
+}

@@ -1,0 +1,9 @@
+*.exe   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.icns  binary
+*.dll   binary
+*.node  binary
+*.dylib binary
