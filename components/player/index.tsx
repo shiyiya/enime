@@ -6,8 +6,8 @@ import { AniSkip, Episode } from '@/lib/types';
 import Player from '@oplayer/core';
 import ui from '@oplayer/ui';
 import hls from '@oplayer/hls';
+import type { Highlight } from '@oplayer/ui';
 import { sourceUrlToName } from '@/lib/helper';
-import { Highlight } from '@oplayer/ui/src/types';
 import { skipOpEd } from '@/lib/player/plugin/skip-op-ed';
 
 export default function EnimePlayer(props) {
@@ -17,7 +17,7 @@ export default function EnimePlayer(props) {
     const [sourceIndex, setSourceIndex] = useState(0);
 
     const playerContainerRef = useRef<HTMLDivElement>();
-    const playerRef = useRef<Player>();
+    const playerRef = useRef<Player<{ ui: ReturnType<typeof ui> }>>();
 
     const [source, setSource] = useState(undefined);
     // const { data: source, error } = useSWR<Source>(enimeApi + `/source/${sources[sourceIndex].id}`, url => fetch(url, { cache: "no-store" }).then(res => res.json()));
@@ -25,7 +25,7 @@ export default function EnimePlayer(props) {
 
     useEffect(() => {
         if (playerRef.current) return;
-        playerRef.current = Player.make(playerContainerRef.current, {
+        playerRef.current = Player.make<any>(playerContainerRef.current, {
             volume: setting?.volume * 0.01 || 1
         })
             .use([
@@ -50,7 +50,7 @@ export default function EnimePlayer(props) {
                         }
                     ]
                 }),
-                hls()
+                hls({ forceHLS: true })
             ])
             .create()
             .on('error', ({ payload }) => {
@@ -58,18 +58,15 @@ export default function EnimePlayer(props) {
                     setSourceIndex(sourceIndex + 1);
                 }
             })
-            .on('videosourcechanged', () => {
-                playerRef.current.loader?.on('hlsManifestParsed', (data) => {
-                    console.log(data);
-                });
-            });
+
+        return () => playerRef.current.destroy()
     }, []);
 
     useEffect(() => {
-        fetch(enimeApi + `/source/${sources[sourceIndex].id}`)
+        playerRef.current.changeSource(fetch(enimeApi + `/source/${sources[sourceIndex].id}`)
             .then((res) => res.json())
             .then((res) => {
-                fetch(`https://cdn.nade.me/generate?url=${encodeURIComponent(res.url)}`, {
+                return fetch(`https://cdn.nade.me/generate?url=${encodeURIComponent(res.url)}`, {
                     headers: {
                         "x-origin": "none",
                         "x-referer": "none",
@@ -82,68 +79,64 @@ export default function EnimePlayer(props) {
                             ...res,
                             url: r,
                         });
+
+                        return {
+                            src: r,
+                            ...(poster && {
+                                poster: poster,
+                            })
+                        }
                     })
+            })).then(() => {
+                playerRef.current.context.ui.subtitle.changeSource([
+                    {
+                        default: true,
+                        src: source.subtitle,
+                        name: 'English',
+                    },
+                ]);
             });
     }, [sourceIndex]);
 
     useEffect(() => {
-        if (source) {
-            playerRef.current.changeSource({
-                src: source.url,
-                ...(poster && {
-                    poster: poster,
-                }),
-            }).then(() => {
-                if (anime.mappings.mal) {
-                    fetch(`https://api.aniskip.com/v2/skip-times/${anime.mappings.mal}/${number}?types=op&types=recap&types=mixed-op&types=ed&types=mixed-ed&episodeLength=0`)
-                        .then(res => res.json())
-                        .then(res => {
-                            res = res as AniSkip;
+        if (source && anime.mappings.mal) {
+            fetch(`https://api.aniskip.com/v2/skip-times/${anime.mappings.mal}/${number}?types=op&types=recap&types=mixed-op&types=ed&types=mixed-ed&episodeLength=0`)
+                .then(res => res.json())
+                .then(res => {
+                    res = res as AniSkip;
 
-                            const highlights: Highlight[] = []
-                            let opDuration = [], edDuration = [];
+                    const highlights: Highlight[] = []
+                    let opDuration = [], edDuration = [];
 
-                            if (res.statusCode === 200) {
-                                for (let result of res.results) {
-                                    if (result.skipType === "op" || result.skipType === "ed") {
-                                        const { startTime, endTime } = result.interval;
+                    if (res.statusCode === 200) {
+                        for (let result of res.results) {
+                            if (result.skipType === "op" || result.skipType === "ed") {
+                                const { startTime, endTime } = result.interval;
 
-                                        if (startTime) {
-                                            highlights.push({
-                                                time: startTime,
-                                                text: result.skipType === "op" ? "OP" : "ED"
-                                            });
-                                            if (result.skipType === "op") opDuration.push(startTime);
-                                            else edDuration.push(startTime);
-                                        }
+                                if (startTime) {
+                                    highlights.push({
+                                        time: startTime,
+                                        text: result.skipType === "op" ? "OP" : "ED"
+                                    });
+                                    if (result.skipType === "op") opDuration.push(startTime);
+                                    else edDuration.push(startTime);
+                                }
 
-                                        if (endTime) {
-                                            highlights.push({
-                                                time: endTime,
-                                                text: result.skipType === "op" ? "OP" : "ED"
-                                            });
-                                            if (result.skipType === "op") opDuration.push(endTime);
-                                            else edDuration.push(endTime);
-                                        }
-                                    }
+                                if (endTime) {
+                                    highlights.push({
+                                        time: endTime,
+                                        text: result.skipType === "op" ? "OP" : "ED"
+                                    });
+                                    if (result.skipType === "op") opDuration.push(endTime);
+                                    else edDuration.push(endTime);
                                 }
                             }
+                        }
+                    }
 
-                            playerRef.current.emit("opedchange", [opDuration, edDuration]);
-                            playerRef.current.plugins.ui.highlight(highlights)
-                        });
-                }
-
-                if (source.subtitle) {
-                    playerRef.current.plugins.ui.subtitle.updateSource([
-                        {
-                            default: true,
-                            src: source.subtitle,
-                            name: 'English',
-                        },
-                    ]);
-                }
-            });
+                    playerRef.current.emit("opedchange", [opDuration, edDuration]);
+                    playerRef.current.context.ui.changHighlightSource(highlights)
+                });
         }
     }, [source]);
 
